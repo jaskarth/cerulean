@@ -1,0 +1,12 @@
+{
+  "type": "cerulean:dreamscape",
+  "generator": {
+    "type": "cerulean:dreamscape",
+    "biome_source": {
+      "type": "cerulean:dreamscape",
+      "biomes": [
+        "cerulean:dreamscape"
+      ]
+    }
+  }
+}

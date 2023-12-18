@@ -1,0 +1,12 @@
+{
+  "type": "cerulean:skies",
+  "generator": {
+    "type": "cerulean:skies",
+    "biome_source": {
+      "type": "cerulean:skies",
+      "biomes": [
+        "cerulean:skies"
+      ]
+    }
+  }
+}
