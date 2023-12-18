@@ -1,4 +1,4 @@
-package com.jaskarth.cerulean;
+package fmt.cerulean;
 
 import net.fabricmc.api.ModInitializer;
 

@@ -13,10 +13,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "com.jaskarth.cerulean.client.CeruleanClient"
+      "fmt.cerulean.client.CeruleanClient"
     ],
     "main": [
-      "com.jaskarth.cerulean.Cerulean"
+      "fmt.cerulean.Cerulean"
     ]
   },
   "mixins": [
