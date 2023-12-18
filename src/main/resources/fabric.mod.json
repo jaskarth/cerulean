@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "cerulean",
+  "version": "${version}",
+  "name": "cerulean",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/jaskarth/cerulean"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/cerulean/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.jaskarth.cerulean.client.CeruleanClient"
+    ],
+    "main": [
+      "com.jaskarth.cerulean.Cerulean"
+    ]
+  },
+  "mixins": [
+    "cerulean.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
