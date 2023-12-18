@@ -13,28 +13,28 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import java.util.stream.Stream;
 
 public class SkiesBiomeSource extends BiomeSource {
-    public static final Codec<SkiesBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            RegistryCodecs.entryList(RegistryKeys.BIOME, Biome.CODEC).fieldOf("biomes").forGetter((source) -> source.entries)
-    ).apply(instance, SkiesBiomeSource::new));
+	public static final Codec<SkiesBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			RegistryCodecs.entryList(RegistryKeys.BIOME, Biome.CODEC).fieldOf("biomes").forGetter((source) -> source.entries)
+	).apply(instance, SkiesBiomeSource::new));
 
-    public final RegistryEntryList<Biome> entries;
+	public final RegistryEntryList<Biome> entries;
 
-    public SkiesBiomeSource(RegistryEntryList<Biome> entries) {
-        this.entries = entries;
-    }
+	public SkiesBiomeSource(RegistryEntryList<Biome> entries) {
+		this.entries = entries;
+	}
 
-    @Override
-    protected Codec<? extends BiomeSource> getCodec() {
-        return CODEC;
-    }
+	@Override
+	protected Codec<? extends BiomeSource> getCodec() {
+		return CODEC;
+	}
 
-    @Override
-    protected Stream<RegistryEntry<Biome>> biomeStream() {
-        return entries.stream();
-    }
+	@Override
+	protected Stream<RegistryEntry<Biome>> biomeStream() {
+		return entries.stream();
+	}
 
-    @Override
-    public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
-        return entries.get(0);
-    }
+	@Override
+	public RegistryEntry<Biome> getBiome(int x, int y, int z, MultiNoiseUtil.MultiNoiseSampler noise) {
+		return entries.get(0);
+	}
 }
