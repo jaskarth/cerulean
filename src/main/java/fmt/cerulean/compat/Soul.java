@@ -31,7 +31,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Soul implements IMixinConfigPlugin {
 	private static final String UNSPOKEN = "fmt/cerulean/mixin/$";
-	private static final Set<String> CONVALESCENTS = Set.of("cerulean");
+	private static final Set<String> CONVALESCENTS = Set.of("minecraft", "cerulean");
 	private static final List<String> SCRIPTURE = List.of(
 		"Find refuge",
 		"Lights dimmed",
@@ -55,8 +55,12 @@ public class Soul implements IMixinConfigPlugin {
 		Set<String> targets = Sets.newHashSet();
 		try {
 			FabricLoader.getInstance().getAllMods().stream()
-				.filter(c -> CONVALESCENTS.contains(c.getMetadata().getId()))
-				.forEach(c -> {
+				.filter(c -> {
+					if (FabricLoader.getInstance().isDevelopmentEnvironment() && c.getMetadata().getId().equals("cerulean")) {
+						return false;
+					}
+					return CONVALESCENTS.contains(c.getMetadata().getId());
+				}).forEach(c -> {
 					for (Path path : c.getRootPaths()) {
 						int pathStart = path.toString().length();
 						try {
