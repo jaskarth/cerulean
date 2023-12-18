@@ -5,7 +5,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class SkiesEffects extends DimensionEffects {
 	public SkiesEffects() {
-		super(Float.NaN, false, SkyType.NORMAL, false, false);
+		super(Float.NaN, false, SkyType.NORMAL, true, false);
 	}
 
 	@Override

@@ -19,6 +19,7 @@
       "fmt.cerulean.Cerulean"
     ]
   },
+  "accessWidener": "cerulean.aw",
   "mixins": [
     "cerulean.mixins.json"
   ],
