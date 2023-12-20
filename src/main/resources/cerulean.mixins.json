@@ -6,7 +6,9 @@
   "plugin": "fmt.cerulean.compat.Soul",
   "mixins": [
     "MixinNoiseConfig",
-    "MixinServerWorld"
+    "MixinServerWorld",
+    "MixinPlayerEntity",
+    "MixinWorld"
   ],
   "client": [
     "client.MixinClientPlayNetworkHandler",
