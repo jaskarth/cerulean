@@ -32,14 +32,18 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	public static void spew(World world, BlockPos pos, Direction direction, FlowState state) {
 		for (int i = 0; i < Math.max(1, state.pressure() / 1000); i++) {
 			Random random = world.getRandom();
-			float x = pos.getX() + 0.5f + direction.getOffsetX() * 0.5f + random.nextFloat() * 0.1f;
-			float y = pos.getY() + 0.5f + direction.getOffsetY() * 0.5f + random.nextFloat() * 0.1f;
-			float z = pos.getZ() + 0.5f + direction.getOffsetZ() * 0.5f + random.nextFloat() * 0.1f;
-			float vx = direction.getOffsetX() + random.nextFloat() * 0.1f;
-			float vy = direction.getOffsetY() + random.nextFloat() * 0.1f;
-			float vz = direction.getOffsetZ() + random.nextFloat() * 0.1f;
+			float x = pos.getX() + 0.5f + direction.getOffsetX() * 0.5f + skew(random, 0.2f);
+			float y = pos.getY() + 0.5f + direction.getOffsetY() * 0.5f + skew(random, 0.2f);
+			float z = pos.getZ() + 0.5f + direction.getOffsetZ() * 0.5f + skew(random, 0.2f);
+			float vx = direction.getOffsetX() + skew(random, 0.2f);
+			float vy = direction.getOffsetY() + skew(random, 0.2f);
+			float vz = direction.getOffsetZ() + skew(random, 0.2f);
 			world.addParticle(ParticleTypes.SMOKE, x, y, z, vx, vy, vz);
 		}
+	}
+
+	private static float skew(Random random, float range) {
+		return random.nextFloat() * range - (range / 2);
 	}
 
 	@Override
