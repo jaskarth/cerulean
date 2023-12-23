@@ -1,5 +1,7 @@
 package fmt.cerulean;
 
+import fmt.cerulean.registry.CeruleanBlockEntities;
+import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.gen.DreamscapeBiomeSource;
 import fmt.cerulean.world.gen.DreamscapeChunkGenerator;
@@ -21,6 +23,8 @@ public class Cerulean implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		CeruleanBlocks.init();
+		CeruleanBlockEntities.init();
 
 		Registry.register(Registries.BIOME_SOURCE, id("dreamscape"), DreamscapeBiomeSource.CODEC);
 		Registry.register(Registries.BIOME_SOURCE, id("skies"), SkiesBiomeSource.CODEC);
