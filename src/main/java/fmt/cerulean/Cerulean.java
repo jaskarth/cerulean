@@ -4,6 +4,7 @@ import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItemGroups;
 import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.registry.CeruleanParticleTypes;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.gen.DreamscapeBiomeSource;
 import fmt.cerulean.world.gen.DreamscapeChunkGenerator;
@@ -28,6 +29,7 @@ public class Cerulean implements ModInitializer {
 	public void onInitialize() {
 		CeruleanBlocks.init();
 		CeruleanBlockEntities.init();
+		CeruleanParticleTypes.init();
 
 		CeruleanItems.init();
 

@@ -1,6 +1,7 @@
 package fmt.cerulean.block.entity;
 
 import fmt.cerulean.block.PipeBlock;
+import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.registry.CeruleanBlockEntities;
@@ -10,10 +11,10 @@ import net.minecraft.block.ConnectingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
@@ -28,7 +29,6 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 
 	public void clientTick(World world, BlockPos pos, BlockState state) {
 		if (!current.empty()) {
-			world.addParticle(ParticleTypes.BUBBLE, pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f, 0, 0.1f, 0);
 			int connections = 0;
 			Direction unconnected = null;
 			for (Direction dir : Util.DIRECTIONS) {
@@ -37,6 +37,20 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 					connections++;
 					if (!connect) {
 						unconnected = dir;
+					}
+					if (dir != inputDir) {
+						Random random = world.getRandom();
+						float backoff = dir.getOpposite() == inputDir ? -0.5f : 0f;
+						float x = pos.getX() + 0.5f + dir.getOffsetX() * backoff + WellBlockEntity.skew(random, 0.3f);
+						float y = pos.getY() + 0.5f + dir.getOffsetY() * backoff + WellBlockEntity.skew(random, 0.3f);
+						float z = pos.getZ() + 0.5f + dir.getOffsetZ() * backoff + WellBlockEntity.skew(random, 0.3f);
+						float vx = dir.getOffsetX() * 0.2f + WellBlockEntity.skew(random, 0.05f);
+						float vy = dir.getOffsetY() * 0.2f + WellBlockEntity.skew(random, 0.05f);
+						float vz = dir.getOffsetZ() * 0.2f + WellBlockEntity.skew(random, 0.05f);
+						float r = 0.4f + WellBlockEntity.skew(random, 0.2f);
+						float g = 0.2f + WellBlockEntity.skew(random, 0.2f);
+						float b = 0.8f + WellBlockEntity.skew(random, 0.2f);
+						world.addParticle(new StarParticleType(r, g, b, true), x, y, z, vx, vy, vz);
 					}
 				}
 			}
