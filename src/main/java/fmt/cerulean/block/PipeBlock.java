@@ -3,6 +3,7 @@ package fmt.cerulean.block;
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -59,7 +60,7 @@ public class PipeBlock extends Block implements BlockEntityProvider {
 		BlockState state = this.getDefaultState();
 		Direction lastDir = null;
 		int connections = 0;
-		for (Direction dir : Direction.values()) {
+		for (Direction dir : Util.DIRECTIONS) {
 			if (canConnect(world.getBlockState(pos.offset(dir)), dir.getOpposite())) {
 				connections++;
 				lastDir = dir;

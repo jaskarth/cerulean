@@ -2,11 +2,14 @@ package fmt.cerulean;
 
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanItemGroups;
+import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.gen.DreamscapeBiomeSource;
 import fmt.cerulean.world.gen.DreamscapeChunkGenerator;
 import fmt.cerulean.world.gen.SkiesBiomeSource;
 import fmt.cerulean.world.gen.SkiesChunkGenerator;
+import fmt.cerulean.world.gen.feature.BiomeDecorator;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -25,6 +28,12 @@ public class Cerulean implements ModInitializer {
 	public void onInitialize() {
 		CeruleanBlocks.init();
 		CeruleanBlockEntities.init();
+
+		CeruleanItems.init();
+
+		CeruleanItemGroups.init();
+
+		BiomeDecorator.init();
 
 		Registry.register(Registries.BIOME_SOURCE, id("dreamscape"), DreamscapeBiomeSource.CODEC);
 		Registry.register(Registries.BIOME_SOURCE, id("skies"), SkiesBiomeSource.CODEC);

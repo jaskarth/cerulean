@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "cerulean:block/spacerock"
+      },
+      {
+        "model": "cerulean:block/spacerock",
+        "y": 90
+      },
+      {
+        "model": "cerulean:block/spacerock",
+        "y": 180
+      },
+      {
+        "model": "cerulean:block/spacerock",
+        "y": 270
+      }
+    ]
+  }
+}

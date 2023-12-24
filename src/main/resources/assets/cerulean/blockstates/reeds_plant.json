@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "berries=false": {
+      "model": "cerulean:block/reeds"
+    },
+    "berries=true": {
+      "model": "cerulean:block/reeds_fruit"
+    }
+  }
+}

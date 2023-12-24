@@ -1,4 +1,23 @@
 {
   "block.cerulean.pipe": "Pipe",
-  "block.cerulean.star_well": "Star Well"
+  "block.cerulean.star_well": "Star Well",
+  "block.cerulean.spacerock": "Spacerock",
+  "block.cerulean.coral": "Coral",
+  "block.cerulean.skygrass": "Skygrass",
+  "block.cerulean.sparkblossom": "Sparkblossom",
+  "block.cerulean.lunarium": "Lunarium",
+  "block.cerulean.reeds": "Reeds",
+  "block.cerulean.reeds_plant": "Reeds (plant)",
+
+  "item.cerulean.pipe": "Pipe",
+  "item.cerulean.star_well": "Star Well",
+  "item.cerulean.spacerock": "Spacerock",
+  "item.cerulean.coral": "Coral",
+  "item.cerulean.skygrass": "Skygrass",
+  "item.cerulean.sparkblossom": "Sparkblossom",
+  "item.cerulean.lunarium": "Lunarium",
+
+  "item.cerulean.berries": "Berries",
+
+  "cerulean.group": "Cerulean"
 }

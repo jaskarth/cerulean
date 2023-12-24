@@ -4,6 +4,7 @@ import fmt.cerulean.block.PipeBlock;
 import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.registry.CeruleanBlockEntities;
+import fmt.cerulean.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ConnectingBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -30,7 +31,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 			world.addParticle(ParticleTypes.BUBBLE, pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f, 0, 0.1f, 0);
 			int connections = 0;
 			Direction unconnected = null;
-			for (Direction dir : Direction.values()) {
+			for (Direction dir : Util.DIRECTIONS) {
 				if (state.get(ConnectingBlock.FACING_PROPERTIES.get(dir))) {
 					boolean connect = PipeBlock.canConnect(world.getBlockState(pos.offset(dir)), dir.getOpposite());
 					connections++;
@@ -50,7 +51,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		updateNext();
 		Direction bestDir = null;
 		FlowState bestFlow = FlowState.NONE;
-		for (Direction dir : Direction.values()) {
+		for (Direction dir : Util.DIRECTIONS) {
 			if (world.getBlockEntity(pos.offset(dir)) instanceof FlowOutreach flow) {
 				FlowState fs = flow.getExportedState(dir.getOpposite());
 				if (fs.pressure() > bestFlow.pressure()) {
@@ -88,7 +89,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 
 	private int getConnectionCount() {
 		int c = 0;
-		for (Direction dir : Direction.values()) {
+		for (Direction dir : Util.DIRECTIONS) {
 			if (getCachedState().get(ConnectingBlock.FACING_PROPERTIES.get(dir))) {
 				// Real
 				c++;

@@ -6,6 +6,14 @@ import net.minecraft.client.render.RenderLayer;
 public class CeruleanRenderLayers {
 	
 	public static void init() {
-		BlockRenderLayerMap.INSTANCE.putBlock(CeruleanBlocks.PIPE, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
+				CeruleanBlocks.PIPE,
+				CeruleanBlocks.CORAL,
+				CeruleanBlocks.SKYGRASS,
+				CeruleanBlocks.SPARKBLOSSOM,
+				CeruleanBlocks.LUNARIUM,
+				CeruleanBlocks.REEDS,
+				CeruleanBlocks.REEDS_PLANT
+		);
 	}
 }

@@ -2,12 +2,13 @@ package fmt.cerulean.world.gen;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import fmt.cerulean.util.Seedy;
-import fmt.cerulean.util.Vec2d;
-import fmt.cerulean.util.Vec2i;
-import fmt.cerulean.util.Voronoi;
+import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.util.*;
+import fmt.cerulean.world.gen.feature.BiomeDecorator;
+import fmt.cerulean.world.gen.feature.ConfiguredDecoration;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -17,6 +18,8 @@ import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
@@ -33,6 +36,7 @@ import net.minecraft.world.gen.noise.NoiseConfig;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -225,8 +229,30 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		return CompletableFuture.completedFuture(chunk);
 	}
 
+	@Override
+	public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
+		int startX = chunk.getPos().getStartX();
+		int startZ = chunk.getPos().getStartZ();
+
+		BlockPos center = new BlockPos(startX, 0, startZ);
+
+		RegistryKey<Biome> key = world.getBiome(center).getKey().orElseThrow();
+
+		List<ConfiguredDecoration> decos = BiomeDecorator.DECORATIONS.get(key);
+
+		ImprovedChunkRandom random = new ImprovedChunkRandom(world.getSeed());
+		long pSeed = random.setPopulationSeed(world.getSeed(), startX, startZ);
+		int i = 0;
+		BlockPos start = new BlockPos(startX, 0, startZ);
+		for (ConfiguredDecoration deco : decos) {
+			random.setDecoratorSeed(pSeed, i, 30481);
+			deco.generate(world, random, start);
+			i++;
+		}
+	}
+
 	private BlockState getBlockState(double density, int realY) {
-		return density > 0 ? Blocks.STONE.getDefaultState() : AIR;
+		return density > 0 ? CeruleanBlocks.SPACEROCK.getDefaultState() : AIR;
 	}
 
 	@Override

@@ -1,0 +1,6 @@
+{
+  "parent": "cerulean:block/cross_mirror",
+  "textures": {
+    "cross": "cerulean:block/sparkblossom"
+  }
+}
