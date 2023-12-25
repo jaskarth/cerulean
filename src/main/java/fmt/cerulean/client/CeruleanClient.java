@@ -5,8 +5,10 @@ import fmt.cerulean.client.effects.DreamscapeEffects;
 import fmt.cerulean.client.effects.SkiesEffects;
 import fmt.cerulean.client.render.DreamscapeRenderer;
 import fmt.cerulean.client.render.SkiesRenderer;
-import fmt.cerulean.registry.CeruleanParticles;
-import fmt.cerulean.registry.CeruleanRenderLayers;
+import fmt.cerulean.net.CeruleanClientNetworking;
+import fmt.cerulean.registry.client.CeruleanBlockEntityRenderers;
+import fmt.cerulean.registry.client.CeruleanParticles;
+import fmt.cerulean.registry.client.CeruleanRenderLayers;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
@@ -18,11 +20,14 @@ public class CeruleanClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		CeruleanRenderLayers.init();
 		CeruleanParticles.init();
+		CeruleanBlockEntityRenderers.init();
 
 		DimensionRenderingRegistry.registerDimensionEffects(Cerulean.id("dreamscape"), new DreamscapeEffects());
 		DimensionRenderingRegistry.registerDimensionEffects(Cerulean.id("skies"), new SkiesEffects());
 
 		DimensionRenderingRegistry.registerSkyRenderer(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.DREAMSCAPE), new DreamscapeRenderer());
 		DimensionRenderingRegistry.registerSkyRenderer(RegistryKey.of(RegistryKeys.WORLD, Cerulean.id("skies")), new SkiesRenderer());
+
+		CeruleanClientNetworking.init();
 	}
 }

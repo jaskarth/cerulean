@@ -82,6 +82,12 @@ public final class CeruleanBlocks {
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY)));
 
+	public static final Block MIMIC = register("mimic",
+			new MimicBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
+
+	public static final Block INKY_VOID = register("inky_void",
+			new InkyVoidBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
+
 	public static void init() {
 	}
 	

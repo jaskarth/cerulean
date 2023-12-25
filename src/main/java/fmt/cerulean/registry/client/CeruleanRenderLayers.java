@@ -1,5 +1,6 @@
-package fmt.cerulean.registry;
+package fmt.cerulean.registry.client;
 
+import fmt.cerulean.registry.CeruleanBlocks;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;
 

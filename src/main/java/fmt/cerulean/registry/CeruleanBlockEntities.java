@@ -1,6 +1,7 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.block.entity.WellBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -13,6 +14,7 @@ import net.minecraft.registry.Registry;
 public class CeruleanBlockEntities {
 	public static final BlockEntityType<WellBlockEntity> WELL = register("well", WellBlockEntity::new, CeruleanBlocks.HYDROTHERMAL_VENT, CeruleanBlocks.STAR_WELL);
 	public static final BlockEntityType<PipeBlockEntity> PIPE = register("pipe", PipeBlockEntity::new, CeruleanBlocks.PIPE);
+	public static final BlockEntityType<MimicBlockEntity> MIMIC = register("mimic", MimicBlockEntity::new, CeruleanBlocks.MIMIC);
 
 	public static void init() {
 	}

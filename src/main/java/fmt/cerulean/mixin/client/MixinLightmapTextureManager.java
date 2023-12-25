@@ -64,6 +64,11 @@ public abstract class MixinLightmapTextureManager {
 
                 for(int skyLight = 0; skyLight < 16; ++skyLight) {
                     for(int blockLight = 0; blockLight < 16; ++blockLight) {
+                        if (skyLight == 15) {
+                            this.image.setColor(blockLight, skyLight, 0xFFFFFFFF);
+                            continue;
+                        }
+
                         float brightness = getBrightness(world.getDimension(), blockLight) * flicker;
                         float green = brightness * brightness * ((brightness * 0.8F + 0.1F) * 0.8F + 0.2F);
                         float blue = brightness * brightness * (brightness * brightness * 0.6F + 0.3F);

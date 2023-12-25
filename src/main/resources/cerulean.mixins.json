@@ -9,13 +9,16 @@
     "MixinNoiseConfig",
     "MixinServerWorld",
     "MixinPlayerEntity",
-    "MixinWorld"
+    "MixinWorld",
+    "MixinServerPlayerEntity"
   ],
   "client": [
     "client.MixinClientPlayNetworkHandler",
     "client.MixinMinecraftClient",
     "client.MixinInGameHud",
-    "client.MixinLightmapTextureManager"
+    "client.MixinLightmapTextureManager",
+    "client.MixinClientPlayerEntity",
+    "client.MixinWorldRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

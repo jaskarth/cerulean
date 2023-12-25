@@ -8,7 +8,12 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
+
 public class CeruleanItemGroups {
+	private static final List<String> EXCLUDED = List.of(
+			"mimic"
+	);
 
 	public static void init() {
 		Registry.register(Registries.ITEM_GROUP, Cerulean.id("cerulean"), FabricItemGroup.builder()
@@ -16,7 +21,7 @@ public class CeruleanItemGroups {
 				.icon(() -> new ItemStack(CeruleanBlocks.CORAL))
 				.entries((ctx, e) -> {
 					for (Identifier id : Registries.ITEM.getIds()) {
-						if (id.getNamespace().equals(Cerulean.ID)) {
+						if (id.getNamespace().equals(Cerulean.ID) && !EXCLUDED.contains(id.getPath())) {
 							e.add(new ItemStack(Registries.ITEM.get(id)));
 						}
 					}

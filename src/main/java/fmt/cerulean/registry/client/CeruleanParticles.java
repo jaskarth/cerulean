@@ -1,6 +1,7 @@
-package fmt.cerulean.registry;
+package fmt.cerulean.registry.client;
 
 import fmt.cerulean.client.particle.StarParticle;
+import fmt.cerulean.registry.CeruleanParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 
 public class CeruleanParticles {

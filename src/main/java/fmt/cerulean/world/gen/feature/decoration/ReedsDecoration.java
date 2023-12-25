@@ -45,7 +45,7 @@ public class ReedsDecoration extends Decoration {
 				world.setBlockState(local.up(j), CeruleanBlocks.REEDS_PLANT.getDefaultState().with(ReedsPlantBlock.BERRIES, random.nextInt(6) == 0), 3);
 			}
 
-			world.setBlockState(local.up(height), CeruleanBlocks.REEDS.getDefaultState().with(ReedsBlock.AGE, random.nextInt(25)), 3);
+			world.setBlockState(local.up(height), CeruleanBlocks.REEDS.getDefaultState().with(ReedsBlock.AGE, 25), 3);
 		}
 	}
 }

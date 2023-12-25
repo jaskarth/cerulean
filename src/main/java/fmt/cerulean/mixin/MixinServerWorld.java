@@ -1,12 +1,11 @@
 package fmt.cerulean.mixin;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.block.entity.MimicBlockEntity;
+import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
-import net.minecraft.block.BedBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
@@ -79,20 +78,6 @@ public abstract class MixinServerWorld extends World implements StructureWorldAc
 
 				BlockPos origin = p.getBlockPos();
 
-				// Facade copy
-				for (int x = -11; x <= 11; x++) {
-					for (int z = -11; z <= 11; z++) {
-						for (int y = -5; y <= 5; y++) {
-							BlockPos local = origin.add(x, y, z);
-							if (Math.abs(x) == 11 || Math.abs(z) == 11 || Math.abs(y) == 5) {
-								dreamscape.setBlockState(local, Blocks.BLACK_CONCRETE.getDefaultState());
-							} else {
-								dreamscape.setBlockState(local, this.getBlockState(local));
-							}
-						}
-					}
-				}
-
 				// [House](https://www.britannica.com/animal/horse) of leaves
 
 				BlockPos paintingOrigin = portalPainting.getBlockPos();
@@ -102,26 +87,93 @@ public abstract class MixinServerWorld extends World implements StructureWorldAc
 				BlockPos otherA = paintingOrigin.offset(moveDir.rotateYClockwise());
 				BlockPos otherB = paintingOrigin.offset(moveDir.rotateYCounterclockwise());
 
+				// Consider this:
+				// ACB
+				// AXB
+				// AXB
+				// ACB
+				//
+				// A: otherA pos
+				// B: otherB pos
+				// X: hole
+				// C: central pos
+
+				BlockState[] a = new BlockState[4];
+				BlockState[] c = new BlockState[4];
+				BlockState[] b = new BlockState[4];
+
+				for (int j = -2; j <= 1; j++) {
+					a[j + 2] = this.getBlockState(otherA.up(j));
+					b[j + 2] = this.getBlockState(otherB.up(j));
+					c[j + 2] = this.getBlockState(paintingOrigin.up(j));
+				}
+
+				// Check support blocks
+				boolean ok = true;
+				for (int j = -2; j <= 1; j++) {
+					// Ignore corners
+					if (j != -2 && j != 1) {
+						if (!a[j + 2].isOpaqueFullCube(this, otherA.up(j))) {
+							ok = false;
+							break;
+						}
+
+						if (!b[j + 2].isOpaqueFullCube(this, otherB.up(j))) {
+							ok = false;
+							break;
+						}
+					}
+
+					if (!c[j + 2].isOpaqueFullCube(this, paintingOrigin.up(j))) {
+						ok = false;
+						break;
+					}
+				}
+
+				if (!ok) {
+					continue;
+				}
+
+				// Facade copy
+				for (int x = -11; x <= 11; x++) {
+					for (int z = -11; z <= 11; z++) {
+						for (int y = -5; y <= 5; y++) {
+							BlockPos local = origin.add(x, y, z);
+							if (Math.abs(x) == 11 || Math.abs(z) == 11 || Math.abs(y) == 5) {
+								dreamscape.setBlockState(local, CeruleanBlocks.INKY_VOID.getDefaultState());
+							} else {
+								dreamscape.setBlockState(local, this.getBlockState(local));
+							}
+						}
+					}
+				}
+
 				for (int i = 0; i < 20; i++) {
 					// Central path
-					dreamscape.setBlockState(paintingOrigin.offset(moveDir, i), Blocks.AIR.getDefaultState());
-					dreamscape.setBlockState(paintingOrigin.down().offset(moveDir, i), Blocks.AIR.getDefaultState());
+					dreamscape.setBlockState(paintingOrigin.offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min((i + 1) * 3, 15)));
+					dreamscape.setBlockState(paintingOrigin.down().offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min((i + 1) * 3, 15)));
 
 					// Surrounding blocks
 
 					if (i > 0) {
-						dreamscape.setBlockState(paintingOrigin.up().offset(moveDir, i), Blocks.WHITE_CONCRETE.getDefaultState());
-					}
+						dreamscape.setBlockState(paintingOrigin.up().offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
+						MimicBlockEntity.set(dreamscape.getBlockEntity(paintingOrigin.up().offset(moveDir, i)), c[3],  i - 1, moveDir);
+						dreamscape.setBlockState(paintingOrigin.down(2).offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
+						MimicBlockEntity.set(dreamscape.getBlockEntity(paintingOrigin.down(2).offset(moveDir, i)), c[0],  i - 1, moveDir);
 
-					dreamscape.setBlockState(paintingOrigin.down(2).offset(moveDir, i), Blocks.WHITE_CONCRETE.getDefaultState());
-
-					if (i > 0) {
-						for (int j = -2; j <= 1; j++) {
-							dreamscape.setBlockState(otherA.up(j).offset(moveDir, i), Blocks.WHITE_CONCRETE.getDefaultState());
-							dreamscape.setBlockState(otherB.up(j).offset(moveDir, i), Blocks.WHITE_CONCRETE.getDefaultState());
+						for (int j = -1; j <= 0; j++) {
+							dreamscape.setBlockState(otherA.up(j).offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
+							MimicBlockEntity.set(dreamscape.getBlockEntity(otherA.up(j).offset(moveDir, i)), a[j + 2],  i - 1, moveDir);
+							dreamscape.setBlockState(otherB.up(j).offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
+							MimicBlockEntity.set(dreamscape.getBlockEntity(otherB.up(j).offset(moveDir, i)), b[j + 2],  i - 1, moveDir);
 						}
 					}
 				}
+
+				dreamscape.setBlockState(paintingOrigin.offset(moveDir, 20), CeruleanBlocks.MIMIC.getDefaultState());
+				MimicBlockEntity.set(dreamscape.getBlockEntity(paintingOrigin.offset(moveDir, 20)), c[2],  20, moveDir);
+				dreamscape.setBlockState(paintingOrigin.down().offset(moveDir, 20), CeruleanBlocks.MIMIC.getDefaultState());
+				MimicBlockEntity.set(dreamscape.getBlockEntity(paintingOrigin.down().offset(moveDir, 20)), c[1],  20, moveDir);
 
 				// Reset occupied state
 				p.getSleepingPosition().filter(p.getWorld()::isChunkLoaded).ifPresent(pos -> {

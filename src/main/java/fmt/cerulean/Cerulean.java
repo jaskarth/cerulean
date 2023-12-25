@@ -1,5 +1,6 @@
 package fmt.cerulean;
 
+import fmt.cerulean.net.CeruleanServerNetworking;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItemGroups;
@@ -21,6 +22,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
 
 public class Cerulean implements ModInitializer {
 	public static final String ID = "cerulean";
@@ -36,6 +38,8 @@ public class Cerulean implements ModInitializer {
 		CeruleanItemGroups.init();
 
 		BiomeDecorator.init();
+
+		CeruleanServerNetworking.init();
 
 		Registry.register(Registries.BIOME_SOURCE, id("dreamscape"), DreamscapeBiomeSource.CODEC);
 		Registry.register(Registries.BIOME_SOURCE, id("skies"), SkiesBiomeSource.CODEC);
