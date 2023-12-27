@@ -22,7 +22,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
 
 public class Cerulean implements ModInitializer {
 	public static final String ID = "cerulean";

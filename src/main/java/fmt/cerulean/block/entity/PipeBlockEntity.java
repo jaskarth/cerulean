@@ -47,9 +47,9 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 						float vx = dir.getOffsetX() * 0.2f + WellBlockEntity.skew(random, 0.05f);
 						float vy = dir.getOffsetY() * 0.2f + WellBlockEntity.skew(random, 0.05f);
 						float vz = dir.getOffsetZ() * 0.2f + WellBlockEntity.skew(random, 0.05f);
-						float r = 0.4f + WellBlockEntity.skew(random, 0.2f);
-						float g = 0.2f + WellBlockEntity.skew(random, 0.2f);
-						float b = 0.8f + WellBlockEntity.skew(random, 0.2f);
+						float r = ((current.resource().getColor().color & 0xFF0000) >> 16) / 255f;
+						float g = ((current.resource().getColor().color & 0x00FF00) >> 8) / 255f;
+						float b = ((current.resource().getColor().color & 0x0000FF)) / 255f;
 						world.addParticle(new StarParticleType(r, g, b, true), x, y, z, vx, vy, vz);
 					}
 				}
@@ -84,6 +84,9 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 				return;
 			}
 			inputDir = bestDir;
+		}
+		if (bestFlow.empty() && current.empty()) {
+			return;
 		}
 		if (bestFlow.pressure() < threshold) {
 			return;
@@ -124,12 +127,17 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound nbt = new NbtCompound();
+	public void writeNbt(NbtCompound nbt) {
 		if (inputDir != null) {
 			nbt.putInt("Input", inputDir.getId());
 		}
 		nbt.put("Flow", current.toNbt());
+	}
+
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound nbt = new NbtCompound();
+		writeNbt(nbt);
 		return nbt;
 	}
 
@@ -140,7 +148,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 
 	private FlowState depressure(FlowState state, int connections) {
 		int div = Math.max(1, connections - 1);
-		return new FlowState(state.pressure() / div * 19 / 20);
+		return new FlowState(state.resource(), state.pressure() / div * 19 / 20);
 	}
 
 	private void updateNext() {
