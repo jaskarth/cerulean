@@ -11,11 +11,11 @@ public final class Voronoi {
         this.seed = seed;
     }
 
-    public int get(double x, double z) {
+    public long get(double x, double z) {
         int xStart = MathHelper.floor(x);
         int zStart = MathHelper.floor(z);
 
-        int chosenColor = 0;
+        long chosenColor = 0;
         double minDist = Double.MAX_VALUE;
         for (int x1 = -1; x1 <= 1; x1++) {
             for (int z1 = -1; z1 <= 1; z1++) {
@@ -28,7 +28,7 @@ public final class Voronoi {
                 double dist = ax * ax + az * az;
                 if (dist < minDist) {
                     minDist = dist;
-                    chosenColor = this.random.nextInt();
+                    chosenColor = this.random.nextLong();
                 }
             }
         }

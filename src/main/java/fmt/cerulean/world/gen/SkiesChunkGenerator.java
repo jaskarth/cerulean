@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.*;
+import fmt.cerulean.world.gen.carver.SkyCarver;
 import fmt.cerulean.world.gen.feature.BiomeDecorator;
 import fmt.cerulean.world.gen.feature.ConfiguredDecoration;
 import net.minecraft.block.BlockState;
@@ -26,6 +27,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.ProtoChunk;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.HeightContext;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
@@ -57,8 +59,25 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+	public void carve(ChunkRegion world, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+		ChunkPos chunkPos = chunk.getPos();
 
+		ImprovedChunkRandom random = new ImprovedChunkRandom(seed);
+
+		HeightContext ctx = new HeightContext(this, world);
+
+		for(int j = -8; j <= 8; ++j) {
+			for (int k = -8; k <= 8; ++k) {
+				ChunkPos pos = new ChunkPos(chunkPos.x + j, chunkPos.z + k);
+
+				random.setCarverSeed(seed, pos.x, pos.z);
+				for (SkyCarver carver : BiomeDecorator.CARVERS) {
+					if (carver.shouldCarve(random, pos.x, pos.z)) {
+						carver.carve(ctx, chunk, random, pos);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -88,15 +107,24 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		PerlinNoiseSampler s2 = new PerlinNoiseSampler(new CheckedRandom(seed + 1));
 
 		double scale = 48.0;
+		long uniq = vn.get(x / scale, z / scale);
 		Vec2d cp = vn.getCellPos(x / scale, z / scale, scale);
 		Vec2i center = cp.floor();
 		int dx = center.x() - x;
 		int dz = center.z() - z;
 
-		double distScale = 14.0 + (s1.sample(x / 2.21, 0, z / 2.21) * 4) + (s2.sample(x / 4.21, 0, z / 4.21) * 8);
+		Random random = new Random(uniq);
+
+		int startOff = random.nextInt(7) - 3;
+		double distOffset = random.nextDouble() * 2.5;
+
+		double distScale = (14.0 + distOffset) + (s1.sample(x / 2.21, 0, z / 2.21) * 4) + (s2.sample(x / 4.21, 0, z / 4.21) * 8);
 		double sq = Math.sqrt(dx * dx + dz * dz);
 
-		for (int nY = 4; nY < 16; nY++) {
+		int amt = 16 + startOff;
+		int lAmt = 4 + startOff;
+
+		for (int nY = lAmt; nY < amt; nY++) {
 			double n = -1;
 
 			if (sq < distScale) {
@@ -104,7 +132,7 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 
 				h = h * h * h * h;
 
-				n = MathHelper.map(nY, 4, 17, -1.3, h);
+				n = MathHelper.map(nY, lAmt, amt + 1, -1.3, h);
 
 				n += s1.sample(x / 4.84, nY / 6.56, z / 4.84) * 0.1;
 			}
@@ -112,7 +140,7 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 			noiseData[index(nX, nZ, nY)] = n;
 		}
 
-		noiseData[index(nX, nZ, 16)] = -4;
+		noiseData[index(nX, nZ, amt)] = -4;
 	}
 
 	@Override

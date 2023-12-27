@@ -1,6 +1,12 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "all": "cerulean:block/star_well"
+    "down": "cerulean:block/spacerock",
+    "east": "cerulean:block/spacerock",
+    "north": "cerulean:block/spacerock",
+    "particle": "cerulean:block/spacerock",
+    "south": "cerulean:block/spacerock",
+    "up": "cerulean:block/star_well",
+    "west": "cerulean:block/spacerock"
   }
 }

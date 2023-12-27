@@ -30,7 +30,7 @@ public class MixinInGameHud {
 	@Inject(method = "render", at = @At("TAIL"))
 	private void cerulean$renderOverlays(DrawContext context, float tickDelta, CallbackInfo ci) {
 		DimensionState state = Counterful.get(MinecraftClient.getInstance().player);
-		if (state.melancholy > 120) {
+		if (state.melancholy > 140) {
 			float amt = MathHelper.clamp((state.melancholy - 140) / 80.f, 0, 1);
 			int color = (int)(255.0F * amt) << 24 | 0x000000;
 			context.fill(RenderLayer.getGuiOverlay(), 0, 0, this.scaledWidth, this.scaledHeight, color);

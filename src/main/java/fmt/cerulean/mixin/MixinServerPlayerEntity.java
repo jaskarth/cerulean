@@ -67,13 +67,14 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	private void cerulean$playerTick(CallbackInfo ci) {
 		DimensionState st = Counterful.get((PlayerEntity) (Object) this);
 		if (st.melancholy > 230) {
-			st.reset();
-			st.sync((ServerPlayerEntity) (Object)this);
 			this.detach();
 			this.notInAnyWorld = true;
 			this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
 
 			this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
+
+			st.reset();
+			st.sync((ServerPlayerEntity) (Object)this);
 			return;
 		}
 
@@ -105,13 +106,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 			}
 
 			if (st.indifference > 60) {
-				st.reset();
-				st.sync((ServerPlayerEntity) (Object)this);
 				this.detach();
 				this.notInAnyWorld = true;
 				this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
 
 				this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
+				st.reset();
+				st.sync((ServerPlayerEntity) (Object)this);
 				return;
 			}
 
@@ -127,17 +128,19 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, this.getBlockPos());
 
 				if (tp != null) {
-					st.reset();
-					st.sync((ServerPlayerEntity) (Object)this);
 					FabricDimensions.teleport(this, skies, new TeleportTarget(tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch()));
-				} else {
+
 					st.reset();
 					st.sync((ServerPlayerEntity) (Object)this);
+				} else {
 					this.detach();
 					this.notInAnyWorld = true;
 					this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
 
 					this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
+
+					st.reset();
+					st.sync((ServerPlayerEntity) (Object)this);
 				}
 			}
 		}
