@@ -9,7 +9,7 @@ public class TestVoronoi {
         Voronoi vn = new Voronoi(100);
         Random random = new Random();
         ImageDumper.dumpImage("voronoi.png", 512, (x, z) -> {
-            int i = vn.get(x / 20.0, z / 20.0);
+            long i = vn.get(x / 20.0, z / 20.0);
             random.setSeed(i);
 
             int r = random.nextInt(256);

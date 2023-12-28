@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
+import net.fabricmc.loader.impl.transformer.EnvironmentStrippingData;
+import org.objectweb.asm.*;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -61,6 +61,7 @@ public class Soul implements IMixinConfigPlugin {
 					}
 					return CONVALESCENTS.contains(c.getMetadata().getId());
 				}).forEach(c -> {
+					EnvType env = FabricLoader.getInstance().getEnvironmentType();
 					for (Path path : c.getRootPaths()) {
 						int pathStart = path.toString().length();
 						try {
@@ -70,6 +71,19 @@ public class Soul implements IMixinConfigPlugin {
 									s = s.substring(pathStart, s.length() - 6);
 									if (s.startsWith("/")) {
 										s = s.substring(1);
+									}
+									if (c.getMetadata().getId().equals("minecraft") && FabricLoader.getInstance().isDevelopmentEnvironment()) {
+										try {
+											byte[] b = Files.readAllBytes(p);
+											ClassReader reader = new ClassReader(b);
+											EnvironmentStrippingData data = new EnvironmentStrippingData(FabricLoaderImpl.ASM_VERSION, env.toString());
+											reader.accept(data, ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES);
+											if (data.stripEntireClass()) {
+												return;
+											}
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 									}
 									if (!s.startsWith(holy) && !s.startsWith(unholy)) {
 										targets.add("L" + s + ";");

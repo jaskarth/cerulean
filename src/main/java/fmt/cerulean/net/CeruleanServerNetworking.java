@@ -48,22 +48,22 @@ public class CeruleanServerNetworking {
 						world.setBlockState(oOrigin.down().offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min(ndist * 3, 15)));
 
 						world.setBlockState(oOrigin.up().offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
-						MimicBlockEntity.set(world.getBlockEntity(oOrigin.up().offset(moveDir, i)), c[3], ndist, moveDir);
+						MimicBlockEntity.set(world.getBlockEntity(oOrigin.up().offset(moveDir, i)), c[3], ndist, moveDir, true);
 						world.setBlockState(oOrigin.down(2).offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
-						MimicBlockEntity.set(world.getBlockEntity(oOrigin.down(2).offset(moveDir, i)), c[0], ndist, moveDir);
+						MimicBlockEntity.set(world.getBlockEntity(oOrigin.down(2).offset(moveDir, i)), c[0], ndist, moveDir, true);
 
 						for (int j = -1; j <= 0; j++) {
 							world.setBlockState(otherA.up(j).offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
-							MimicBlockEntity.set(world.getBlockEntity(otherA.up(j).offset(moveDir, i)), a[j + 2], ndist, moveDir);
+							MimicBlockEntity.set(world.getBlockEntity(otherA.up(j).offset(moveDir, i)), a[j + 2], ndist, moveDir, true);
 							world.setBlockState(otherB.up(j).offset(moveDir, i), CeruleanBlocks.MIMIC.getDefaultState());
-							MimicBlockEntity.set(world.getBlockEntity(otherB.up(j).offset(moveDir, i)), b[j + 2], ndist, moveDir);
+							MimicBlockEntity.set(world.getBlockEntity(otherB.up(j).offset(moveDir, i)), b[j + 2], ndist, moveDir, true);
 						}
 					}
 
 					world.setBlockState(oOrigin.offset(moveDir, amt), CeruleanBlocks.MIMIC.getDefaultState());
-					MimicBlockEntity.set(world.getBlockEntity(oOrigin.offset(moveDir, amt)), c[2], 20, moveDir);
+					MimicBlockEntity.set(world.getBlockEntity(oOrigin.offset(moveDir, amt)), c[2], 20, moveDir, true);
 					world.setBlockState(oOrigin.down().offset(moveDir, amt), CeruleanBlocks.MIMIC.getDefaultState());
-					MimicBlockEntity.set(world.getBlockEntity(oOrigin.down().offset(moveDir, amt)), c[1], 20, moveDir);
+					MimicBlockEntity.set(world.getBlockEntity(oOrigin.down().offset(moveDir, amt)), c[1], 20, moveDir, true);
 				}
 			});
 		});

@@ -21,6 +21,7 @@ public class MimicBlockEntity extends BlockEntity {
 	public BlockState state;
 	public int dist;
 	public Direction facing = Direction.NORTH;
+	public boolean alone;
 
 	public MimicBlockEntity(BlockPos pos, BlockState state) {
 		super(CeruleanBlockEntities.MIMIC, pos, state);
@@ -46,6 +47,7 @@ public class MimicBlockEntity extends BlockEntity {
 		state = NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("Block"));
 		dist = nbt.getInt("Dist");
 		facing = Direction.byId(nbt.getByte("Dir"));
+		alone = nbt.getBoolean("Alone");
 	}
 
 	@Override
@@ -55,13 +57,15 @@ public class MimicBlockEntity extends BlockEntity {
 		nbt.put("Block", NbtHelper.fromBlockState(this.state == null ? Blocks.BEDROCK.getDefaultState() : state));
 		nbt.putInt("Dist", dist);
 		nbt.putByte("Dir", (byte) facing.getId());
+		nbt.putBoolean("Alone", alone);
 	}
 
-	public static void set(BlockEntity be, BlockState state, int dist, Direction facing) {
+	public static void set(BlockEntity be, BlockState state, int dist, Direction facing, boolean alone) {
 		MimicBlockEntity mbe = (MimicBlockEntity) be;
 		mbe.state = state;
 		mbe.dist = dist;
 		mbe.facing = facing;
+		mbe.alone = alone;
 		mbe.markDirty();
 
 		World world = mbe.getWorld();

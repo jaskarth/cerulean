@@ -38,7 +38,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
 				BlockEntity be = this.getWorld().getBlockEntity(pos);
 				if (be instanceof MimicBlockEntity mbe) {
-					if (mbe.dist > 2) {
+					if (mbe.alone && mbe.dist > 2) {
 						Direction dir = mbe.facing;
 
 						if (dir == this.getHorizontalFacing()) {
