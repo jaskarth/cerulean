@@ -15,6 +15,7 @@ public class PigmentInventory extends SimpleInventory {
 	public final FlowState flow, opposing;
 	public final World world;
 	public final BlockPos pos;
+	public int recipeProgress = 0;
 
 	public PigmentInventory(FlowState flow, FlowState opposing, World world, BlockPos pos) {
 		this(flow, opposing, world, pos, getItemEntities(world, pos));

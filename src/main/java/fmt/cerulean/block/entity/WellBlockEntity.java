@@ -2,6 +2,7 @@ package fmt.cerulean.block.entity;
 
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
+import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
@@ -88,6 +89,16 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 			float r = ((state.resource().getColor().color & 0xFF0000) >> 16) / 255f;
 			float g = ((state.resource().getColor().color & 0x00FF00) >> 8) / 255f;
 			float b = ((state.resource().getColor().color & 0x0000FF)) / 255f;
+			if (state.resource().getColor() == FlowResource.Color.ASH) {
+				float s = skew(random, 0.2f);
+				r = Math.clamp(r + s, 0, 1);
+				g = Math.clamp(g + s, 0, 1);
+				b = Math.clamp(b + s, 0, 1);
+			} else {
+				r = Math.clamp(r + skew(random, 0.2f), 0, 1);
+				g = Math.clamp(g + skew(random, 0.2f), 0, 1);
+				b = Math.clamp(b + skew(random, 0.2f), 0, 1);
+			}
 			world.addParticle(new StarParticleType(r, g, b, false), x, y, z, vx, vy, vz);
 		}
 	}

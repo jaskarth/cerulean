@@ -32,19 +32,32 @@ import net.fabricmc.loader.api.FabricLoader;
 public class Soul implements IMixinConfigPlugin {
 	private static final String UNSPOKEN = "fmt/cerulean/mixin/$";
 	private static final Set<String> CONVALESCENTS = Set.of("minecraft", "cerulean");
-	private static final List<String> SCRIPTURE = List.of(
-		"Find refuge",
-		"Lights dimmed",
-		"Eyes wide shut",
-		"A world now silent",
+	private static final List<List<String>> SCRIPTURE = List.of(
+		List.of(
+			"Find refuge",
+			"Lights dimmed",
+			"Eyes wide shut",
+			"A world now silent",
 
-		"Light flickers in the distance",
-		"Can you see it?",
-		"Can't you feel it?",
-		"Home you never knew",
+			"Light flickers in the distance",
+			"Can you see it?",
+			"Can't you feel it?",
+			"Home you never knew",
 
-		"Wake up",
-		"Don't stop dreaming"
+			"Wake up",
+			"Don't stop dreaming"
+		),
+		List.of(
+			"Gaze into the stars and the stars twinkle back",
+			"The heart's light beckons slightly",
+			"Holding hands with heaven",
+			"Recoil from the saccharine flavor",
+
+			"Drifting through an apathetic chronology",
+			"Parse cruelty with eyes closed",
+			"Like sandpaper for your emotions",
+			"Choking on glass to see the sun rise"
+		)
 	);
 	private Random random = new Random();
 
@@ -162,8 +175,12 @@ public class Soul implements IMixinConfigPlugin {
 
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		targetClass.sourceFile = SCRIPTURE.get(random.nextInt(SCRIPTURE.size()));
-		targetClass.sourceDebug = SCRIPTURE.get(random.nextInt(SCRIPTURE.size()));
+		String[] parts = targetClassName.split("\\.");
+		String pkg = targetClassName.substring(0, targetClassName.length() - parts[parts.length - 1].length());
+		Random desk = new Random(pkg.hashCode());
+		List<String> poem = SCRIPTURE.get(desk.nextInt(SCRIPTURE.size()));
+		targetClass.sourceFile = poem.get(random.nextInt(poem.size()));
+		targetClass.sourceDebug = poem.get(random.nextInt(poem.size()));
 	}
 
 	@Override

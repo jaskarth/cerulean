@@ -9,9 +9,8 @@ import com.google.common.collect.Lists;
 
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
-import fmt.cerulean.flow.FlowResources;
-import fmt.cerulean.flow.FlowState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CropBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
@@ -29,9 +28,13 @@ public class BrushRecipes {
 			), 40, s -> s.isOf(Items.COARSE_DIRT), (a, b) -> new ItemStack(Items.DIRT)));
 		addRecipe(new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.KELP_PLANT, Set.of(Color.CHARTREUSE, Color.LILAC), ALL_BRIGHTNESSES),
-			flow -> new FlowState(FlowResources.star(Color.ASH, flow.resource().getBrightness()), flow.pressure()),
+			flow -> flow.colored(Color.ASH),
 			0.1f
 		));
+		addRecipe(new UnblightBrushRecipe(
+			CanvasRequirements.of(
+				Blocks.WHEAT, Set.of(Color.ROSE), ALL_BRIGHTNESSES
+			), (CropBlock) Blocks.WHEAT, s -> s.colored(Color.CHARTREUSE)));
 	}
 
 	private static void addRecipe(BrushRecipe recipe) {

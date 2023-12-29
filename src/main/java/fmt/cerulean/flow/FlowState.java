@@ -1,5 +1,7 @@
 package fmt.cerulean.flow;
 
+import fmt.cerulean.flow.FlowResource.Brightness;
+import fmt.cerulean.flow.FlowResource.Color;
 import net.minecraft.nbt.NbtCompound;
 
 public record FlowState(FlowResource resource, int pressure) {
@@ -7,6 +9,14 @@ public record FlowState(FlowResource resource, int pressure) {
 
 	public boolean empty() {
 		return pressure <= 0 || resource == null;
+	}
+
+	public FlowState colored(Color color) {
+		return new FlowState(FlowResources.star(color, this.resource.getBrightness()), pressure);
+	}
+
+	public FlowState lit(Brightness brightness) {
+		return new FlowState(FlowResources.star(this.resource.getColor(), brightness), pressure);
 	}
 
 	public NbtCompound toNbt() {

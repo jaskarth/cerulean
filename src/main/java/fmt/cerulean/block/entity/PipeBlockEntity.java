@@ -3,10 +3,11 @@ package fmt.cerulean.block.entity;
 import fmt.cerulean.block.PipeBlock;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
+import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.flow.FlowState;
-import fmt.cerulean.flow.recipe.PigmentInventory;
 import fmt.cerulean.flow.recipe.BrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipes;
+import fmt.cerulean.flow.recipe.PigmentInventory;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.util.Util;
 import net.minecraft.block.BlockState;
@@ -49,6 +50,16 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 						float r = ((current.resource().getColor().color & 0xFF0000) >> 16) / 255f;
 						float g = ((current.resource().getColor().color & 0x00FF00) >> 8) / 255f;
 						float b = ((current.resource().getColor().color & 0x0000FF)) / 255f;
+						if (current.resource().getColor() == FlowResource.Color.ASH) {
+							float s = WellBlockEntity.skew(random, 0.2f);
+							r = Math.clamp(r + s, 0, 1);
+							g = Math.clamp(g + s, 0, 1);
+							b = Math.clamp(b + s, 0, 1);
+						} else {
+							r = Math.clamp(r + WellBlockEntity.skew(random, 0.2f), 0, 1);
+							g = Math.clamp(g + WellBlockEntity.skew(random, 0.2f), 0, 1);
+							b = Math.clamp(b + WellBlockEntity.skew(random, 0.2f), 0, 1);
+						}
 						world.addParticle(new StarParticleType(r, g, b, true), x, y, z, vx, vy, vz);
 					}
 				}
@@ -136,6 +147,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 				return;
 			}
 			PigmentInventory inventory = new PigmentInventory(current, opposing, world, pos.offset(spew));
+			inventory.recipeProgress = recipeProgress;
 			if (activeRecipe != null) {
 				if (!activeRecipe.matches(inventory, world)) {
 					activeRecipe = null;
@@ -143,6 +155,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 				}
 			}
 			if (activeRecipe == null) {
+				inventory.recipeProgress = 0;
 				activeRecipe = BrushRecipes.getFirstValid(inventory);
 				recipeProgress = 0;
 			}
