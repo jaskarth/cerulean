@@ -18,8 +18,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import java.util.Optional;
 
 public final class CeruleanBlocks {
-	public static final Block HYDROTHERMAL_VENT = register("hydrothermal_vent",
-		new WellBlock(AbstractBlock.Settings.copy(Blocks.DEEPSLATE)));
 	public static final Block STAR_WELL = register("star_well",
 		new WellBlock(AbstractBlock.Settings.copy(Blocks.DEEPSLATE)));
 	public static final Block PIPE = register("pipe",

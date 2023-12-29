@@ -15,6 +15,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
@@ -35,7 +36,12 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 
 	public void giveRandomStars() {
 		java.util.Random random = new java.util.Random();
-		flow = new FlowState(FlowResources.star(Color.values()[random.nextInt(Color.amount)], Brightness.values()[random.nextInt(Brightness.amount)]), 10_000);
+		Brightness brightness = switch (random.nextInt(20)) {
+			case 0 -> Brightness.BRILLIANT;
+			case 1 -> Brightness.INNOCUOUS;
+			default -> Brightness.CANDESCENT;
+		};
+		flow = new FlowState(FlowResources.star(Color.values()[random.nextInt(Color.amount)], brightness), 10_000);
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {
@@ -86,21 +92,39 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 			float vx = direction.getOffsetX() * 0.4f + skew(random, 0.2f);
 			float vy = direction.getOffsetY() * 0.4f + skew(random, 0.2f);
 			float vz = direction.getOffsetZ() * 0.4f + skew(random, 0.2f);
-			float r = ((state.resource().getColor().color & 0xFF0000) >> 16) / 255f;
-			float g = ((state.resource().getColor().color & 0x00FF00) >> 8) / 255f;
-			float b = ((state.resource().getColor().color & 0x0000FF)) / 255f;
-			if (state.resource().getColor() == FlowResource.Color.ASH) {
-				float s = skew(random, 0.2f);
-				r = Math.clamp(r + s, 0, 1);
-				g = Math.clamp(g + s, 0, 1);
-				b = Math.clamp(b + s, 0, 1);
-			} else {
-				r = Math.clamp(r + skew(random, 0.2f), 0, 1);
-				g = Math.clamp(g + skew(random, 0.2f), 0, 1);
-				b = Math.clamp(b + skew(random, 0.2f), 0, 1);
-			}
-			world.addParticle(new StarParticleType(r, g, b, false), x, y, z, vx, vy, vz);
+			StarParticleType star = createParticle(state, false, random);
+			world.addParticle(star, true, x, y, z, vx, vy, vz);
 		}
+	}
+
+	public static StarParticleType createParticle(FlowState state, boolean tubular, Random random) {
+		int color = getRgb(state);
+		float r = ((color & 0xFF0000) >> 16) / 255f;
+		float g = ((color & 0x00FF00) >> 8) / 255f;
+		float b = ((color & 0x0000FF)) / 255f;
+		if (state.resource().getColor() == FlowResource.Color.ASH) {
+			float s = skew(random, 0.2f);
+			r = Math.clamp(r + s, 0, 1);
+			g = Math.clamp(g + s, 0, 1);
+			b = Math.clamp(b + s, 0, 1);
+		} else {
+			r = Math.clamp(r + skew(random, 0.2f), 0, 1);
+			g = Math.clamp(g + skew(random, 0.2f), 0, 1);
+			b = Math.clamp(b + skew(random, 0.2f), 0, 1);
+		}
+		return new StarParticleType(r, g, b, tubular);
+	}
+
+	public static int getRgb(FlowState state) {
+		FlowResource res = state.resource();
+		float l = switch(res.getBrightness()) {
+			case BRILLIANT -> 0.95f;
+			case CANDESCENT -> 0.8f;
+			case INNOCUOUS -> 0.65f;
+			case WANING -> 0.5f;
+			case DIM -> 0.4f;
+		};
+		return MathHelper.hsvToRgb(res.getColor().h / 360f, res.getColor().s, res.getColor().v * l);
 	}
 
 	public static float skew(Random random, float range) {

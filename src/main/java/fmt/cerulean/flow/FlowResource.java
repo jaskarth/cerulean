@@ -11,11 +11,11 @@ public interface FlowResource {
 	Color getColor();
 
 	public static enum Brightness {
-		DIM("dim"),
-		WANING("waning"),
-		INNOCUOUS("innocuous"),
-		CANDESCENT("candescent"),
 		BRILLIANT("brilliant"),
+		CANDESCENT("candescent"),
+		INNOCUOUS("innocuous"),
+		WANING("waning"),
+		DIM("dim"),
 		;
 
 		public final String name;
@@ -41,21 +41,23 @@ public interface FlowResource {
 	}
 
 	public static enum Color {
-		CERULEAN("cerulean", 0x3a3de8),
-		VIRIDIAN("viridian", 0x26a875),
-		ROSE("rose", 0xa82656),
-		LILAC("lilac", 0xcb98e2),
-		ASH("ash", 0x444242),
-		CHARTREUSE("chartreuse", 0x98b840),
-		TURQUOISE("turquoise", 0x5d92df),
+		CERULEAN("cerulean", 239f, 0.75f, 0.91f),
+		VIRIDIAN("viridian", 156f, 0.77f, 0.66f),
+		ROSE("rose", 338f, 0.77f, 0.66f),
+		LILAC("lilac", 281f, 0.33f, 0.89f),
+		ASH("ash", 0f, 0.03f, 0.27f),
+		CHARTREUSE("chartreuse", 76f, 0.65f, 0.72f),
+		TURQUOISE("turquoise", 216f, 0.58f, 0.87f),
 		;
 
 		public final String name;
-		public final int color;
+		public final float h, s, v;
 
-		private Color(String name, int color) {
+		private Color(String name, float h, float s, float v) {
 			this.name = name;
-			this.color = color;
+			this.h = h;
+			this.s = s;
+			this.v = v;
 		}
 
 		public static Color fromName(String name) {

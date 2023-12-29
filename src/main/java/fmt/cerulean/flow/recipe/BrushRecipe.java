@@ -10,13 +10,13 @@ import net.minecraft.world.World;
 
 public interface BrushRecipe extends Recipe<PigmentInventory> {
 
-	boolean canCraft(PigmentInventory inventory);
-
-	void craft(PigmentInventory inventory);
-
 	int getCraftTime();
 
 	int getRequiredFlowInputs();
+
+	boolean canCraft(PigmentInventory inventory);
+
+	void craft(PigmentInventory inventory);
 
 	default FlowState getProcessedFlow(FlowState flow, int process) {
 		return FlowState.NONE;

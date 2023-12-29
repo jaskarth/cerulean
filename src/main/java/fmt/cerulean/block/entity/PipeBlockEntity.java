@@ -3,7 +3,6 @@ package fmt.cerulean.block.entity;
 import fmt.cerulean.block.PipeBlock;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
-import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.flow.recipe.BrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipes;
@@ -15,6 +14,7 @@ import net.minecraft.block.ConnectingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -29,6 +29,8 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	private Direction inputDir;
 	private BrushRecipe activeRecipe;
 	private int recipeProgress;
+	// Client
+	private boolean processing;
 
 	public PipeBlockEntity(BlockPos pos, BlockState state) {
 		super(CeruleanBlockEntities.PIPE, pos, state);
@@ -36,10 +38,10 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 
 	public void clientTick(World world, BlockPos pos, BlockState state) {
 		if (!current.empty()) {
+			Random random = world.getRandom();
 			for (Direction dir : Util.DIRECTIONS) {
 				if (state.get(ConnectingBlock.FACING_PROPERTIES.get(dir))) {
 					if (dir != inputDir) {
-						Random random = world.getRandom();
 						float backoff = dir.getOpposite() == inputDir ? -0.5f : 0f;
 						float x = pos.getX() + 0.5f + dir.getOffsetX() * backoff + WellBlockEntity.skew(random, 0.3f);
 						float y = pos.getY() + 0.5f + dir.getOffsetY() * backoff + WellBlockEntity.skew(random, 0.3f);
@@ -47,27 +49,36 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 						float vx = dir.getOffsetX() * 0.2f + WellBlockEntity.skew(random, 0.05f);
 						float vy = dir.getOffsetY() * 0.2f + WellBlockEntity.skew(random, 0.05f);
 						float vz = dir.getOffsetZ() * 0.2f + WellBlockEntity.skew(random, 0.05f);
-						float r = ((current.resource().getColor().color & 0xFF0000) >> 16) / 255f;
-						float g = ((current.resource().getColor().color & 0x00FF00) >> 8) / 255f;
-						float b = ((current.resource().getColor().color & 0x0000FF)) / 255f;
-						if (current.resource().getColor() == FlowResource.Color.ASH) {
-							float s = WellBlockEntity.skew(random, 0.2f);
-							r = Math.clamp(r + s, 0, 1);
-							g = Math.clamp(g + s, 0, 1);
-							b = Math.clamp(b + s, 0, 1);
-						} else {
-							r = Math.clamp(r + WellBlockEntity.skew(random, 0.2f), 0, 1);
-							g = Math.clamp(g + WellBlockEntity.skew(random, 0.2f), 0, 1);
-							b = Math.clamp(b + WellBlockEntity.skew(random, 0.2f), 0, 1);
-						}
-						world.addParticle(new StarParticleType(r, g, b, true), x, y, z, vx, vy, vz);
+						StarParticleType star = WellBlockEntity.createParticle(current, true, random);
+						world.addParticle(star, x, y, z, vx, vy, vz);
 					}
 				}
 			}
 			Direction spew = getSpewDirection();
 			if (spew != null) {
-				if (!spewed.empty()) {
-					WellBlockEntity.spew(world, pos, spew, spewed);
+				BlockPos actPos = pos.offset(spew);
+				if (processing) {
+					if (world.getRandom().nextInt(2) == 0) {
+						float x = actPos.getX() + 0.5f + WellBlockEntity.skew(random, 1.1f);
+						float y = actPos.getY() + 0.5f + WellBlockEntity.skew(random, 1.1f);
+						float z = actPos.getZ() + 0.5f + WellBlockEntity.skew(random, 1.1f);
+						float vx = WellBlockEntity.skew(random, 0.5f);
+						float vy = WellBlockEntity.skew(random, 0.5f);
+						float vz = WellBlockEntity.skew(random, 0.5f);
+						world.addParticle(ParticleTypes.ELECTRIC_SPARK, x, y, z, vx, vy, vz);
+					}
+				}
+				if (processing && !spewed.empty()) {
+					for (int i = 0; i < Math.max(1, spewed.pressure() / 1000); i++) {
+						float x = pos.getX() + 0.5f + spew.getOffsetX() * 0.5f + WellBlockEntity.skew(random, 0.3f);
+						float y = pos.getY() + 0.5f + spew.getOffsetY() * 0.5f + WellBlockEntity.skew(random, 0.3f);
+						float z = pos.getZ() + 0.5f + spew.getOffsetZ() * 0.5f + WellBlockEntity.skew(random, 0.3f);
+						float vx = spew.getOffsetX() * 0.2f + WellBlockEntity.skew(random, 0.05f);
+						float vy = spew.getOffsetY() * 0.2f + WellBlockEntity.skew(random, 0.05f);
+						float vz = spew.getOffsetZ() * 0.2f + WellBlockEntity.skew(random, 0.05f);
+						StarParticleType star = WellBlockEntity.createParticle(random.nextBoolean() ? spewed : current, true, random);
+						world.addParticle(star, x, y, z, vx, vy, vz);
+					}
 				} else {
 					WellBlockEntity.spew(world, pos, spew, current);
 				}
@@ -136,6 +147,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 
 	private void updateRecipe() {
 		FlowState lastSpew = spewed;
+		boolean lastProcessing = activeRecipe != null;
 		Direction spew = getSpewDirection();
 		if (spew != null && !current.empty()) {
 			FlowState opposing = world.getBlockEntity(pos.offset(spew, 2), CeruleanBlockEntities.PIPE)
@@ -146,7 +158,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 			if (!opposing.empty() && spew.getDirection() == AxisDirection.POSITIVE) {
 				return;
 			}
-			PigmentInventory inventory = new PigmentInventory(current, opposing, world, pos.offset(spew));
+			PigmentInventory inventory = new PigmentInventory(current, opposing, world, pos.offset(spew), spew);
 			inventory.recipeProgress = recipeProgress;
 			if (activeRecipe != null) {
 				if (!activeRecipe.matches(inventory, world)) {
@@ -174,7 +186,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 			activeRecipe = null;
 			spewed = FlowState.NONE;
 		}
-		if (!lastSpew.equals(spewed)) {
+		if (!lastSpew.equals(spewed) || (lastProcessing != (activeRecipe != null))) {
 			markDirty();
 			if (world instanceof ServerWorld sw) {
 				sw.getChunkManager().markForUpdate(pos);
@@ -224,6 +236,9 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		if (nbt.contains("Spewed")) {
 			spewed = FlowState.fromNbt(nbt.getCompound("Spewed"));
 		}
+		if (nbt.contains("Processing")) {
+			processing = nbt.getBoolean("Processing");
+		}
 	}
 
 	@Override
@@ -238,6 +253,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	public NbtCompound toInitialChunkDataNbt() {
 		NbtCompound nbt = new NbtCompound();
 		nbt.put("Spewed", spewed.toNbt());
+		nbt.putBoolean("Processing", activeRecipe != null);
 		writeNbt(nbt);
 		return nbt;
 	}
