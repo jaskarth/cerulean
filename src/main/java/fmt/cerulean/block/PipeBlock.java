@@ -9,9 +9,12 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ConnectingBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
@@ -24,14 +27,15 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public class PipeBlock extends Block implements BlockEntityProvider {
-	private final VoxelShape[] SHAPE_CACHE = bakeShapes();
+public class PipeBlock extends Block implements BlockEntityProvider, Waterloggable {
 	public static final BooleanProperty UP = Properties.UP;
 	public static final BooleanProperty DOWN = Properties.DOWN;
 	public static final BooleanProperty NORTH = Properties.NORTH;
 	public static final BooleanProperty EAST = Properties.EAST;
 	public static final BooleanProperty SOUTH = Properties.SOUTH;
 	public static final BooleanProperty WEST = Properties.WEST;
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+	private final VoxelShape[] SHAPE_CACHE = bakeShapes();
 
 	public PipeBlock(Settings settings) {
 		super(settings);
@@ -42,12 +46,16 @@ public class PipeBlock extends Block implements BlockEntityProvider {
 			.with(EAST, false)
 			.with(SOUTH, false)
 			.with(WEST, false)
+			.with(WATERLOGGED, false)
 		);
 	}
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState,
 			WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (state.get(WATERLOGGED)) {
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
 		return getState(world, pos);
 	}
 
@@ -57,7 +65,8 @@ public class PipeBlock extends Block implements BlockEntityProvider {
 	}
 
 	private BlockState getState(WorldAccess world, BlockPos pos) {
-		BlockState state = this.getDefaultState();
+		FluidState fluid = world.getFluidState(pos);
+		BlockState state = this.getDefaultState().with(WATERLOGGED, fluid.isOf(Fluids.WATER));
 		Direction lastDir = null;
 		int connections = 0;
 		for (Direction dir : Util.DIRECTIONS) {
@@ -96,7 +105,13 @@ public class PipeBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
+		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(true) : super.getFluidState(state);
 	}
 	
 	@Override

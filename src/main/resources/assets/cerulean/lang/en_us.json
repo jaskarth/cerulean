@@ -19,5 +19,21 @@
 
   "item.cerulean.berries": "Berries",
 
+  "message.cerulean.flow_flavor": "Inspires dreams of %s %s...",
+
+  "cerulean.brightness.dim": "Dim",
+  "cerulean.brightness.waning": "Waning",
+  "cerulean.brightness.innocuous": "Innocuous",
+  "cerulean.brightness.candescent": "Candescent",
+  "cerulean.brightness.brilliant": "Brilliant",
+
+  "cerulean.color.cerulean": "Cerulean",
+  "cerulean.color.viridian": "Viridian",
+  "cerulean.color.rose": "Rose",
+  "cerulean.color.lilac": "Lilac",
+  "cerulean.color.ash": "Ash",
+  "cerulean.color.chartreuse": "Chartreuse",
+  "cerulean.color.turquoise": "Turquoise",
+
   "cerulean.group": "Cerulean"
 }

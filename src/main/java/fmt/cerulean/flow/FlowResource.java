@@ -1,5 +1,7 @@
 package fmt.cerulean.flow;
 
+import net.minecraft.text.Text;
+
 public interface FlowResource {
 
 	boolean isStar();
@@ -31,6 +33,10 @@ public interface FlowResource {
 			return null;
 		}
 
+		public Text text() {
+			return Text.translatable("cerulean.brightness." + name);
+		}
+
 		public static final int amount = Brightness.values().length;
 	}
 
@@ -59,6 +65,10 @@ public interface FlowResource {
 				}
 			}
 			return null;
+		}
+
+		public Text text() {
+			return Text.translatable("cerulean.color." + name);
 		}
 
 		public static final int amount = Color.values().length;

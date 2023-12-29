@@ -1,5 +1,6 @@
 package fmt.cerulean;
 
+import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.net.CeruleanServerNetworking;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
@@ -39,6 +40,8 @@ public class Cerulean implements ModInitializer {
 		BiomeDecorator.init();
 
 		CeruleanServerNetworking.init();
+
+		BrushRecipes.init();
 		
 
 		Registry.register(Registries.BIOME_SOURCE, id("dreamscape"), DreamscapeBiomeSource.CODEC);

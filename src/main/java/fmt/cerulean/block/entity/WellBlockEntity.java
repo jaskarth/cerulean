@@ -27,7 +27,7 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	@Override
 	public void setWorld(World world) {
 		super.setWorld(world);
-		if (!world.isClient) {
+		if (!world.isClient && flow.empty()) {
 			giveRandomStars();
 		}
 	}
@@ -101,6 +101,11 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 		if (direction == Direction.UP) {
 			return flow;
 		}
+		return FlowState.NONE;
+	}
+
+	@Override
+	public FlowState getDistantExportedState(Direction direction) {
 		return FlowState.NONE;
 	}
 }
