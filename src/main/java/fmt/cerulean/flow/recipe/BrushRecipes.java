@@ -23,6 +23,7 @@ public class BrushRecipes {
 	public static void init() {
 		addRecipe(new BerryFlavoringBrushRecipe());
 		addRecipe(new ManifestationBrushRecipe());
+		addRecipe(new AnxietyManifestationBrushRecipe());
 		addRecipe(new InspirationBrushRecipe(
 			CanvasRequirements.of(
 				Set.of(Color.ASH), ALL_BRIGHTNESSES,

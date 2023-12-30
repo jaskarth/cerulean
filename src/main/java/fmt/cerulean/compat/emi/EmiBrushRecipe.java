@@ -17,6 +17,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
@@ -27,10 +28,14 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 	public final List<EmiIngredient> inputStars, inputItems, outputItems;
 	public final EmiIngredient outputStar;
 	public final List<BlockState> blocks;
-	public final List<Text> info;
+	public final List<OrderedText> info;
 	public boolean nonsense = false;
 
-	public EmiBrushRecipe(Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, List<Text> info) {
+	public EmiBrushRecipe(Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, Text info) {
+		this(id, inputStars, inputItems, outputStar, outputItems, blocks, split(info));
+	}
+
+	private EmiBrushRecipe(Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, List<OrderedText> info) {
 		super(CeruleanEmiPlugin.BRUSHING, id, 100, 18 + (inputItems.isEmpty() ? 0 : 20) + (outputItems.isEmpty() ? 0 : 20) + info.size() * 12);
 		this.inputStars = inputStars;
 		this.inputItems = inputItems;
@@ -50,6 +55,14 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		}
 		this.blocks = blocks;
 		this.info = info;
+	}
+
+	private static List<OrderedText> split(Text t) {
+		if (t == null) {
+			return List.of();
+		}
+		MinecraftClient client = MinecraftClient.getInstance();
+		return client.textRenderer.wrapLines(t, 100);
 	}
 
 	@Override
@@ -99,7 +112,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			cx += 18;
 		}
 		int infoY = starY + 18 + 3 + (outputItems.isEmpty() ? 0 : 20);
-		for (Text i : info) {
+		for (OrderedText i : info) {
 			int tw = client.textRenderer.getWidth(i);
 			widgets.addText(i, (getDisplayWidth() - tw) / 2, infoY, 0xFFFFFFFF, true);
 			infoY += 12;

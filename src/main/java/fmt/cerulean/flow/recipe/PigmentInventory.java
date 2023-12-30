@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import fmt.cerulean.flow.FlowState;
+import fmt.cerulean.mixin.ItemEntityAccessor;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ public class PigmentInventory extends SimpleInventory {
 	public final World world;
 	public final BlockPos pos;
 	public final Direction direction;
+	public final List<ItemEntity> entities;
 	public int recipeProgress = 0;
 
 	public PigmentInventory(FlowState flow, FlowState opposing, World world, BlockPos pos, Direction direction) {
@@ -30,6 +32,7 @@ public class PigmentInventory extends SimpleInventory {
 		this.world = world;
 		this.pos = pos;
 		this.direction = direction;
+		this.entities = entities;
 	}
 
 	private static List<ItemEntity> getItemEntities(World world, BlockPos pos) {
@@ -58,6 +61,15 @@ public class PigmentInventory extends SimpleInventory {
 				int coveted = Math.min(amount, stack.getCount());
 				stack.decrement(coveted);
 				slain += coveted;
+			}
+		}
+	}
+
+	public void keepAlive(ItemStack stack) {
+		for (ItemEntity e : entities) {
+			if (e.getStack() == stack) {
+				((ItemEntityAccessor) e).setItemAge(0);
+				return;
 			}
 		}
 	}

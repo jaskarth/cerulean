@@ -6,6 +6,7 @@
   "plugin": "fmt.cerulean.compat.Soul",
   "mixins": [
     "BlockSettingsAccessor",
+    "ItemEntityAccessor",
     "MixinNoiseConfig",
     "MixinServerWorld",
     "MixinPlayerEntity",

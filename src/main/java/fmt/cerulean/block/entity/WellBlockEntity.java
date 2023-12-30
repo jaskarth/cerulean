@@ -108,13 +108,13 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 		float b = ((color & 0x0000FF)) / 255f;
 		if (resource.getColor() == FlowResource.Color.ASH) {
 			float s = skew(random, 0.2f);
-			r = Math.clamp(r + s, 0, 1);
-			g = Math.clamp(g + s, 0, 1);
-			b = Math.clamp(b + s, 0, 1);
+			r = MathHelper.clamp(r + s, 0, 1);
+			g = MathHelper.clamp(g + s, 0, 1);
+			b = MathHelper.clamp(b + s, 0, 1);
 		} else {
-			r = Math.clamp(r + skew(random, 0.2f), 0, 1);
-			g = Math.clamp(g + skew(random, 0.2f), 0, 1);
-			b = Math.clamp(b + skew(random, 0.2f), 0, 1);
+			r = MathHelper.clamp(r + skew(random, 0.2f), 0, 1);
+			g = MathHelper.clamp(g + skew(random, 0.2f), 0, 1);
+			b = MathHelper.clamp(b + skew(random, 0.2f), 0, 1);
 		}
 		return new StarParticleType(r, g, b, tubular);
 	}

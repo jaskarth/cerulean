@@ -58,7 +58,9 @@
   "message.cerulean.flow_flavor": "Inspires dreams of %s %s...",
 
   "info.cerulean.berry_flavor": "Flavored with stars",
-  "info.cerulean.unblight": "Grows nearby",
+  "info.cerulean.unblight": "Grows nearby crops",
+  "info.cerulean.manifestation": "Places blocks ahead",
+  "info.cerulean.anxiety_manifestation": "Destroys blocks ahead with a tool",
 
   "cerulean.brightness.dim": "Dim",
   "cerulean.brightness.waning": "Waning",

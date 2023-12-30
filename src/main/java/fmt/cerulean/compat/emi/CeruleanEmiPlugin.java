@@ -18,20 +18,24 @@ import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
+import fmt.cerulean.flow.recipe.AnxietyManifestationBrushRecipe;
 import fmt.cerulean.flow.recipe.BerryFlavoringBrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.flow.recipe.CanvasRequirements;
 import fmt.cerulean.flow.recipe.InspirationBrushRecipe;
+import fmt.cerulean.flow.recipe.ManifestationBrushRecipe;
 import fmt.cerulean.flow.recipe.UnblightBrushRecipe;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.text.Text;
 
 public class CeruleanEmiPlugin implements EmiPlugin {
-	private static final EmiIngredient ALL_STARS = of(Arrays.stream(Color.values()).collect(Collectors.toSet()), Arrays.stream(Brightness.values()).collect(Collectors.toSet()));
+	private static final Set<Brightness> ALL_BRIGHTNESSES = Stream.of(Brightness.values()).collect(Collectors.toSet());
+	private static final EmiIngredient ALL_STARS = of(Arrays.stream(Color.values()).collect(Collectors.toSet()), ALL_BRIGHTNESSES);
 	public static final EmiRecipeCategory BRUSHING = new EmiRecipeCategory(Cerulean.id("brushing"), of(FlowResources.star(Color.CERULEAN, Brightness.BRILLIANT)));
 
 	@Override
@@ -47,7 +51,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					EmiStack.EMPTY,
 					List.of(EmiStack.of(real.misleadingOutput)),
 					List.of(),
-					List.of()
+					null
 				));
 			} else if (recipe instanceof BerryFlavoringBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(null,
@@ -56,7 +60,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					EmiStack.EMPTY,
 					List.of(EmiStack.of(CeruleanItems.BERRIES)),
 					List.of(),
-					List.of(Text.translatable("info.cerulean.berry_flavor"))
+					Text.translatable("info.cerulean.berry_flavor")
 				));
 			} else if (recipe instanceof UnblightBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(null,
@@ -65,7 +69,25 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					of(FlowResources.star(Color.CHARTREUSE, Brightness.BRILLIANT)),
 					List.of(),
 					List.of(Blocks.WHEAT.getDefaultState().with(CropBlock.AGE, 7)),
-					List.of(Text.translatable("info.cerulean.unblight"))
+					Text.translatable("info.cerulean.unblight")
+				));
+			} else if (recipe instanceof ManifestationBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					List.of(of(Set.of(Color.LILAC), ALL_BRIGHTNESSES)),
+					List.of(),
+					EmiStack.EMPTY,
+					List.of(),
+					List.of(),
+					Text.translatable("info.cerulean.manifestation")
+				));
+			} else if (recipe instanceof AnxietyManifestationBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					List.of(of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES)),
+					List.of(EmiIngredient.of(ItemTags.TOOLS)),
+					EmiStack.EMPTY,
+					List.of(),
+					List.of(),
+					Text.translatable("info.cerulean.anxiety_manifestation")
 				));
 			}
 		}
