@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:brilliant_cerulean_star",
+    "cerulean:candescent_cerulean_star",
+    "cerulean:innocuous_cerulean_star",
+    "cerulean:waning_cerulean_star",
+    "cerulean:dim_cerulean_star"
+  ]
+}

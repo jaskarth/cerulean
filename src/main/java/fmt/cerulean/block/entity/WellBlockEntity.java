@@ -98,11 +98,15 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	public static StarParticleType createParticle(FlowState state, boolean tubular, Random random) {
-		int color = getRgb(state);
+		return createParticle(state.resource(), tubular, random);
+	}
+
+	public static StarParticleType createParticle(FlowResource resource, boolean tubular, Random random) {
+		int color = getRgb(resource);
 		float r = ((color & 0xFF0000) >> 16) / 255f;
 		float g = ((color & 0x00FF00) >> 8) / 255f;
 		float b = ((color & 0x0000FF)) / 255f;
-		if (state.resource().getColor() == FlowResource.Color.ASH) {
+		if (resource.getColor() == FlowResource.Color.ASH) {
 			float s = skew(random, 0.2f);
 			r = Math.clamp(r + s, 0, 1);
 			g = Math.clamp(g + s, 0, 1);
@@ -115,14 +119,13 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 		return new StarParticleType(r, g, b, tubular);
 	}
 
-	public static int getRgb(FlowState state) {
-		FlowResource res = state.resource();
+	public static int getRgb(FlowResource res) {
 		float l = switch(res.getBrightness()) {
-			case BRILLIANT -> 0.95f;
-			case CANDESCENT -> 0.8f;
-			case INNOCUOUS -> 0.65f;
-			case WANING -> 0.5f;
-			case DIM -> 0.4f;
+			case BRILLIANT -> 1.05f;
+			case CANDESCENT -> 0.9f;
+			case INNOCUOUS -> 0.75f;
+			case WANING -> 0.6f;
+			case DIM -> 0.5f;
 		};
 		return MathHelper.hsvToRgb(res.getColor().h / 360f, res.getColor().s, res.getColor().v * l);
 	}

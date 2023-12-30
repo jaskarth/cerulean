@@ -4,18 +4,23 @@ import java.util.function.Predicate;
 
 import fmt.cerulean.flow.FlowState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
 
 public class InspirationBrushRecipe implements BrushRecipe {
-	protected final CanvasRequirements canvas;
-	protected final int time;
-	protected final Predicate<ItemStack> input;
-	protected final Output output;
+	public final CanvasRequirements canvas;
+	public final int time;
+	public final Predicate<ItemStack> input;
+	public final Output output;
+	public final Ingredient misleadingInput;
+	public final ItemStack misleadingOutput;
 
-	public InspirationBrushRecipe(CanvasRequirements canvas, int time, Predicate<ItemStack> input, Output output) {
+	public InspirationBrushRecipe(CanvasRequirements canvas, int time, Ingredient input, ItemStack output) {
 		this.canvas = canvas;
 		this.time = time;
 		this.input = input;
-		this.output = output;
+		this.output = (a, b) -> output;
+		this.misleadingInput = input;
+		this.misleadingOutput = output;
 	}
 
 	@Override
@@ -41,7 +46,7 @@ public class InspirationBrushRecipe implements BrushRecipe {
 
 	public static class Uninspired extends InspirationBrushRecipe {
 
-		public Uninspired(CanvasRequirements canvas, int time, Predicate<ItemStack> input, Output output) {
+		public Uninspired(CanvasRequirements canvas, int time, Ingredient input, ItemStack output) {
 			super(canvas, time, input, output);
 		}
 

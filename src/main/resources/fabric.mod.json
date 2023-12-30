@@ -17,6 +17,9 @@
     ],
     "main": [
       "fmt.cerulean.Cerulean"
+    ],
+    "emi": [
+      "fmt.cerulean.compat.emi.CeruleanEmiPlugin"
     ]
   },
   "accessWidener": "cerulean.aw",

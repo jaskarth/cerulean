@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 public class UnblightBrushRecipe implements BrushRecipe {
 	private static final int HORIZONTAL_SEARCH = 6;
 	private static final int VERTICAL_SEARCH = 2;
-	private final CanvasRequirements canvas;
-	private final CropBlock block;
-	private final Function<FlowState, FlowState> flowTransform;
+	public final CanvasRequirements canvas;
+	public final CropBlock block;
+	public final Function<FlowState, FlowState> flowTransform;
 
 	public UnblightBrushRecipe(CanvasRequirements canvas, CropBlock block, Function<FlowState, FlowState> flowTransform) {
 		this.canvas = canvas;

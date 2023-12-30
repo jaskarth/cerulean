@@ -1,0 +1,96 @@
+package fmt.cerulean.compat.emi;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.google.common.collect.Lists;
+
+import dev.emi.emi.api.EmiPlugin;
+import dev.emi.emi.api.EmiRegistry;
+import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.stack.EmiIngredient;
+import dev.emi.emi.api.stack.EmiStack;
+import fmt.cerulean.Cerulean;
+import fmt.cerulean.flow.FlowResource;
+import fmt.cerulean.flow.FlowResource.Brightness;
+import fmt.cerulean.flow.FlowResource.Color;
+import fmt.cerulean.flow.FlowResources;
+import fmt.cerulean.flow.recipe.BerryFlavoringBrushRecipe;
+import fmt.cerulean.flow.recipe.BrushRecipe;
+import fmt.cerulean.flow.recipe.BrushRecipes;
+import fmt.cerulean.flow.recipe.CanvasRequirements;
+import fmt.cerulean.flow.recipe.InspirationBrushRecipe;
+import fmt.cerulean.flow.recipe.UnblightBrushRecipe;
+import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanItems;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.CropBlock;
+import net.minecraft.text.Text;
+
+public class CeruleanEmiPlugin implements EmiPlugin {
+	private static final EmiIngredient ALL_STARS = of(Arrays.stream(Color.values()).collect(Collectors.toSet()), Arrays.stream(Brightness.values()).collect(Collectors.toSet()));
+	public static final EmiRecipeCategory BRUSHING = new EmiRecipeCategory(Cerulean.id("brushing"), of(FlowResources.star(Color.CERULEAN, Brightness.BRILLIANT)));
+
+	@Override
+	public void register(EmiRegistry registry) {
+		registry.removeEmiStacks(EmiStack.of(CeruleanBlocks.INKY_VOID));
+		registry.addCategory(BRUSHING);
+		registry.addWorkstation(BRUSHING, EmiStack.of(CeruleanBlocks.STAR_WELL));
+		for (BrushRecipe recipe : Stream.concat(BrushRecipes.SOLO_RECIPES.stream(), BrushRecipes.DUAL_RECIPES.stream()).toList()) {
+			if (recipe instanceof InspirationBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					inputStars(real.canvas),
+					List.of(EmiIngredient.of(real.misleadingInput)),
+					EmiStack.EMPTY,
+					List.of(EmiStack.of(real.misleadingOutput)),
+					List.of(),
+					List.of()
+				));
+			} else if (recipe instanceof BerryFlavoringBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					List.of(ALL_STARS),
+					List.of(EmiStack.of(CeruleanItems.BERRIES)),
+					EmiStack.EMPTY,
+					List.of(EmiStack.of(CeruleanItems.BERRIES)),
+					List.of(),
+					List.of(Text.translatable("info.cerulean.berry_flavor"))
+				));
+			} else if (recipe instanceof UnblightBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					inputStars(real.canvas),
+					List.of(),
+					of(FlowResources.star(Color.CHARTREUSE, Brightness.BRILLIANT)),
+					List.of(),
+					List.of(Blocks.WHEAT.getDefaultState().with(CropBlock.AGE, 7)),
+					List.of(Text.translatable("info.cerulean.unblight"))
+				));
+			}
+		}
+	}
+
+	public static EmiStack of(FlowResource resource) {
+		return EmiStack.of(CeruleanItems.STARS.get(resource));
+	}
+
+	public static List<EmiIngredient> inputStars(CanvasRequirements canvas) {
+		List<EmiIngredient> ingredients = Lists.newArrayList();
+		ingredients.add(of(canvas.validColors, canvas.validBrightnesses));
+		if (!canvas.validOpposingColors.isEmpty()) {
+			ingredients.add(of(canvas.validOpposingColors, canvas.validOpposingBrightnesses));
+		}
+		return ingredients;
+	}
+
+	public static EmiIngredient of(Set<Color> colors, Set<Brightness> brightnesses) {
+		List<EmiStack> stacks = Lists.newArrayList();
+		for (Color c : colors) {
+			for (Brightness b : brightnesses) {
+				stacks.add(of(FlowResources.star(c, b)));
+			}
+		}
+		return EmiIngredient.of(stacks);
+	}
+}

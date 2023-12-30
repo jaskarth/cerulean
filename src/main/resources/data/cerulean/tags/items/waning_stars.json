@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:waning_ash_star",
+    "cerulean:waning_cerulean_star",
+    "cerulean:waning_chartreuse_star",
+    "cerulean:waning_lilac_star",
+    "cerulean:waning_rose_star",
+    "cerulean:waning_turquoise_star",
+    "cerulean:waning_viridian_star"
+  ]
+}

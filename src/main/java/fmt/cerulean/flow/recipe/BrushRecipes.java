@@ -13,6 +13,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 
 public class BrushRecipes {
 	private static final Set<Brightness> ALL_BRIGHTNESSES = Stream.of(Brightness.values()).collect(Collectors.toSet());
@@ -26,7 +27,7 @@ public class BrushRecipes {
 			CanvasRequirements.of(
 				Set.of(Color.ASH), ALL_BRIGHTNESSES,
 				Set.of(Color.LILAC), ALL_BRIGHTNESSES
-			), 40, s -> s.isOf(Items.COARSE_DIRT), (a, b) -> new ItemStack(Items.DIRT)));
+			), 40, Ingredient.ofItems(Items.COARSE_DIRT), new ItemStack(Items.DIRT)));
 		addRecipe(new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.KELP_PLANT, Set.of(Color.CHARTREUSE, Color.LILAC), ALL_BRIGHTNESSES),
 			flow -> flow.colored(Color.ASH),

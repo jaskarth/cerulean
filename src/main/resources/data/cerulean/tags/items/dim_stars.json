@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:dim_ash_star",
+    "cerulean:dim_cerulean_star",
+    "cerulean:dim_chartreuse_star",
+    "cerulean:dim_lilac_star",
+    "cerulean:dim_rose_star",
+    "cerulean:dim_turquoise_star",
+    "cerulean:dim_viridian_star"
+  ]
+}
