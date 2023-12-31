@@ -1,11 +1,11 @@
 package fmt.cerulean.flow.recipe;
 
 import java.util.List;
-import java.util.function.Function;
 
 import com.google.common.collect.Lists;
 
 import fmt.cerulean.flow.FlowState;
+import fmt.cerulean.flow.FlowResource.Color;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
 import net.minecraft.util.math.BlockPos;
@@ -16,12 +16,12 @@ public class UnblightBrushRecipe implements BrushRecipe {
 	private static final int VERTICAL_SEARCH = 2;
 	public final CanvasRequirements canvas;
 	public final CropBlock block;
-	public final Function<FlowState, FlowState> flowTransform;
+	public final Color color;
 
-	public UnblightBrushRecipe(CanvasRequirements canvas, CropBlock block, Function<FlowState, FlowState> flowTransform) {
+	public UnblightBrushRecipe(CanvasRequirements canvas, CropBlock block, Color color) {
 		this.canvas = canvas;
 		this.block = block;
-		this.flowTransform = flowTransform;
+		this.color = color;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class UnblightBrushRecipe implements BrushRecipe {
 
 	@Override
 	public FlowState getProcessedFlow(FlowState flow, int process) {
-		return flowTransform.apply(flow);
+		return flow.coloredDimmer(color);
 	}
 
 	@Override

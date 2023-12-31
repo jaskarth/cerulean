@@ -1,6 +1,5 @@
 package fmt.cerulean.mixin.client;
 
-import fmt.cerulean.Cerulean;
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.screen.ColorDownloadScreen;
 import fmt.cerulean.world.CeruleanDimensions;

@@ -5,7 +5,6 @@ import fmt.cerulean.block.*;
 import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
 import net.minecraft.block.*;
-import net.minecraft.block.enums.Instrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

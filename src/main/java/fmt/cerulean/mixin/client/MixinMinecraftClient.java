@@ -5,7 +5,6 @@ import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.client.screen.ColorProgressScreen;
 import fmt.cerulean.flow.FlowState;
-import fmt.cerulean.util.Counterful;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;

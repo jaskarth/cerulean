@@ -29,6 +29,10 @@ public class CanvasRequirements {
 		this.validOpposingBrightnesses = validOpposingBrightnesses;
 	}
 
+	public static CanvasRequirements of(Set<Block> blocks, Set<Color> validColors, Set<Brightness> validBrightnesses) {
+		return new CanvasRequirements(blocks, Set.of(), validColors, validBrightnesses, Set.of(), Set.of());
+	}
+
 	public static CanvasRequirements of(Block block, Set<Color> validColors, Set<Brightness> validBrightnesses) {
 		return new CanvasRequirements(Set.of(block), Set.of(), validColors, validBrightnesses, Set.of(), Set.of());
 	}

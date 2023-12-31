@@ -37,7 +37,7 @@ public class TallPlantFilteringBrushRecipe implements BrushRecipe {
 		World world = inventory.world;
 		if (world.getRandom().nextFloat() <= wiltChance) {
 			BlockPos top = inventory.pos;
-			while (canvas.canCraft(inventory.world, top, inventory.flow)) {
+			while (canvas.canCraft(inventory.world, top.up(), inventory.flow)) {
 				top = top.up();
 			}
 			world.breakBlock(top, false);

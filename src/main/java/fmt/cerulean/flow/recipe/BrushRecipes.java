@@ -33,49 +33,54 @@ public class BrushRecipes {
 				Set.of(Color.LILAC), ALL_BRIGHTNESSES
 			), 40, Ingredient.ofItems(Items.COARSE_DIRT), new ItemStack(Items.DIRT)));
 		addRecipe(new TallPlantFilteringBrushRecipe(
-			CanvasRequirements.of(Blocks.KELP_PLANT, Set.of(Color.CHARTREUSE, Color.LILAC), ALL_BRIGHTNESSES),
+			CanvasRequirements.of(Set.of(Blocks.KELP, Blocks.KELP_PLANT), Set.of(Color.CHARTREUSE, Color.LILAC), ALL_BRIGHTNESSES),
 			flow -> flow.colored(Color.ASH),
+			0.03f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES),
+			flow -> flow.colored(Color.VIRIDIAN),
 			0.1f
 		));
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.WHEAT, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.WHEAT, s -> s.coloredDimmer(Color.CHARTREUSE)));
+			), (CropBlock) Blocks.WHEAT, Color.CHARTREUSE));
 
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.CARROTS, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.CARROTS, s -> s.coloredDimmer(Color.VIRIDIAN)));
+			), (CropBlock) Blocks.CARROTS, Color.VIRIDIAN));
 
 		addRecipe(new UnblightBrushRecipe(
 				CanvasRequirements.of(
 				Blocks.POTATOES, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.POTATOES, s -> s.coloredDimmer(Color.ASH)));
+			), (CropBlock) Blocks.POTATOES, Color.ASH));
 
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.BEETROOTS, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.BEETROOTS, s -> s.coloredDimmer(Color.LILAC)));
+			), (CropBlock) Blocks.BEETROOTS, Color.LILAC));
 
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.TORCHFLOWER_CROP, Set.of(Color.ASH), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.TORCHFLOWER_CROP, s -> s.coloredDimmer(Color.TURQUOISE)));
+			), (CropBlock) Blocks.TORCHFLOWER_CROP, Color.TURQUOISE));
 
 		addRecipe(new ParadigmBrushRecipe(Color.ROSE, CeruleanBlocks.SPARKBLOSSOM, CeruleanBlocks.SPARKLESSBLOSSOM, new ItemStack(CeruleanItems.GLIMMERCRUMB)));
-		addRecipe(new ParadigmBrushRecipe(Color.TURQUOISE, Blocks.BOOKSHELF, CeruleanBlocks.SORTED_BOOKSHELF, null));
+		addRecipe(new ParadigmBrushRecipe(Color.TURQUOISE, Blocks.BOOKSHELF, CeruleanBlocks.SORTED_BOOKSHELF, ItemStack.EMPTY));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
-			40, s -> s.isOf(Items.COPPER_INGOT), (a, b) -> new ItemStack(CeruleanItems.EXPOSED_COPPER_INGOT)));
+			40, Ingredient.ofItems(Items.COPPER_INGOT), new ItemStack(CeruleanItems.EXPOSED_COPPER_INGOT)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
-			40, s -> s.isOf(CeruleanItems.EXPOSED_COPPER_INGOT), (a, b) -> new ItemStack(CeruleanItems.WEATHERED_COPPER_INGOT)));
+			40, Ingredient.ofItems(CeruleanItems.EXPOSED_COPPER_INGOT), new ItemStack(CeruleanItems.WEATHERED_COPPER_INGOT)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
-			40, s -> s.isOf(CeruleanItems.WEATHERED_COPPER_INGOT), (a, b) -> new ItemStack(CeruleanItems.OXIDIZED_COPPER_INGOT)));
+			40, Ingredient.ofItems(CeruleanItems.WEATHERED_COPPER_INGOT), new ItemStack(CeruleanItems.OXIDIZED_COPPER_INGOT)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
-			40, s -> s.isOf(CeruleanItems.ORB), (a, b) -> new ItemStack(CeruleanItems.MOVRB)));
+			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.MOVRB)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CERULEAN), ALL_BRIGHTNESSES),
-			40, s -> s.isOf(CeruleanItems.ORB), (a, b) -> new ItemStack(CeruleanItems.JORB)));
+			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.JORB)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.LILAC), ALL_BRIGHTNESSES),
-			40, s -> s.isOf(CeruleanItems.ORB), (a, b) -> new ItemStack(CeruleanItems.KORB)));
+			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.KORB)));
 	}
 
 	private static void addRecipe(BrushRecipe recipe) {

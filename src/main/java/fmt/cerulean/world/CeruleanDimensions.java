@@ -1,11 +1,9 @@
 package fmt.cerulean.world;
 
 import fmt.cerulean.Cerulean;
-import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
 

@@ -10,10 +10,10 @@ import net.minecraft.world.World;
 
 public class ParadigmBrushRecipe implements BrushRecipe{
 
-	private final FlowResource.Color color;
-	private final Block source;
-	private final Block destination;
-	private final ItemStack collateral;
+	public final FlowResource.Color color;
+	public final Block source;
+	public final Block destination;
+	public final ItemStack collateral;
 
 	public ParadigmBrushRecipe(FlowResource.Color color, Block source, Block destination, ItemStack collateral) {
 		this.color = color;
