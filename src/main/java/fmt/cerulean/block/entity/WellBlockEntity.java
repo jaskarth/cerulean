@@ -102,6 +102,10 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	public static StarParticleType createParticle(FlowResource resource, boolean tubular, Random random) {
+		return createParticle(resource, !tubular, tubular, random);
+	}
+
+	public static StarParticleType createParticle(FlowResource resource, boolean collision, boolean shortLife, Random random) {
 		int color = getRgb(resource);
 		float r = ((color & 0xFF0000) >> 16) / 255f;
 		float g = ((color & 0x00FF00) >> 8) / 255f;
@@ -116,7 +120,7 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 			g = MathHelper.clamp(g + skew(random, 0.2f), 0, 1);
 			b = MathHelper.clamp(b + skew(random, 0.2f), 0, 1);
 		}
-		return new StarParticleType(r, g, b, tubular);
+		return new StarParticleType(r, g, b, collision, shortLife);
 	}
 
 	public static int getRgb(FlowResource res) {

@@ -7,12 +7,22 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class CeruleanServerNetworking {
 	public static void init() {
+		ServerPlayNetworking.registerGlobalReceiver(CeruleanNetworking.MAGIC_ATTACK, (s, p, h, buf, rs) -> {
+			int eId = buf.readVarInt();
+
+			s.execute(() -> {
+				Entity entity = p.getServerWorld().getEntityById(eId);
+				entity.damage(entity.getDamageSources().magic(), 12);
+			});
+		});
+
 		ServerPlayNetworking.registerGlobalReceiver(CeruleanNetworking.CLOSE_BEHIND, (s, p, h, buf, rs) -> {
 			s.execute(() -> {
 				ServerWorld world = p.getServerWorld();

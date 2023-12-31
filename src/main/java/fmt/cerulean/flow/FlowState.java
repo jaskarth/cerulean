@@ -15,6 +15,10 @@ public record FlowState(FlowResource resource, int pressure) {
 		return new FlowState(FlowResources.star(color, this.resource.getBrightness()), pressure);
 	}
 
+	public FlowState coloredDimmer(Color color) {
+		return new FlowState(FlowResources.star(color, this.resource.getBrightness().dimmer()), pressure);
+	}
+
 	public FlowState lit(Brightness brightness) {
 		return new FlowState(FlowResources.star(this.resource.getColor(), brightness), pressure);
 	}

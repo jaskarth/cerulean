@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "cerulean:block/spacebricks",
+    "side": "cerulean:block/spacebricks",
+    "top": "cerulean:block/spacebricks"
+  }
+}

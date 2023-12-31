@@ -163,8 +163,8 @@ public class DreamscapeTeleporter {
 
 			for (int i = 0; i < 20; i++) {
 				// Central path
-				dreamscape.setBlockState(paintingOrigin.offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min((i + 1) * 3, 15)));
-				dreamscape.setBlockState(paintingOrigin.down().offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min((i + 1) * 3, 15)));
+				dreamscape.setBlockState(paintingOrigin.offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min((i + 1) * 3, 15)), Block.SKIP_DROPS);
+				dreamscape.setBlockState(paintingOrigin.down().offset(moveDir, i), Blocks.LIGHT.getDefaultState().with(LightBlock.LEVEL_15, Math.min((i + 1) * 3, 15)), Block.SKIP_DROPS);
 
 				// Surrounding blocks
 
@@ -197,7 +197,7 @@ public class DreamscapeTeleporter {
 		}
 	}
 	private static void place(ServerWorld world, BlockPos pos, BlockState state, int dist, Direction facing, boolean alone) {
-		world.setBlockState(pos, CeruleanBlocks.MIMIC.getDefaultState());
+		world.setBlockState(pos, CeruleanBlocks.MIMIC.getDefaultState(), Block.SKIP_DROPS);
 		MimicBlockEntity.set(world.getBlockEntity(pos), state, dist, facing, alone);
 	}
 

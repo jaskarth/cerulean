@@ -4,10 +4,8 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.*;
 import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
+import net.minecraft.block.*;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -53,6 +51,15 @@ public final class CeruleanBlocks {
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY))));
 
+	public static final Block SPARKLESSBLOSSOM = register("sparklessblossom",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+					.mapColor(MapColor.DARK_GREEN)
+					.noCollision()
+					.breakInstantly()
+					.sounds(BlockSoundGroup.GRASS)
+					.pistonBehavior(PistonBehavior.DESTROY))));
+
 	public static final Block LUNARIUM = register("lunarium",
 			new CeruleanPlantBlock(offsetter(
 					AbstractBlock.Settings.create()
@@ -85,6 +92,39 @@ public final class CeruleanBlocks {
 
 	public static final Block INKY_VOID = register("inky_void",
 			new InkyVoidBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
+
+	public static final Block SORTED_BOOKSHELF = register("sorted_bookshelf",
+			new Block(AbstractBlock.Settings.copy(Blocks.BOOKSHELF)));
+
+	public static final Block SPACEROCK_WALL = register("spacerock_wall",
+			new WallBlock(AbstractBlock.Settings.copyShallow(SPACEROCK).solid()));
+
+	public static final Block SPACEBRICKS = register("spacebricks",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block POLISHED_SPACEROCK = register("polished_spacerock",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block CHISELED_SPACEROCK = register("chiseled_spacerock",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block SMOOTH_SPACEROCK = register("smooth_spacerock",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block SPACEROCK_SLAB = register("spacerock_slab",
+			new SlabBlock(AbstractBlock.Settings.copyShallow(SPACEROCK)));
+
+	public static final Block SPACEBRICK_WALL = register("spacebrick_wall",
+			new WallBlock(AbstractBlock.Settings.copyShallow(SPACEBRICKS).solid()));
+
+	public static final Block SPACEBRICK_SLAB = register("spacebrick_slab",
+			new SlabBlock(AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
+
+	public static final Block SPACEBRICK_STAIRS = register("spacebrick_stairs",
+			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
+
+	public static final Block SPACEROCK_STAIRS = register("spacerock_stairs",
+			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
 
 	public static void init() {
 	}

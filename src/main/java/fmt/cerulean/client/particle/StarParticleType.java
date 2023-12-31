@@ -7,13 +7,15 @@ import net.minecraft.particle.ParticleType;
 
 public class StarParticleType implements ParticleEffect {
 	public final float red, green, blue;
-	public final boolean tubular;
+	public final boolean collision;
+	public final boolean shortLife;
 
-	public StarParticleType(float red, float green, float blue, boolean tubular) {
+	public StarParticleType(float red, float green, float blue, boolean collision, boolean shortLife) {
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
-		this.tubular = tubular;
+		this.collision = collision;
+		this.shortLife = shortLife;
 	}
 
 	@Override

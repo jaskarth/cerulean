@@ -11,7 +11,8 @@
     "MixinServerWorld",
     "MixinPlayerEntity",
     "MixinWorld",
-    "MixinServerPlayerEntity"
+    "MixinServerPlayerEntity",
+    "MixinEnchantmentScreenHandler"
   ],
   "client": [
     "client.MixinClientPlayNetworkHandler",

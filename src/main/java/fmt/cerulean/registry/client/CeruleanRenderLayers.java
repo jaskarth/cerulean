@@ -12,6 +12,7 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.CORAL,
 				CeruleanBlocks.SKYGRASS,
 				CeruleanBlocks.SPARKBLOSSOM,
+				CeruleanBlocks.SPARKLESSBLOSSOM,
 				CeruleanBlocks.LUNARIUM,
 				CeruleanBlocks.REEDS,
 				CeruleanBlocks.REEDS_PLANT

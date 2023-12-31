@@ -31,6 +31,9 @@ public class MimicBlockEntityRenderer implements BlockEntityRenderer<MimicBlockE
 
 		BlockPos pos = entity.getPos();
 		BlockState state = entity.state;
+		if (state == null) {
+			state = Blocks.BEDROCK.getDefaultState();
+		}
 		float v = entity.dist / 15.f;
 		v = v * v * v;
 		int alpha = MathHelper.clamp((int) (v * 255), 0, 255);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "cerulean:block/spacerock_slab"
+    },
+    "type=double": {
+      "model": "cerulean:block/spacerock"
+    },
+    "type=top": {
+      "model": "cerulean:block/spacerock_slab_top"
+    }
+  }
+}

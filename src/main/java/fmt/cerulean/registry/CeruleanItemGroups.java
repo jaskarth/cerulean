@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CeruleanItemGroups {
 	private static final List<String> EXCLUDED = List.of(
-			"mimic"
+			"mimic", "inky_void"
 	);
 
 	public static void init() {

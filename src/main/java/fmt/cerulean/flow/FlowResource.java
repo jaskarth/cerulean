@@ -33,6 +33,16 @@ public interface FlowResource {
 			return null;
 		}
 
+		public Brightness dimmer() {
+			return switch (this) {
+				case BRILLIANT -> CANDESCENT;
+				case CANDESCENT -> INNOCUOUS;
+				case INNOCUOUS -> WANING;
+				case WANING -> DIM;
+				case DIM -> DIM;
+			};
+		}
+
 		public Text text() {
 			return Text.translatable("cerulean.brightness." + name);
 		}
