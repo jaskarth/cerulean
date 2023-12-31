@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:brilliant_ash_star",
+    "cerulean:brilliant_cerulean_star",
+    "cerulean:brilliant_chartreuse_star",
+    "cerulean:brilliant_lilac_star",
+    "cerulean:brilliant_rose_star",
+    "cerulean:brilliant_turquoise_star",
+    "cerulean:brilliant_viridian_star",
+    "cerulean:candescent_ash_star",
+    "cerulean:candescent_cerulean_star",
+    "cerulean:candescent_chartreuse_star",
+    "cerulean:candescent_lilac_star",
+    "cerulean:candescent_rose_star",
+    "cerulean:candescent_turquoise_star",
+    "cerulean:candescent_viridian_star",
+    "cerulean:innocuous_ash_star",
+    "cerulean:innocuous_cerulean_star",
+    "cerulean:innocuous_chartreuse_star",
+    "cerulean:innocuous_lilac_star",
+    "cerulean:innocuous_rose_star",
+    "cerulean:innocuous_turquoise_star",
+    "cerulean:innocuous_viridian_star",
+    "cerulean:waning_ash_star",
+    "cerulean:waning_cerulean_star",
+    "cerulean:waning_chartreuse_star",
+    "cerulean:waning_lilac_star",
+    "cerulean:waning_rose_star",
+    "cerulean:waning_turquoise_star",
+    "cerulean:waning_viridian_star"
+  ]
+}

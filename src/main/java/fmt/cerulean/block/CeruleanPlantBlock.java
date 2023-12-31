@@ -1,7 +1,6 @@
 package fmt.cerulean.block;
 
 import net.minecraft.block.*;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -23,6 +22,7 @@ public class CeruleanPlantBlock extends Block {
 
 	public CeruleanPlantBlock(Settings settings) {
 		super(settings);
+		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.UP));
 	}
 
 	@Override

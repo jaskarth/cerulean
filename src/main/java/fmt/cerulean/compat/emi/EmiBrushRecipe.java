@@ -87,7 +87,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			cx += 18;
 		}
 		if (!outputStar.isEmpty()) {
-			widgets.addSlot(outputStar, 64, starY).drawBack(false);
+			widgets.addSlot(outputStar, 64, starY).recipeContext(this).drawBack(false);
 			widgets.addSlot(PIPE, 82, starY).drawBack(false);
 			addParticles(particles, outputStar, starY, false, true, random);
 		}
@@ -108,7 +108,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		}
 		cx = getDisplayWidth() / 2 - outputItems.size() * 9;
 		for (EmiIngredient o : outputItems) {
-			widgets.addSlot(o, cx, starY + 20);
+			widgets.addSlot(o, cx, starY + 20).recipeContext(this);
 			cx += 18;
 		}
 		int infoY = starY + 18 + 3 + (outputItems.isEmpty() ? 0 : 20);

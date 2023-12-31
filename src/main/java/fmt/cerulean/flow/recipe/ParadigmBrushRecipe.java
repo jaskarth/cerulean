@@ -66,7 +66,7 @@ public class ParadigmBrushRecipe implements BrushRecipe{
 				}
 
 				world.setBlockState(pos, dest);
-				if (collateral != null) {
+				if (!collateral.isEmpty()) {
 					Block.dropStack(world, pos, this.collateral.copy());
 				}
 				return;

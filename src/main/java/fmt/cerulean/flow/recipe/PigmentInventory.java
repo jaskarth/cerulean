@@ -3,11 +3,14 @@ package fmt.cerulean.flow.recipe;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.google.common.collect.Lists;
+
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.mixin.ItemEntityAccessor;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -33,6 +36,26 @@ public class PigmentInventory extends SimpleInventory {
 		this.pos = pos;
 		this.direction = direction;
 		this.entities = entities;
+	}
+
+	public boolean containsAll(List<Ingredient> base) {
+		List<Ingredient> ingredients = Lists.newArrayList(base);
+		for (int i = 0; i < size(); i++) {
+			ItemStack s = getStack(i);
+			int amount = s.getCount();
+			for (int j = 0; j < ingredients.size(); j++) {
+				Ingredient ing = ingredients.get(j);
+				if (ing.test(s)) {
+					amount--;
+					ingredients.remove(j);
+					j = 0;
+					if (amount <= 0) {
+						break;
+					}
+				}
+			}
+		}
+		return ingredients.isEmpty();
 	}
 
 	private static List<ItemEntity> getItemEntities(World world, BlockPos pos) {

@@ -1,6 +1,6 @@
 package fmt.cerulean.flow.recipe;
 
-import java.util.function.Predicate;
+import java.util.List;
 
 import fmt.cerulean.flow.FlowState;
 import net.minecraft.item.ItemStack;
@@ -9,18 +9,18 @@ import net.minecraft.recipe.Ingredient;
 public class InspirationBrushRecipe implements BrushRecipe {
 	public final CanvasRequirements canvas;
 	public final int time;
-	public final Predicate<ItemStack> input;
-	public final Output output;
-	public final Ingredient misleadingInput;
-	public final ItemStack misleadingOutput;
+	public final List<Ingredient> input;
+	public final ItemStack output;
 
 	public InspirationBrushRecipe(CanvasRequirements canvas, int time, Ingredient input, ItemStack output) {
+		this(canvas, time, List.of(input), output);
+	}
+
+	public InspirationBrushRecipe(CanvasRequirements canvas, int time, List<Ingredient> input, ItemStack output) {
 		this.canvas = canvas;
 		this.time = time;
 		this.input = input;
-		this.output = (a, b) -> output;
-		this.misleadingInput = input;
-		this.misleadingOutput = output;
+		this.output = output;
 	}
 
 	@Override
@@ -35,18 +35,24 @@ public class InspirationBrushRecipe implements BrushRecipe {
 
 	@Override
 	public boolean canCraft(PigmentInventory inventory) {
-		return canvas.canCraft(inventory.world, inventory.pos, inventory.flow, inventory.opposing) && inventory.containsAny(input);
+		return canvas.canCraft(inventory.world, inventory.pos, inventory.flow, inventory.opposing) && inventory.containsAll(input);
 	}
 
 	@Override
 	public void craft(PigmentInventory inventory) {
-		inventory.killItems(input, 1);
-		inventory.spawnResult(output.getOutput(inventory.flow, inventory.opposing));
+		for (Ingredient i : input) {
+			inventory.killItems(i, 1);
+		}
+		inventory.spawnResult(output.copy());
 	}
 
 	public static class Uninspired extends InspirationBrushRecipe {
 
 		public Uninspired(CanvasRequirements canvas, int time, Ingredient input, ItemStack output) {
+			super(canvas, time, List.of(input), output);
+		}
+
+		public Uninspired(CanvasRequirements canvas, int time, List<Ingredient> input, ItemStack output) {
 			super(canvas, time, input, output);
 		}
 
@@ -58,7 +64,7 @@ public class InspirationBrushRecipe implements BrushRecipe {
 	
 		@Override
 		public boolean canCraft(PigmentInventory inventory) {
-			return canvas.canCraft(inventory.world, inventory.pos, inventory.flow) && inventory.containsAny(input);
+			return canvas.canCraft(inventory.world, inventory.pos, inventory.flow) && inventory.containsAll(input);
 		}
 	}
 

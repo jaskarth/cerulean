@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:candescent_chartreuse_star",
+    "cerulean:innocuous_chartreuse_star",
+    "cerulean:waning_chartreuse_star",
+    "cerulean:dim_chartreuse_star"
+  ]
+}

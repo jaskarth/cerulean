@@ -18,15 +18,28 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 
 public class BrushRecipes {
+	private static final Set<Color> ALL_COLORS = Stream.of(Color.values()).collect(Collectors.toSet());
 	private static final Set<Brightness> ALL_BRIGHTNESSES = Stream.of(Brightness.values()).collect(Collectors.toSet());
 	private static final Set<Brightness> ALL_BRIGHTNESSES_EXCEPT_DIM = Stream.of(Brightness.values()).filter(b -> b != Brightness.DIM).collect(Collectors.toSet());
+	private static final Set<Brightness> ALL_BRIGHTNESSES_EXCEPT_BRILLIANT = Stream.of(Brightness.values()).filter(b -> b != Brightness.BRILLIANT).collect(Collectors.toSet());
 	public static final List<BrushRecipe> SOLO_RECIPES = Lists.newArrayList();
 	public static final List<BrushRecipe> DUAL_RECIPES = Lists.newArrayList();
 
 	public static void init() {
 		addRecipe(new BerryFlavoringBrushRecipe());
+		addRecipe(new BevvyTastingBrushRecipe());
 		addRecipe(new ManifestationBrushRecipe());
 		addRecipe(new AnxietyManifestationBrushRecipe());
+		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
+			Blocks.CAMPFIRE,
+			ALL_COLORS,
+			ALL_BRIGHTNESSES_EXCEPT_BRILLIANT
+		), false));
+		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
+			Blocks.SOUL_CAMPFIRE,
+			ALL_COLORS,
+			Set.of(Brightness.DIM)
+		), true));
 		addRecipe(new InspirationBrushRecipe(
 			CanvasRequirements.of(
 				Set.of(Color.ASH), ALL_BRIGHTNESSES,
@@ -38,8 +51,8 @@ public class BrushRecipes {
 			0.03f
 		));
 		addRecipe(new TallPlantFilteringBrushRecipe(
-			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES),
-			flow -> flow.colored(Color.VIRIDIAN),
+			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES),
+			flow -> flow.colored(Color.CERULEAN),
 			0.1f
 		));
 		addRecipe(new UnblightBrushRecipe(
@@ -75,12 +88,45 @@ public class BrushRecipes {
 			40, Ingredient.ofItems(CeruleanItems.EXPOSED_COPPER_INGOT), new ItemStack(CeruleanItems.WEATHERED_COPPER_INGOT)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.WEATHERED_COPPER_INGOT), new ItemStack(CeruleanItems.OXIDIZED_COPPER_INGOT)));
+		addRecipe(new InspirationBrushRecipe(CanvasRequirements.of(Set.of(Color.ROSE), ALL_BRIGHTNESSES, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES),
+			40, List.of(Ingredient.ofItems(CeruleanItems.OXIDIZED_COPPER_INGOT), Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB), Ingredient.ofItems(Items.REDSTONE)), new ItemStack(CeruleanItems.ORB)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.MOVRB)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CERULEAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.JORB)));
 		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.LILAC), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.KORB)));
+		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
+			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.LORB)));
+
+		addRecipe(new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES,
+				Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+			), 30, List.of(
+				Ingredient.ofItems(Items.BROWN_DYE),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER)
+			), new ItemStack(Items.BOOK)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+			CanvasRequirements.of(
+				Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES
+			), 20, List.of(
+				Ingredient.ofItems(Items.FIRE_CHARGE)
+			), new ItemStack(Items.BLAZE_POWDER, 3)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+			CanvasRequirements.of(
+				Set.of(Color.LILAC), ALL_BRIGHTNESSES
+			), 5000, List.of(
+				Ingredient.ofItems(Items.MUSIC_DISC_STAL)
+			), new ItemStack(Items.MUSIC_DISC_WAIT)
+		));
 	}
 
 	private static void addRecipe(BrushRecipe recipe) {

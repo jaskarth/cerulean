@@ -92,12 +92,48 @@
   "item.cerulean.waning_turquoise_star": "Waning Turquoise Star",
   "item.cerulean.waning_viridian_star": "Waning Viridian Star",
 
+  "tag.item.cerulean.all_stars": "Stars",
+
+  "tag.item.cerulean.cerulean_stars": "Cerulean Stars",
+  "tag.item.cerulean.viridian_stars": "Viridian Stars",
+  "tag.item.cerulean.rose_stars": "Rose Stars",
+  "tag.item.cerulean.lilac_stars": "Lilac Stars",
+  "tag.item.cerulean.ash_stars": "Ash Stars",
+  "tag.item.cerulean.chartreuse_stars": "Chartreuse Stars",
+  "tag.item.cerulean.turquoise_stars": "Turquoise Stars",
+
+  "tag.item.cerulean.non_brilliant_cerulean_stars": "Non-Brilliant Cerulean Stars",
+  "tag.item.cerulean.non_brilliant_viridian_stars": "Non-Brilliant Viridian Stars",
+  "tag.item.cerulean.non_brilliant_rose_stars": "Non-Brilliant Rose Stars",
+  "tag.item.cerulean.non_brilliant_lilac_stars": "Non-Brilliant Lilac Stars",
+  "tag.item.cerulean.non_brilliant_ash_stars": "Non-Brilliant Ash Stars",
+  "tag.item.cerulean.non_brilliant_chartreuse_stars": "Non-Brilliant Chartreuse Stars",
+  "tag.item.cerulean.non_brilliant_turquoise_stars": "Non-Brilliant Turquoise Stars",
+
+  "tag.item.cerulean.non_dim_cerulean_stars": "Non-Dim Cerulean Stars",
+  "tag.item.cerulean.non_dim_viridian_stars": "Non-Dim Viridian Stars",
+  "tag.item.cerulean.non_dim_rose_stars": "Non-Dim Rose Stars",
+  "tag.item.cerulean.non_dim_lilac_stars": "Non-Dim Lilac Stars",
+  "tag.item.cerulean.non_dim_ash_stars": "Non-Dim Ash Stars",
+  "tag.item.cerulean.non_dim_chartreuse_stars": "Non-Dim Chartreuse Stars",
+  "tag.item.cerulean.non_dim_turquoise_stars": "Non-Dim Turquoise Stars",
+
+  "tag.item.cerulean.dim_stars": "Dim Stars",
+  "tag.item.cerulean.waning_stars": "Waning Stars",
+  "tag.item.cerulean.innocuous_stars": "Innocuous Stars",
+  "tag.item.cerulean.candescent_stars": "Candescent Stars",
+  "tag.item.cerulean.brilliant_stars": "Brilliant Stars",
+
   "message.cerulean.flow_flavor": "Inspires dreams of %s %s...",
 
   "info.cerulean.berry_flavor": "Flavored with stars",
   "info.cerulean.unblight": "Grows nearby crops",
   "info.cerulean.manifestation": "Places blocks ahead",
   "info.cerulean.anxiety_manifestation": "Destroys blocks ahead with a tool",
+  "info.cerulean.paradigm": "Explores a paradigm shift",
+  "info.cerulean.cindering_afterglow": "Burns dimmer stars out",
+  "info.cerulean.cindering_afterglow_twice": "Burns the dimmest stars out",
+  "info.cerulean.bevvy_tasting": "Consumes potions to brighten stars",
 
   "cerulean.brightness.dim": "Dim",
   "cerulean.brightness.waning": "Waning",

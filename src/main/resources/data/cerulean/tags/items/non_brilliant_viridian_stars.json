@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:candescent_viridian_star",
+    "cerulean:innocuous_viridian_star",
+    "cerulean:waning_viridian_star",
+    "cerulean:dim_viridian_star"
+  ]
+}

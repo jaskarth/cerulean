@@ -20,20 +20,25 @@ import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.flow.recipe.AnxietyManifestationBrushRecipe;
 import fmt.cerulean.flow.recipe.BerryFlavoringBrushRecipe;
+import fmt.cerulean.flow.recipe.BevvyTastingBrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.flow.recipe.CanvasRequirements;
+import fmt.cerulean.flow.recipe.CinderingAfterglowBrushRecipe;
 import fmt.cerulean.flow.recipe.InspirationBrushRecipe;
 import fmt.cerulean.flow.recipe.ManifestationBrushRecipe;
 import fmt.cerulean.flow.recipe.ParadigmBrushRecipe;
 import fmt.cerulean.flow.recipe.UnblightBrushRecipe;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.text.Text;
 
 public class CeruleanEmiPlugin implements EmiPlugin {
+	private static final Set<Color> ALL_COLORS = Stream.of(Color.values()).collect(Collectors.toSet());
 	private static final Set<Brightness> ALL_BRIGHTNESSES = Stream.of(Brightness.values()).collect(Collectors.toSet());
+	private static final Set<Brightness> ALL_BRIGHTNESSES_EXCEPT_DIM = ALL_BRIGHTNESSES.stream().filter(b -> b != Brightness.DIM).collect(Collectors.toSet());
 	private static final Set<Brightness> ALL_BRIGHTNESSES_EXCEPT_BRILLIANT = ALL_BRIGHTNESSES.stream().filter(b -> b != Brightness.BRILLIANT).collect(Collectors.toSet());
 	private static final EmiIngredient ALL_STARS = of(Arrays.stream(Color.values()).collect(Collectors.toSet()), ALL_BRIGHTNESSES);
 	public static final EmiRecipeCategory BRUSHING = new EmiRecipeCategory(Cerulean.id("brushing"), of(FlowResources.star(Color.CERULEAN, Brightness.BRILLIANT)));
@@ -47,9 +52,9 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 			if (recipe instanceof InspirationBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(null,
 					inputStars(real.canvas),
-					List.of(EmiIngredient.of(real.misleadingInput)),
+					real.input.stream().map(EmiIngredient::of).toList(),
 					EmiStack.EMPTY,
-					List.of(EmiStack.of(real.misleadingOutput)),
+					List.of(EmiStack.of(real.output)),
 					List.of(),
 					null
 				));
@@ -97,6 +102,24 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					real.collateral.isEmpty() ? List.of(EmiStack.of(real.destination)) : List.of(EmiStack.of(real.destination), EmiStack.of(real.collateral)),
 					List.of(real.source.getDefaultState()),
 					Text.translatable("info.cerulean.paradigm")
+				));
+			} else if (recipe instanceof CinderingAfterglowBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					inputStars(real.canvas),
+					List.of(),
+					of(real.canvas.validColors, (real.twicetwice && real.twicetwice) ? Set.of(Brightness.CANDESCENT) : ALL_BRIGHTNESSES_EXCEPT_DIM),
+					List.of(),
+					List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
+					Text.translatable("info.cerulean.cindering_afterglow" + ((real.twicetwice && real.twicetwice) ? "_twice" : ""))
+				));
+			} else if (recipe instanceof BevvyTastingBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(null,
+					List.of(of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_BRILLIANT)),
+					List.of(),
+					of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_BRILLIANT),
+					List.of(),
+					List.of(Blocks.BREWING_STAND.getDefaultState()),
+					Text.translatable("info.cerulean.bevvy_tasting")
 				));
 			}
 		}

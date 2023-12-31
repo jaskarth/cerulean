@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "cerulean:candescent_ash_star",
+    "cerulean:innocuous_ash_star",
+    "cerulean:waning_ash_star",
+    "cerulean:dim_ash_star"
+  ]
+}

@@ -11,6 +11,20 @@ public record FlowState(FlowResource resource, int pressure) {
 		return pressure <= 0 || resource == null;
 	}
 
+	public FlowState brightened(float factor) {
+		Brightness b = switch (this.resource.getBrightness()) {
+			case DIM -> Brightness.WANING;
+			case WANING -> Brightness.INNOCUOUS;
+			case INNOCUOUS -> Brightness.CANDESCENT;
+			default -> Brightness.BRILLIANT;
+		};
+		return new FlowState(FlowResources.star(this.resource.getColor(), b), (int) (pressure * factor));
+	}
+
+	public FlowState scaled(float factor) {
+		return new FlowState(this.resource, (int) (pressure * factor));
+	}
+
 	public FlowState colored(Color color) {
 		return new FlowState(FlowResources.star(color, this.resource.getBrightness()), pressure);
 	}
