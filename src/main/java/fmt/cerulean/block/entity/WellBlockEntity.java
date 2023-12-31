@@ -42,7 +42,7 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 			case 1 -> Brightness.INNOCUOUS;
 			default -> Brightness.CANDESCENT;
 		};
-		flow = new FlowState(FlowResources.star(Color.values()[random.nextInt(Color.amount)], brightness), 10_000);
+		flow = new FlowState(FlowResources.star(Color.values()[random.nextInt(Color.amount)], brightness), world.random.nextBetween(9_000, 11_000));
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {

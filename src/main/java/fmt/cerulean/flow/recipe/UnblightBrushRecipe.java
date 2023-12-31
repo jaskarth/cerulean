@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.flow.FlowResource.Color;
+import fmt.cerulean.flow.FlowState;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
+import net.minecraft.block.NetherWartBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -15,13 +17,19 @@ public class UnblightBrushRecipe implements BrushRecipe {
 	private static final int HORIZONTAL_SEARCH = 6;
 	private static final int VERTICAL_SEARCH = 2;
 	public final CanvasRequirements canvas;
-	public final CropBlock block;
+	public final Block block;
+	public final BlockState grown;
 	public final Color color;
 
-	public UnblightBrushRecipe(CanvasRequirements canvas, CropBlock block, Color color) {
+	public UnblightBrushRecipe(CanvasRequirements canvas, Block block, Color color) {
 		this.canvas = canvas;
 		this.block = block;
 		this.color = color;
+		if (block instanceof CropBlock cb) {
+			grown = cb.withAge(cb.getMaxAge());
+		} else {
+			grown = block.getDefaultState().with(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE);
+		}
 	}
 
 	@Override
@@ -53,7 +61,16 @@ public class UnblightBrushRecipe implements BrushRecipe {
 					for (int y = origin.getY() - VERTICAL_SEARCH; y < origin.getY() + VERTICAL_SEARCH; y++) {
 						pos.set(x, y, z);
 						BlockState state = world.getBlockState(pos);
-						if (state.isOf(block) && !block.isMature(state)) {
+						if (state.isOf(block)) {
+							if (block instanceof CropBlock cb) {
+								if (cb.isMature(state)) {
+									continue;
+								}
+							} else if (block instanceof NetherWartBlock nb) {
+								if (state.get(NetherWartBlock.AGE) == NetherWartBlock.MAX_AGE) {
+									continue;
+								}
+							}
 							return true;
 						}
 					}
@@ -76,7 +93,16 @@ public class UnblightBrushRecipe implements BrushRecipe {
 				for (int y = origin.getY() - VERTICAL_SEARCH; y < origin.getY() + VERTICAL_SEARCH; y++) {
 					pos.set(x, y, z);
 					BlockState state = world.getBlockState(pos);
-					if (state.isOf(block) && !block.isMature(state)) {
+					if (state.isOf(block)) {
+						if (block instanceof CropBlock cb) {
+							if (cb.isMature(state)) {
+								continue;
+							}
+						} else if (block instanceof NetherWartBlock nb) {
+							if (state.get(NetherWartBlock.AGE) == NetherWartBlock.MAX_AGE) {
+								continue;
+							}
+						}
 						candidates.add(pos.toImmutable());
 					}
 				}
@@ -84,7 +110,12 @@ public class UnblightBrushRecipe implements BrushRecipe {
 		}
 		if (!candidates.isEmpty()) {
 			BlockPos growUp = candidates.get(world.random.nextInt(candidates.size()));
-			block.applyGrowth(world, growUp, world.getBlockState(growUp));
+			BlockState state = world.getBlockState(growUp);
+			if (block instanceof CropBlock cb) {
+				cb.applyGrowth(world, growUp, state);
+			} else if (block instanceof NetherWartBlock nb && world.random.nextInt(3) == 0) {
+				world.setBlockState(growUp, state.with(NetherWartBlock.AGE, state.get(NetherWartBlock.AGE) + 1));
+			}
 		}
 	}
 }

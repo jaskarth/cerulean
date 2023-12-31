@@ -1,12 +1,15 @@
 package fmt.cerulean.flow.recipe;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
+import fmt.cerulean.Cerulean;
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.registry.CeruleanBlocks;
@@ -16,8 +19,11 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.Identifier;
 
 public class BrushRecipes {
+	public static final Map<Identifier, BrushRecipe> BY_ID = Maps.newHashMap();
+	public static final Map<BrushRecipe, Identifier> GET_ID = Maps.newHashMap();
 	private static final Set<Color> ALL_COLORS = Stream.of(Color.values()).collect(Collectors.toSet());
 	private static final Set<Brightness> ALL_BRIGHTNESSES = Stream.of(Brightness.values()).collect(Collectors.toSet());
 	private static final Set<Brightness> ALL_BRIGHTNESSES_EXCEPT_DIM = Stream.of(Brightness.values()).filter(b -> b != Brightness.DIM).collect(Collectors.toSet());
@@ -26,66 +32,97 @@ public class BrushRecipes {
 	public static final List<BrushRecipe> DUAL_RECIPES = Lists.newArrayList();
 
 	public static void init() {
-		addRecipe(new InspirationBrushRecipe(
-			CanvasRequirements.of(
-				Set.of(Color.ASH), ALL_BRIGHTNESSES,
-				Set.of(Color.LILAC), ALL_BRIGHTNESSES
-			), 40, Ingredient.ofItems(Items.COARSE_DIRT), new ItemStack(Items.DIRT)));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("kelp_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Set.of(Blocks.KELP, Blocks.KELP_PLANT), Set.of(Color.LILAC), ALL_BRIGHTNESSES),
 			Color.ASH,
 			0.03f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("bamboo_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
 			Color.TURQUOISE,
 			0.05f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
-			CanvasRequirements.of(Blocks.SUGAR_CANE, Set.of(Color.ASH), ALL_BRIGHTNESSES),
-			Color.CERULEAN,
-			0.05f
-		));
-		addRecipe(new UnblightBrushRecipe(
+		addRecipe("wheat_unblight", new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.WHEAT, Set.of(Color.ROSE), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.WHEAT, Color.CHARTREUSE));
 
-		addRecipe(new UnblightBrushRecipe(
+		addRecipe("carrots_unblight", new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.CARROTS, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.CARROTS, Color.VIRIDIAN));
 
-		addRecipe(new UnblightBrushRecipe(
+		addRecipe("potatoes_unblight", new UnblightBrushRecipe(
 				CanvasRequirements.of(
 				Blocks.POTATOES, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.BEETROOTS, Color.ROSE));
 
-		addRecipe(new UnblightBrushRecipe(
+		addRecipe("_unblight", new UnblightBrushRecipe(
 			CanvasRequirements.of(
 				Blocks.BEETROOTS, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.POTATOES, Color.LILAC));
 
-		addRecipe(new ParadigmBrushRecipe(Color.ROSE, CeruleanBlocks.SPARKBLOSSOM, CeruleanBlocks.SPARKLESSBLOSSOM, new ItemStack(CeruleanItems.GLIMMERCRUMB)));
-		addRecipe(new ParadigmBrushRecipe(Color.TURQUOISE, Blocks.BOOKSHELF, CeruleanBlocks.SORTED_BOOKSHELF, ItemStack.EMPTY));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
+		addRecipe("nether_wart_unblight", new UnblightBrushRecipe(
+			CanvasRequirements.of(
+				Blocks.NETHER_WART, Set.of(Color.ASH), ALL_BRIGHTNESSES
+			), Blocks.NETHER_WART, Color.CERULEAN));
+
+		addRecipe("glimmercrumb", new ParadigmBrushRecipe(Color.ROSE, CeruleanBlocks.SPARKBLOSSOM, CeruleanBlocks.SPARKLESSBLOSSOM, new ItemStack(CeruleanItems.GLIMMERCRUMB)));
+		addRecipe("sorted_bookshelf", new ParadigmBrushRecipe(Color.TURQUOISE, Blocks.BOOKSHELF, CeruleanBlocks.SORTED_BOOKSHELF, ItemStack.EMPTY));
+		addRecipe("exposed_copper_ingot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(Items.COPPER_INGOT), new ItemStack(CeruleanItems.EXPOSED_COPPER_INGOT)));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
+		addRecipe("weathered_copper_ingot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.EXPOSED_COPPER_INGOT), new ItemStack(CeruleanItems.WEATHERED_COPPER_INGOT)));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
+		addRecipe("oxidized_copper_ingot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.WEATHERED_COPPER_INGOT), new ItemStack(CeruleanItems.OXIDIZED_COPPER_INGOT)));
-		addRecipe(new InspirationBrushRecipe(CanvasRequirements.of(Set.of(Color.ROSE), ALL_BRIGHTNESSES, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES),
+		addRecipe("orb", new InspirationBrushRecipe(CanvasRequirements.of(Set.of(Color.ROSE), ALL_BRIGHTNESSES, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES),
 			40, List.of(Ingredient.ofItems(CeruleanItems.OXIDIZED_COPPER_INGOT), Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB), Ingredient.ofItems(Items.REDSTONE)), new ItemStack(CeruleanItems.ORB)));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
+		addRecipe("movrb", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.MOVRB)));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CERULEAN), ALL_BRIGHTNESSES),
+		addRecipe("jorb", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CERULEAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.JORB)));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.LILAC), ALL_BRIGHTNESSES),
+		addRecipe("korb", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.LILAC), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.KORB)));
-		addRecipe(new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
+		addRecipe("lorb", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.LORB)));
 
-		addRecipe(new InspirationBrushRecipe(
+		addRecipe("iron_ingot", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.ASH), ALL_BRIGHTNESSES,
+				Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+			), 56, List.of(
+				Ingredient.ofItems(Items.RAW_IRON),
+				Ingredient.ofItems(Items.RAW_IRON),
+				Ingredient.ofItems(Items.RAW_IRON),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(Items.IRON_INGOT, 8)
+		));
+
+		addRecipe("gold_ingot", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.ASH), ALL_BRIGHTNESSES,
+				Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES
+			), 56, List.of(
+				Ingredient.ofItems(Items.RAW_GOLD),
+				Ingredient.ofItems(Items.RAW_GOLD),
+				Ingredient.ofItems(Items.RAW_GOLD),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(Items.GOLD_INGOT, 8)
+		));
+
+		addRecipe("copper_ingot", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.ASH), ALL_BRIGHTNESSES,
+				Set.of(Color.ROSE), ALL_BRIGHTNESSES
+			), 56, List.of(
+				Ingredient.ofItems(Items.RAW_COPPER),
+				Ingredient.ofItems(Items.RAW_COPPER),
+				Ingredient.ofItems(Items.RAW_COPPER),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(Items.COPPER_INGOT, 8)
+		));
+
+		addRecipe("book", new InspirationBrushRecipe(
 			CanvasRequirements.of(
 				Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES,
 				Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
@@ -98,7 +135,7 @@ public class BrushRecipes {
 			), new ItemStack(Items.BOOK)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("blaze_powder", new InspirationBrushRecipe.Uninspired(
 			CanvasRequirements.of(
 				Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES
 			), 20, List.of(
@@ -106,7 +143,7 @@ public class BrushRecipes {
 			), new ItemStack(Items.BLAZE_POWDER, 3)
 		));
 
-		addRecipe(new InspirationBrushRecipe(
+		addRecipe("slime_ball", new InspirationBrushRecipe(
 				CanvasRequirements.of(
 						Set.of(Color.LILAC), ALL_BRIGHTNESSES,
 						Set.of(Color.ASH), ALL_BRIGHTNESSES
@@ -115,7 +152,7 @@ public class BrushRecipes {
 		), new ItemStack(Items.SLIME_BALL)
 		));
 
-		addRecipe(new InspirationBrushRecipe(
+		addRecipe("quartz", new InspirationBrushRecipe(
 				CanvasRequirements.of(
 						Set.of(Color.CERULEAN), ALL_BRIGHTNESSES,
 						Set.of(Color.ROSE), ALL_BRIGHTNESSES
@@ -124,7 +161,7 @@ public class BrushRecipes {
 		), new ItemStack(Items.QUARTZ)
 		));
 
-		addRecipe(new InspirationBrushRecipe(
+		addRecipe("rail", new InspirationBrushRecipe(
 				CanvasRequirements.of(
 						Set.of(Color.ASH), ALL_BRIGHTNESSES,
 						Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
@@ -135,7 +172,49 @@ public class BrushRecipes {
 		), new ItemStack(Items.RAIL)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("ochre_froglight", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM,
+				Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM
+			), 36, List.of(
+				Ingredient.ofItems(Items.PUMPKIN),
+				Ingredient.ofItems(Items.PUMPKIN),
+				Ingredient.ofItems(Items.PUMPKIN),
+				Ingredient.ofItems(Items.PUMPKIN),
+				Ingredient.ofItems(Items.PUMPKIN),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(Items.OCHRE_FROGLIGHT, 6)
+		));
+
+		addRecipe("verdant_froglight", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM,
+				Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM
+			), 36, List.of(
+				Ingredient.ofItems(Items.MELON),
+				Ingredient.ofItems(Items.MELON),
+				Ingredient.ofItems(Items.MELON),
+				Ingredient.ofItems(Items.MELON),
+				Ingredient.ofItems(Items.MELON),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(Items.VERDANT_FROGLIGHT, 6)
+		));
+
+		addRecipe("pearlescent_froglight", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM,
+				Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
+			), 36, List.of(
+				Ingredient.ofItems(Items.CHORUS_FLOWER),
+				Ingredient.ofItems(Items.CHORUS_FLOWER),
+				Ingredient.ofItems(Items.CHORUS_FLOWER),
+				Ingredient.ofItems(Items.CHORUS_FLOWER),
+				Ingredient.ofItems(Items.CHORUS_FLOWER),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(Items.PEARLESCENT_FROGLIGHT, 6)
+		));
+
+		addRecipe("fuchsia_ingot", new InspirationBrushRecipe.Uninspired(
 			CanvasRequirements.of(
 				Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 			), 60, List.of(
@@ -145,7 +224,7 @@ public class BrushRecipes {
 			), new ItemStack(CeruleanItems.FUCHSIA_INGOT)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("candy_apple", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
 						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 				), 60, List.of(
@@ -160,7 +239,7 @@ public class BrushRecipes {
 
 		toolRecipes();
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("wait", new InspirationBrushRecipe.Uninspired(
 			CanvasRequirements.of(
 				Set.of(Color.LILAC), ALL_BRIGHTNESSES
 			), 5000, List.of(
@@ -168,52 +247,52 @@ public class BrushRecipes {
 			), new ItemStack(Items.MUSIC_DISC_WAIT)
 		));
 		// start simple color changing
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("lily_of_the_valley_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.LILAC,
 			0f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("dandelion_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.DANDELION, Set.of(Color.ASH), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.CHARTREUSE,
 			0f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("rose_bush_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.ROSE_BUSH, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.ROSE,
 			0f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("allium_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.ALLIUM, Set.of(Color.LILAC), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.VIRIDIAN,
 			0f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("blue_orchid_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.BLUE_ORCHID, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.TURQUOISE,
 			0f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("cornflower_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.CORNFLOWER, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.CERULEAN,
 			0f
 		));
-		addRecipe(new TallPlantFilteringBrushRecipe(
+		addRecipe("azure_bluet_filtering", new TallPlantFilteringBrushRecipe(
 			CanvasRequirements.of(Blocks.AZURE_BLUET, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.ASH,
 			0f
 		));
 		// end simple color changing
-		addRecipe(new BerryFlavoringBrushRecipe());
-		addRecipe(new BevvyTastingBrushRecipe());
-		addRecipe(new ManifestationBrushRecipe());
-		addRecipe(new AnxietyManifestationBrushRecipe());
-		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
+		addRecipe("berry_flavoring", new BerryFlavoringBrushRecipe());
+		addRecipe("bevvy_tasting", new BevvyTastingBrushRecipe());
+		addRecipe("manifestation", new ManifestationBrushRecipe());
+		addRecipe("anxiety_manifestation", new AnxietyManifestationBrushRecipe());
+		addRecipe("cindering_afterglow", new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
 			Blocks.CAMPFIRE,
 			ALL_COLORS,
 			ALL_BRIGHTNESSES_EXCEPT_BRILLIANT
 		), false));
-		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
+		addRecipe("cindering_afterglow_twice", new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
 			Blocks.SOUL_CAMPFIRE,
 			ALL_COLORS,
 			Set.of(Brightness.DIM)
@@ -221,7 +300,7 @@ public class BrushRecipes {
 	}
 
 	private static void toolRecipes() {
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("fuchsia_sword", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
 						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 				), 60, List.of(
@@ -231,7 +310,7 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.FUCHSIA_SWORD)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("fuchsia_pickaxe", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
 						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 				), 60, List.of(
@@ -242,7 +321,7 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.FUCHSIA_PICKAXE)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("fuchsia_axe", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
 						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 				), 60, List.of(
@@ -253,7 +332,7 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.FUCHSIA_AXE)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("fuchsia_shovel", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
 						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 				), 60, List.of(
@@ -262,7 +341,7 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.FUCHSIA_SHOVEL)
 		));
 
-		addRecipe(new InspirationBrushRecipe.Uninspired(
+		addRecipe("fuchsia_hoe", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
 						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
 				), 60, List.of(
@@ -273,7 +352,13 @@ public class BrushRecipes {
 		));
 	}
 
-	private static void addRecipe(BrushRecipe recipe) {
+	private static void addRecipe(String path, BrushRecipe recipe) {
+		Identifier id = Cerulean.id(path);
+		if (BY_ID.containsKey(id)) {
+			throw new IllegalArgumentException("Brush recipe " + id + " is already registered!");
+		}
+		BY_ID.put(id, recipe);
+		GET_ID.put(recipe, id);
 		switch (recipe.getRequiredFlowInputs()) {
 			case 1 -> SOLO_RECIPES.add(recipe);
 			case 2 -> DUAL_RECIPES.add(recipe);

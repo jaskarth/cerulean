@@ -8,6 +8,7 @@ import fmt.cerulean.flow.recipe.BrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.flow.recipe.PigmentInventory;
 import fmt.cerulean.registry.CeruleanBlockEntities;
+import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ConnectingBlock;
@@ -19,7 +20,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.AxisDirection;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
@@ -130,7 +130,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		if (bestFlow.empty() && current.empty()) {
 			return;
 		}
-		if (bestFlow.pressure() < threshold) {
+		if (threshold > 0 && bestFlow.pressure() < threshold) {
 			return;
 		}
 		if (bestDir == null) {
@@ -266,7 +266,17 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 
 	private FlowState depressure(FlowState state, int connections) {
 		int div = Math.max(1, connections - 1);
-		return new FlowState(state.resource(), state.pressure() / div * 19 / 20);
+		int p = state.pressure() / div - 10;
+		if (getCachedState().isOf(CeruleanBlocks.FUCHSIA_PIPE)) {
+			p = p * 29 / 30;
+		} else {
+			p = p * 19 / 20;
+		}
+		if (p < 1000) {
+			p -= 50;
+		}
+		p = Math.max(0, p);
+		return new FlowState(state.resource(), p);
 	}
 
 	private void updateNext() {

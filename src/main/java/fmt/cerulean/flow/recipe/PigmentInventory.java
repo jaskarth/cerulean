@@ -1,5 +1,6 @@
 package fmt.cerulean.flow.recipe;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -10,6 +11,7 @@ import fmt.cerulean.mixin.ItemEntityAccessor;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -48,7 +50,7 @@ public class PigmentInventory extends SimpleInventory {
 				if (ing.test(s)) {
 					amount--;
 					ingredients.remove(j);
-					j = 0;
+					j = -1;
 					if (amount <= 0) {
 						break;
 					}

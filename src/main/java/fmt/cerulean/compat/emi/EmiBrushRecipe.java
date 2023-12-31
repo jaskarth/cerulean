@@ -48,11 +48,11 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		inputs.addAll(inputItems);
 		catalysts.addAll(blocks.stream().map(BlockState::getBlock).map(EmiStack::of).toList());
 		if (!outputStar.isEmpty()) {
-			outputs.addAll(outputItems.stream().flatMap(i -> i.getEmiStacks().stream()).toList());
 			outputs.addAll(outputStar.getEmiStacks());
+			outputs.addAll(outputItems.stream().flatMap(i -> i.getEmiStacks().stream()).toList());
 		} else {
-			outputs.addAll(outputStar.getEmiStacks());
 			outputs.addAll(outputItems.stream().flatMap(i -> i.getEmiStacks().stream()).toList());
+			outputs.addAll(outputStar.getEmiStacks());
 		}
 		if (outputs.size() > outputItems.size() + 1) {
 			nonsense = true;
@@ -77,7 +77,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		Random random = client.world.random;
+		Random random = Random.create(10);
 		List<GuiParticle> particles = Lists.newArrayList();
 		int starY = inputItems.isEmpty() ? 0 : 20;
 		if (inputStars.size() > 0) {
@@ -123,7 +123,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		}
 		widgets.addDrawable(0, 0, 0, 0, (draw, mouseX, mouseY, delta) -> {
 			RenderSystem.enableDepthTest();
-			long time = client.world.getTime();
+			long time = System.currentTimeMillis() / 40;
 			for (int i = 0; i < particles.size(); i++) {
 				GuiParticle p = particles.get(i);
 				int proc = (int) ((time - p.time) % 40);
