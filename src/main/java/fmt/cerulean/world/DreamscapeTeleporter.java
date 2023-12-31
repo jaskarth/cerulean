@@ -148,7 +148,7 @@ public class DreamscapeTeleporter {
 			// Facade copy
 			for (int x = expanded.getMinX(); x <= expanded.getMaxX(); x++) {
 				for (int z = expanded.getMinZ(); z <= expanded.getMaxZ(); z++) {
-					for (int y = expanded.getMinZ(); y <= expanded.getMaxY(); y++) {
+					for (int y = expanded.getMinY(); y <= expanded.getMaxY(); y++) {
 						BlockPos local = new BlockPos(x, y, z);
 						if (expanded.contains(local) && !target.contains(local)) {
 							dreamscape.setBlockState(local, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
