@@ -36,7 +36,7 @@ public class UnblightBrushRecipe implements BrushRecipe {
 
 	@Override
 	public FlowState getProcessedFlow(FlowState flow, int process) {
-		return flow.coloredDimmer(color);
+		return flow.colored(color);
 	}
 
 	@Override

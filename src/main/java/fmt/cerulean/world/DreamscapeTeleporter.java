@@ -151,9 +151,9 @@ public class DreamscapeTeleporter {
 					for (int y = expanded.getMinZ(); y <= expanded.getMaxY(); y++) {
 						BlockPos local = new BlockPos(x, y, z);
 						if (expanded.contains(local) && !target.contains(local)) {
-							dreamscape.setBlockState(local, CeruleanBlocks.INKY_VOID.getDefaultState());
+							dreamscape.setBlockState(local, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
 						} else {
-							dreamscape.setBlockState(local, world.getBlockState(local));
+							dreamscape.setBlockState(local, world.getBlockState(local), Block.SKIP_DROPS);
 						}
 					}
 				}

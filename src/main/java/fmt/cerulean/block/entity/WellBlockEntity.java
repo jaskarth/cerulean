@@ -1,6 +1,7 @@
 package fmt.cerulean.block.entity;
 
 import fmt.cerulean.block.PipeBlock;
+import fmt.cerulean.block.WellBlock;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowResource;
@@ -9,7 +10,6 @@ import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.registry.CeruleanBlockEntities;
-import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -49,9 +49,10 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	public void clientTick(World world, BlockPos pos, BlockState state) {
-		boolean piped = PipeBlock.isPipe(world.getBlockState(pos.offset(Direction.UP)));
+		Direction dir = state.get(WellBlock.FACING);
+		boolean piped = PipeBlock.isPipe(world.getBlockState(pos.offset(dir)));
 		if (!piped) {
-			WellBlockEntity.spew(world, pos, Direction.UP, flow);
+			WellBlockEntity.spew(world, pos, dir, flow);
 		}
 	}
 
@@ -141,7 +142,7 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 
 	@Override
 	public FlowState getExportedState(Direction direction) {
-		if (direction == Direction.UP) {
+		if (direction == getCachedState().get(WellBlock.FACING)) {
 			return flow;
 		}
 		return FlowState.NONE;

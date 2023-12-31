@@ -26,59 +26,45 @@ public class BrushRecipes {
 	public static final List<BrushRecipe> DUAL_RECIPES = Lists.newArrayList();
 
 	public static void init() {
-		addRecipe(new BerryFlavoringBrushRecipe());
-		addRecipe(new BevvyTastingBrushRecipe());
-		addRecipe(new ManifestationBrushRecipe());
-		addRecipe(new AnxietyManifestationBrushRecipe());
-		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
-			Blocks.CAMPFIRE,
-			ALL_COLORS,
-			ALL_BRIGHTNESSES_EXCEPT_BRILLIANT
-		), false));
-		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
-			Blocks.SOUL_CAMPFIRE,
-			ALL_COLORS,
-			Set.of(Brightness.DIM)
-		), true));
 		addRecipe(new InspirationBrushRecipe(
 			CanvasRequirements.of(
 				Set.of(Color.ASH), ALL_BRIGHTNESSES,
 				Set.of(Color.LILAC), ALL_BRIGHTNESSES
 			), 40, Ingredient.ofItems(Items.COARSE_DIRT), new ItemStack(Items.DIRT)));
 		addRecipe(new TallPlantFilteringBrushRecipe(
-			CanvasRequirements.of(Set.of(Blocks.KELP, Blocks.KELP_PLANT), Set.of(Color.CHARTREUSE, Color.LILAC), ALL_BRIGHTNESSES),
-			flow -> flow.colored(Color.ASH),
+			CanvasRequirements.of(Set.of(Blocks.KELP, Blocks.KELP_PLANT), Set.of(Color.LILAC), ALL_BRIGHTNESSES),
+			Color.ASH,
 			0.03f
 		));
 		addRecipe(new TallPlantFilteringBrushRecipe(
-			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES),
-			flow -> flow.colored(Color.CERULEAN),
-			0.1f
+			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
+			Color.TURQUOISE,
+			0.05f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.SUGAR_CANE, Set.of(Color.ASH), ALL_BRIGHTNESSES),
+			Color.CERULEAN,
+			0.05f
 		));
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
-				Blocks.WHEAT, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
+				Blocks.WHEAT, Set.of(Color.ROSE), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.WHEAT, Color.CHARTREUSE));
 
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
-				Blocks.CARROTS, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+				Blocks.CARROTS, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.CARROTS, Color.VIRIDIAN));
 
 		addRecipe(new UnblightBrushRecipe(
 				CanvasRequirements.of(
-				Blocks.POTATOES, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.POTATOES, Color.ASH));
+				Blocks.POTATOES, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES
+			), (CropBlock) Blocks.BEETROOTS, Color.ROSE));
 
 		addRecipe(new UnblightBrushRecipe(
 			CanvasRequirements.of(
-				Blocks.BEETROOTS, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.BEETROOTS, Color.LILAC));
-
-		addRecipe(new UnblightBrushRecipe(
-			CanvasRequirements.of(
-				Blocks.TORCHFLOWER_CROP, Set.of(Color.ASH), ALL_BRIGHTNESSES_EXCEPT_DIM
-			), (CropBlock) Blocks.TORCHFLOWER_CROP, Color.TURQUOISE));
+				Blocks.BEETROOTS, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+			), (CropBlock) Blocks.POTATOES, Color.LILAC));
 
 		addRecipe(new ParadigmBrushRecipe(Color.ROSE, CeruleanBlocks.SPARKBLOSSOM, CeruleanBlocks.SPARKLESSBLOSSOM, new ItemStack(CeruleanItems.GLIMMERCRUMB)));
 		addRecipe(new ParadigmBrushRecipe(Color.TURQUOISE, Blocks.BOOKSHELF, CeruleanBlocks.SORTED_BOOKSHELF, ItemStack.EMPTY));
@@ -181,6 +167,57 @@ public class BrushRecipes {
 				Ingredient.ofItems(Items.MUSIC_DISC_STAL)
 			), new ItemStack(Items.MUSIC_DISC_WAIT)
 		));
+		// start simple color changing
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.LILAC,
+			0f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.DANDELION, Set.of(Color.ASH), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.CHARTREUSE,
+			0f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.ROSE_BUSH, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.ROSE,
+			0f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.ALLIUM, Set.of(Color.LILAC), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.VIRIDIAN,
+			0f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.BLUE_ORCHID, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.TURQUOISE,
+			0f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.CORNFLOWER, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.CERULEAN,
+			0f
+		));
+		addRecipe(new TallPlantFilteringBrushRecipe(
+			CanvasRequirements.of(Blocks.AZURE_BLUET, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Color.ASH,
+			0f
+		));
+		// end simple color changing
+		addRecipe(new BerryFlavoringBrushRecipe());
+		addRecipe(new BevvyTastingBrushRecipe());
+		addRecipe(new ManifestationBrushRecipe());
+		addRecipe(new AnxietyManifestationBrushRecipe());
+		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
+			Blocks.CAMPFIRE,
+			ALL_COLORS,
+			ALL_BRIGHTNESSES_EXCEPT_BRILLIANT
+		), false));
+		addRecipe(new CinderingAfterglowBrushRecipe(CanvasRequirements.of(
+			Blocks.SOUL_CAMPFIRE,
+			ALL_COLORS,
+			Set.of(Brightness.DIM)
+		), true));
 	}
 
 	private static void toolRecipes() {

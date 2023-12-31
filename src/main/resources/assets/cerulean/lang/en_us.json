@@ -101,7 +101,11 @@
   "item.cerulean.waning_turquoise_star": "Waning Turquoise Star",
   "item.cerulean.waning_viridian_star": "Waning Viridian Star",
 
+  "emi.category.cerulean.brushing": "Star Brushing",
+
   "tag.item.cerulean.all_stars": "Stars",
+  "tag.item.cerulean.non_brilliant_stars": "Non-Brilliant Stars",
+  "tag.item.cerulean.non_dim_stars": "Non-Dim Stars",
 
   "tag.item.cerulean.cerulean_stars": "Cerulean Stars",
   "tag.item.cerulean.viridian_stars": "Viridian Stars",
@@ -140,6 +144,8 @@
   "info.cerulean.manifestation": "Places blocks ahead",
   "info.cerulean.anxiety_manifestation": "Destroys blocks ahead with a tool",
   "info.cerulean.paradigm": "Explores a paradigm shift",
+  "info.cerulean.filter": "Trades height for a filter",
+  "info.cerulean.filter_simple": "A dimming color change",
   "info.cerulean.cindering_afterglow": "Burns dimmer stars out",
   "info.cerulean.cindering_afterglow_twice": "Burns the dimmest stars out",
   "info.cerulean.bevvy_tasting": "Consumes potions to brighten stars",

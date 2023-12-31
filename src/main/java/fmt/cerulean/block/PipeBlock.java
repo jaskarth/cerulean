@@ -2,7 +2,6 @@ package fmt.cerulean.block;
 
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.registry.CeruleanBlockEntities;
-import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -83,7 +82,7 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 	}
 
 	public static boolean canConnect(BlockState state, Direction dir) {
-		return isPipe(state) || (state.getBlock() instanceof WellBlock && dir == Direction.UP);
+		return isPipe(state) || (state.getBlock() instanceof WellBlock && dir == state.get(WellBlock.FACING));
 	}
 
 	public static boolean isPipe(BlockState state) {

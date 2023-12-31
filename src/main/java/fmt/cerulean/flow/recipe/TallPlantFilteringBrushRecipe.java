@@ -1,19 +1,18 @@
 package fmt.cerulean.flow.recipe;
 
-import java.util.function.Function;
-
+import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TallPlantFilteringBrushRecipe implements BrushRecipe {
-	private final CanvasRequirements canvas;
-	private final Function<FlowState, FlowState> flowTransform;
-	private final float wiltChance;
+	public final CanvasRequirements canvas;
+	public final Color color;
+	public final float wiltChance;
 
-	public TallPlantFilteringBrushRecipe(CanvasRequirements canvas, Function<FlowState, FlowState> flowTransform, float wiltChance) {
+	public TallPlantFilteringBrushRecipe(CanvasRequirements canvas, Color color, float wiltChance) {
 		this.canvas = canvas;
-		this.flowTransform = flowTransform;
+		this.color = color;
 		this.wiltChance = wiltChance;
 	}
 
@@ -35,7 +34,7 @@ public class TallPlantFilteringBrushRecipe implements BrushRecipe {
 	@Override
 	public void craft(PigmentInventory inventory) {
 		World world = inventory.world;
-		if (world.getRandom().nextFloat() <= wiltChance) {
+		if (wiltChance > 0 && world.getRandom().nextFloat() <= wiltChance) {
 			BlockPos top = inventory.pos;
 			while (canvas.canCraft(inventory.world, top.up(), inventory.flow)) {
 				top = top.up();
@@ -46,6 +45,10 @@ public class TallPlantFilteringBrushRecipe implements BrushRecipe {
 
 	@Override
 	public FlowState getProcessedFlow(FlowState flow, int process) {
-		return flowTransform.apply(flow);
+		if (wiltChance <= 0) {
+			return flow.coloredDimmer(color).scaled(0.95f);
+		} else {
+			return flow.colored(color);
+		}
 	}
 }

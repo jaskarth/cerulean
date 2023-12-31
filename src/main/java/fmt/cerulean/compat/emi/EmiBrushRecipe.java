@@ -3,11 +3,13 @@ package fmt.cerulean.compat.emi;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.WellBlockEntity;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowResource;
@@ -24,6 +26,7 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 
 public class EmiBrushRecipe extends BasicEmiRecipe {
+	private static final Identifier STAR_TEXTURE = Cerulean.id("textures/item/star.png");
 	private static final EmiStack PIPE = EmiStack.of(CeruleanBlocks.PIPE);
 	public final List<EmiIngredient> inputStars, inputItems, outputItems;
 	public final EmiIngredient outputStar;
@@ -43,6 +46,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		this.outputItems = outputItems;
 		inputs.addAll(inputStars);
 		inputs.addAll(inputItems);
+		catalysts.addAll(blocks.stream().map(BlockState::getBlock).map(EmiStack::of).toList());
 		if (!outputStar.isEmpty()) {
 			outputs.addAll(outputItems.stream().flatMap(i -> i.getEmiStacks().stream()).toList());
 			outputs.addAll(outputStar.getEmiStacks());
@@ -92,11 +96,11 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			addParticles(particles, outputStar, starY, false, true, random);
 		}
 		if (!blocks.isEmpty()) {
-			widgets.addDrawable(getDisplayWidth() / 2, starY, 0, 0, (draw, mouseX, mouseY, delta) -> {
-				draw.getMatrices().translate(0, 10, 0);
-				draw.getMatrices().scale(16, -16, 1);
+			widgets.addDrawable(getDisplayWidth() / 2, starY + 1, 0, 0, (draw, mouseX, mouseY, delta) -> {
+				draw.getMatrices().translate(-2, 10, 0);
+				draw.getMatrices().scale(14, -14, 1);
 				draw.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
-				draw.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-45));
+				draw.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-30));
 				BlockState state = blocks.get(0);
 				client.getBlockRenderManager().renderBlockAsEntity(state, draw.getMatrices(), draw.getVertexConsumers(), LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 			});
@@ -118,6 +122,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			infoY += 12;
 		}
 		widgets.addDrawable(0, 0, 0, 0, (draw, mouseX, mouseY, delta) -> {
+			RenderSystem.enableDepthTest();
 			long time = client.world.getTime();
 			for (int i = 0; i < particles.size(); i++) {
 				GuiParticle p = particles.get(i);
@@ -131,7 +136,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 						a = 1 - ((proc - 20) / 4f);
 					}
 					draw.setShaderColor(p.r, p.g, p.b, a);
-					draw.fill(x - 1, y - 1, x + 1, y + 1, 0xffffffff);
+					draw.drawTexture(STAR_TEXTURE, x - 4, y - 4, 0, 0, 8, 8, 8, 8);
 					draw.setShaderColor(1, 1, 1, 1);
 				}
 			}
