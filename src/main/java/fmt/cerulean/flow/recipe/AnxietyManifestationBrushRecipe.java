@@ -1,6 +1,8 @@
 package fmt.cerulean.flow.recipe;
 
 import fmt.cerulean.flow.FlowResource.Color;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +34,8 @@ public class AnxietyManifestationBrushRecipe implements BrushRecipe {
 			for (int i = 1; i < 6; i++) {
 				try {
 					BlockPos pos = inventory.pos.offset(inventory.direction, i);
-					if (ti.isSuitableFor(stack, world.getBlockState(pos))) {
+					BlockState state = world.getBlockState(pos);
+					if (!(state.getBlock() instanceof SaplingBlock) && ti.isSuitableFor(stack, state)) {
 						world.breakBlock(pos, true);
 						stack.damage(1, world.getRandom(), null);
 						return;

@@ -12,6 +12,7 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.block.NetherWartBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
 
 public class UnblightBrushRecipe implements BrushRecipe {
 	private static final int HORIZONTAL_SEARCH = 6;
@@ -116,6 +117,7 @@ public class UnblightBrushRecipe implements BrushRecipe {
 			} else if (block instanceof NetherWartBlock nb && world.random.nextInt(3) == 0) {
 				world.setBlockState(growUp, state.with(NetherWartBlock.AGE, state.get(NetherWartBlock.AGE) + 1));
 			}
+			world.syncWorldEvent(WorldEvents.BONE_MEAL_USED, growUp, 0);
 		}
 	}
 }

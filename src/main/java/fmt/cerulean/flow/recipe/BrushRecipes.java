@@ -32,12 +32,12 @@ public class BrushRecipes {
 	public static final List<BrushRecipe> DUAL_RECIPES = Lists.newArrayList();
 
 	public static void init() {
-		addRecipe("kelp_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("kelp_agoraphobia", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Set.of(Blocks.KELP, Blocks.KELP_PLANT), Set.of(Color.LILAC), ALL_BRIGHTNESSES),
 			Color.ASH,
 			0.03f
 		));
-		addRecipe("bamboo_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("bamboo_agoraphobia", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
 			Color.TURQUOISE,
 			0.05f
@@ -122,7 +122,43 @@ public class BrushRecipes {
 			), new ItemStack(Items.COPPER_INGOT, 8)
 		));
 
-		addRecipe("oxidized_carrot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
+		addRecipe("coke_iron_ingot", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.ASH), ALL_BRIGHTNESSES,
+				Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+			), 56, List.of(
+				Ingredient.ofItems(Items.RAW_IRON),
+				Ingredient.ofItems(Items.RAW_IRON),
+				Ingredient.ofItems(Items.RAW_IRON),
+				Ingredient.ofItems(CeruleanItems.GLITTERING_COAL)
+			), new ItemStack(Items.IRON_INGOT, 4)
+		));
+
+		addRecipe("coke_gold_ingot", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.ASH), ALL_BRIGHTNESSES,
+				Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES
+			), 56, List.of(
+				Ingredient.ofItems(Items.RAW_GOLD),
+				Ingredient.ofItems(Items.RAW_GOLD),
+				Ingredient.ofItems(Items.RAW_GOLD),
+				Ingredient.ofItems(CeruleanItems.GLITTERING_COAL)
+			), new ItemStack(Items.GOLD_INGOT, 4)
+		));
+
+		addRecipe("coke_copper_ingot", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+				Set.of(Color.ASH), ALL_BRIGHTNESSES,
+				Set.of(Color.ROSE), ALL_BRIGHTNESSES
+			), 56, List.of(
+				Ingredient.ofItems(Items.RAW_COPPER),
+				Ingredient.ofItems(Items.RAW_COPPER),
+				Ingredient.ofItems(Items.RAW_COPPER),
+				Ingredient.ofItems(CeruleanItems.GLITTERING_COAL)
+			), new ItemStack(Items.COPPER_INGOT, 4)
+		));
+
+		addRecipe("oxidized_carrot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
 				40, Ingredient.ofItems(Items.CARROT), new ItemStack(CeruleanItems.OXIDIZED_CARROT)));
 
 		addRecipe("book", new InspirationBrushRecipe(
@@ -153,6 +189,17 @@ public class BrushRecipes {
 				), 30, List.of(
 				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
 		), new ItemStack(Items.SLIME_BALL)
+		));
+
+		addRecipe("gunpowder", new InspirationBrushRecipe(
+			CanvasRequirements.of(
+					Set.of(Color.ASH), ALL_BRIGHTNESSES,
+					Set.of(Color.ASH), ALL_BRIGHTNESSES
+			), 30, List.of(
+				Ingredient.ofItems(Items.SUGAR),
+				Ingredient.ofItems(Items.SUGAR),
+				Ingredient.ofItems(Items.CHARCOAL)
+			), new ItemStack(Items.GUNPOWDER)
 		));
 
 		addRecipe("quartz", new InspirationBrushRecipe(
@@ -261,37 +308,37 @@ public class BrushRecipes {
 			), new ItemStack(Items.MUSIC_DISC_WAIT)
 		));
 		// start simple color changing
-		addRecipe("lily_of_the_valley_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("lily_of_the_valley_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.LILAC,
 			0f
 		));
-		addRecipe("dandelion_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("dandelion_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.DANDELION, Set.of(Color.ASH), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.CHARTREUSE,
 			0f
 		));
-		addRecipe("rose_bush_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("rose_bush_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.ROSE_BUSH, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.ROSE,
 			0f
 		));
-		addRecipe("allium_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("allium_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.ALLIUM, Set.of(Color.LILAC), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.VIRIDIAN,
 			0f
 		));
-		addRecipe("blue_orchid_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("blue_orchid_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.BLUE_ORCHID, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.TURQUOISE,
 			0f
 		));
-		addRecipe("cornflower_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("cornflower_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.CORNFLOWER, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.CERULEAN,
 			0f
 		));
-		addRecipe("azure_bluet_filtering", new TallPlantFilteringBrushRecipe(
+		addRecipe("azure_bluet_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.AZURE_BLUET, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM),
 			Color.ASH,
 			0f

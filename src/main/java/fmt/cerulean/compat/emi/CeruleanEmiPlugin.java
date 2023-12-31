@@ -28,7 +28,7 @@ import fmt.cerulean.flow.recipe.CinderingAfterglowBrushRecipe;
 import fmt.cerulean.flow.recipe.InspirationBrushRecipe;
 import fmt.cerulean.flow.recipe.ManifestationBrushRecipe;
 import fmt.cerulean.flow.recipe.ParadigmBrushRecipe;
-import fmt.cerulean.flow.recipe.TallPlantFilteringBrushRecipe;
+import fmt.cerulean.flow.recipe.AgoraphobicGardeningBrushRecipe;
 import fmt.cerulean.flow.recipe.UnblightBrushRecipe;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItems;
@@ -106,14 +106,14 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					List.of(real.source.getDefaultState()),
 					Text.translatable("info.cerulean.paradigm")
 				));
-			} else if (recipe instanceof TallPlantFilteringBrushRecipe real) {
+			} else if (recipe instanceof AgoraphobicGardeningBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(id,
 					inputStars(real.canvas),
 					List.of(),
 					of(Set.of(real.color), real.wiltChance > 0 ? ALL_BRIGHTNESSES : ALL_BRIGHTNESSES_EXCEPT_BRILLIANT),
 					List.of(),
 					List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
-					real.wiltChance > 0 ? Text.translatable("info.cerulean.filter") : Text.translatable("info.cerulean.filter_simple")
+					real.wiltChance > 0 ? Text.translatable("info.cerulean.agoraphobic_gardening") : Text.translatable("info.cerulean.agoraphobic_gardening_simple")
 				));
 			} else if (recipe instanceof CinderingAfterglowBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(id,

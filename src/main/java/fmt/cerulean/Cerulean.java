@@ -1,5 +1,7 @@
 package fmt.cerulean;
 
+import java.util.List;
+
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.net.CeruleanServerNetworking;
 import fmt.cerulean.registry.CeruleanBlockEntities;
@@ -14,15 +16,20 @@ import fmt.cerulean.world.gen.SkiesBiomeSource;
 import fmt.cerulean.world.gen.SkiesChunkGenerator;
 import fmt.cerulean.world.gen.feature.BiomeDecorator;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.decoration.painting.PaintingVariant;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Box;
 
 public class Cerulean implements ModInitializer {
 	public static final String ID = "cerulean";
@@ -65,6 +72,27 @@ public class Cerulean implements ModInitializer {
 				return ActionResult.FAIL;
 			}
 
+			return ActionResult.PASS;
+		});
+
+		EntitySleepEvents.ALLOW_SLEEP_TIME.register((player, sleepingPos, vanillaResult) -> {
+			List<PaintingEntity> paintings = player.getWorld().getEntitiesByClass(PaintingEntity.class, Box.enclosing(sleepingPos, sleepingPos).expand(10), p -> true);
+			boolean found = false;
+
+			for (PaintingEntity painting : paintings) {
+				if (painting.getVariant().matchesKey(RegistryKey.of(RegistryKeys.PAINTING_VARIANT, Cerulean.id("dreams")))) {
+					if (found) {
+						// Found two portal paintings?
+						found = false;
+						break;
+					}
+					found = true;
+				}
+			}
+
+			if (found) {
+				return ActionResult.SUCCESS;
+			}
 			return ActionResult.PASS;
 		});
 	}

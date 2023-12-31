@@ -5,12 +5,12 @@ import fmt.cerulean.flow.FlowState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TallPlantFilteringBrushRecipe implements BrushRecipe {
+public class AgoraphobicGardeningBrushRecipe implements BrushRecipe {
 	public final CanvasRequirements canvas;
 	public final Color color;
 	public final float wiltChance;
 
-	public TallPlantFilteringBrushRecipe(CanvasRequirements canvas, Color color, float wiltChance) {
+	public AgoraphobicGardeningBrushRecipe(CanvasRequirements canvas, Color color, float wiltChance) {
 		this.canvas = canvas;
 		this.color = color;
 		this.wiltChance = wiltChance;
