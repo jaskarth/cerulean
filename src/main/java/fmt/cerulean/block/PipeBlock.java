@@ -128,6 +128,15 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 		];
 	}
 
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (newState.getBlock() instanceof PipeBlock) {
+			return;
+		}
+
+		super.onStateReplaced(state, world, pos, newState, moved);
+	}
+
 	private VoxelShape[] bakeShapes() {
 		VoxelShape[] shapes = new VoxelShape[64];
 		float px0 = 0 / 16f;

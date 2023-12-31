@@ -4,6 +4,7 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.*;
 import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
+import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -18,7 +19,28 @@ public final class CeruleanBlocks {
 	public static final Block STAR_WELL = register("star_well",
 		new WellBlock(AbstractBlock.Settings.copy(Blocks.DEEPSLATE)));
 	public static final Block PIPE = register("pipe",
+		new OxidizablePipeBlock(Oxidizable.OxidationLevel.UNAFFECTED, AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block EXPOSED_PIPE = register("exposed_pipe",
+			new OxidizablePipeBlock(Oxidizable.OxidationLevel.EXPOSED, AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block WEATHERED_PIPE = register("weathered_pipe",
+			new OxidizablePipeBlock(Oxidizable.OxidationLevel.WEATHERED, AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block OXIDIZED_PIPE = register("oxidized_pipe",
+			new OxidizablePipeBlock(Oxidizable.OxidationLevel.OXIDIZED, AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block WAXED_PIPE = register("waxed_pipe",
 		new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block WAXED_EXPOSED_PIPE = register("waxed_exposed_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block WAXED_WEATHERED_PIPE = register("waxed_weathered_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block WAXED_OXIDIZED_PIPE = register("waxed_oxidized_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
 
 	public static final Block FUCHSIA_PIPE = register("fuchsia_pipe",
 			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
@@ -129,6 +151,14 @@ public final class CeruleanBlocks {
 			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
 
 	public static void init() {
+		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);
+		OxidizableBlocksRegistry.registerOxidizableBlockPair(EXPOSED_PIPE, WEATHERED_PIPE);
+		OxidizableBlocksRegistry.registerOxidizableBlockPair(WEATHERED_PIPE, OXIDIZED_PIPE);
+
+		OxidizableBlocksRegistry.registerWaxableBlockPair(PIPE, WAXED_PIPE);
+		OxidizableBlocksRegistry.registerWaxableBlockPair(EXPOSED_PIPE, WAXED_EXPOSED_PIPE);
+		OxidizableBlocksRegistry.registerWaxableBlockPair(WEATHERED_PIPE, WAXED_WEATHERED_PIPE);
+		OxidizableBlocksRegistry.registerWaxableBlockPair(OXIDIZED_PIPE, WAXED_OXIDIZED_PIPE);
 	}
 	
 	private static Block register(String path, Block block) {

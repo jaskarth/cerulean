@@ -58,8 +58,8 @@ public class BiomeDecorator {
 		);
 
 		register(Biomes.SKIES,
-				new CountRangeDecorator(12, new IntRange(40, 150)),
-				new CeruleanPlantDecoration(4, 4, 20, CeruleanBlocks.SPARKBLOSSOM)
+				new CountRangeDecorator(18, new IntRange(40, 150)),
+				new CeruleanPlantDecoration(4, 4, 28, CeruleanBlocks.SPARKBLOSSOM)
 		);
 
 		register(Biomes.SKIES,

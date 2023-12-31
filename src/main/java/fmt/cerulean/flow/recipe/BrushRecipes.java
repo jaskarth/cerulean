@@ -122,6 +122,9 @@ public class BrushRecipes {
 			), new ItemStack(Items.COPPER_INGOT, 8)
 		));
 
+		addRecipe("oxidized_carrot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
+				40, Ingredient.ofItems(Items.CARROT), new ItemStack(CeruleanItems.OXIDIZED_CARROT)));
+
 		addRecipe("book", new InspirationBrushRecipe(
 			CanvasRequirements.of(
 				Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES,
@@ -212,6 +215,17 @@ public class BrushRecipes {
 				Ingredient.ofItems(Items.CHORUS_FLOWER),
 				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
 			), new ItemStack(Items.PEARLESCENT_FROGLIGHT, 6)
+		));
+
+		addRecipe("glittering_coal", new InspirationBrushRecipe(
+				CanvasRequirements.of(
+						Set.of(Color.ASH), ALL_BRIGHTNESSES,
+						Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+				), 40, List.of(
+				Ingredient.ofItems(Items.GOLD_NUGGET),
+				Ingredient.ofItems(Items.GOLD_NUGGET),
+				Ingredient.ofItems(Items.COAL)
+		), new ItemStack(CeruleanItems.GLITTERING_COAL)
 		));
 
 		addRecipe("fuchsia_ingot", new InspirationBrushRecipe.Uninspired(

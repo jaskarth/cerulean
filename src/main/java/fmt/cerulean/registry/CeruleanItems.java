@@ -11,6 +11,9 @@ import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.item.*;
 import fmt.cerulean.util.FuchsiaToolMaterial;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -21,7 +24,7 @@ public class CeruleanItems {
 	));
 
 	public static final Item GLIMMERCRUMB = register("glimmercrumb", new Item(new Item.Settings()
-			.food(new FoodComponent.Builder().hunger(8).saturationModifier(0.2f).alwaysEdible().build())
+			.food(new FoodComponent.Builder().hunger(8).saturationModifier(0.2f).build())
 	));
 
 	public static final Item ORB = register("orb", new Item(new Item.Settings()));
@@ -29,6 +32,15 @@ public class CeruleanItems {
 	public static final Item JORB = register("jorb", new JorbItem(new Item.Settings()));
 	public static final Item KORB = register("korb", new KorbItem(new Item.Settings()));
 	public static final Item LORB = register("lorb", new LorbItem(new Item.Settings()));
+	public static final Item GLITTERING_COAL = register("glittering_coal", new Item(new Item.Settings()));
+	public static final Item OXIDIZED_CARROT = register("oxidized_carrot", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder()
+					.hunger(3)
+					.saturationModifier(0.1f)
+					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 1200, 1), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 300, 0), 1.0F)
+					.build()
+			)));
 	public static final Item EXPOSED_COPPER_INGOT = register("exposed_copper_ingot", new Item(new Item.Settings()));
 	public static final Item WEATHERED_COPPER_INGOT = register("weathered_copper_ingot", new Item(new Item.Settings()));
 	public static final Item OXIDIZED_COPPER_INGOT = register("oxidized_copper_ingot", new Item(new Item.Settings()));
@@ -38,7 +50,16 @@ public class CeruleanItems {
 	public static final Item FUCHSIA_PICKAXE = register("fuchsia_pickaxe", new PickaxeItem(FuchsiaToolMaterial.INSTANCE, 1, -2.8F, new Item.Settings()));
 	public static final Item FUCHSIA_AXE = register("fuchsia_axe", new AxeItem(FuchsiaToolMaterial.INSTANCE, 6.0F, -3.0F, new Item.Settings()));
 	public static final Item FUCHSIA_HOE = register("fuchsia_hoe", new HoeItem(FuchsiaToolMaterial.INSTANCE, 0, -3.0F, new Item.Settings()));
-	public static final Item CANDY_APPLE = register("candy_apple", new Item(new Item.Settings()));
+	public static final Item CANDY_APPLE = register("candy_apple", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder()
+					.hunger(8)
+					.saturationModifier(0.2f)
+					.alwaysEdible()
+					.statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 3600, 2), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 3600, 1), 1.0F)
+					.build()
+	)));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();
@@ -51,6 +72,8 @@ public class CeruleanItems {
 				STARS.put(res, star);
 			}
 		}
+
+		FuelRegistry.INSTANCE.add(GLITTERING_COAL, 3200);
 	}
 
 	private static Item register(String path, Item item) {

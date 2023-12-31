@@ -13,11 +13,11 @@ public class RenderVFX {
 		Random random = Random.create(10842L);
 		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
-		for(int i = 0; i < 7500; ++i) {
+		for(int i = 0; i < 15000; ++i) {
 			double d = (double)(random.nextFloat() * 2.0F - 1.0F);
 			double e = (double)(random.nextFloat() * 2.0F - 1.0F);
 			double f = (double)(random.nextFloat() * 2.0F - 1.0F);
-			double g = (0.05F + (random.nextFloat() * random.nextFloat() * 0.30F));
+			double g = (0.05F + (random.nextFloat() * random.nextFloat() * random.nextFloat() * 0.55F));
 			double h = d * d + e * e + f * f;
 			if (h < 1.0 && h > 0.01) {
 				h = 1.0 / Math.sqrt(h);

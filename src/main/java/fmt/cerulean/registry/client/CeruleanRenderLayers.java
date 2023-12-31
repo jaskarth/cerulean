@@ -9,6 +9,13 @@ public class CeruleanRenderLayers {
 	public static void init() {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
 				CeruleanBlocks.PIPE,
+				CeruleanBlocks.EXPOSED_PIPE,
+				CeruleanBlocks.WEATHERED_PIPE,
+				CeruleanBlocks.OXIDIZED_PIPE,
+				CeruleanBlocks.WAXED_PIPE,
+				CeruleanBlocks.WAXED_EXPOSED_PIPE,
+				CeruleanBlocks.WAXED_WEATHERED_PIPE,
+				CeruleanBlocks.WAXED_OXIDIZED_PIPE,
 				CeruleanBlocks.FUCHSIA_PIPE,
 				CeruleanBlocks.CORAL,
 				CeruleanBlocks.SKYGRASS,
