@@ -1,7 +1,12 @@
 package fmt.cerulean.world.gen.feature.decoration;
 
+import fmt.cerulean.block.entity.WellBlockEntity;
+import fmt.cerulean.flow.FlowResource;
+import fmt.cerulean.flow.FlowResources;
+import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.world.gen.feature.Decoration;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.util.math.random.CheckedRandom;
@@ -44,6 +49,21 @@ public class IslandDecoration extends Decoration {
 
 			radius -= (1 / radiusdiv);
 			radiusdiv -= radiusdivsub;
+		}
+
+		if (random.nextInt(2) == 0) {
+			BlockPos bp = new BlockPos(pos.getX(), oy, pos.getZ());
+			world.setBlockState(bp, CeruleanBlocks.STAR_WELL.getDefaultState(), 3);
+			BlockEntity be = world.getBlockEntity(bp);
+			if (be instanceof WellBlockEntity wbe) {
+				FlowResource.Brightness brightness = switch (random.nextInt(20)) {
+					case 0, 1, 2 -> FlowResource.Brightness.DIM;
+					case 3, 4, 5 -> FlowResource.Brightness.INNOCUOUS;
+					default -> FlowResource.Brightness.WANING;
+				};
+				FlowState flow = new FlowState(FlowResources.star(FlowResource.Color.values()[random.nextInt(FlowResource.Color.amount)], brightness), random.nextInt(2_000) + 9_000);
+				wbe.setFlow(flow);
+			}
 		}
 	}
 }

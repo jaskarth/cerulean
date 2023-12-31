@@ -3,8 +3,8 @@
   "id": "cerulean",
   "version": "${version}",
   "name": "Cerulean",
-  "description": "",
-  "authors": [],
+  "description": "Stars, automation, trinkets, and a dream...",
+  "authors": ["jaskarth", "emilyploszaj"],
   "contact": {
     "repo": "https://github.com/jaskarth/cerulean"
   },

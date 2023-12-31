@@ -52,6 +52,7 @@ public final class CeruleanBlocks {
 					AbstractBlock.Settings.create()
 					.mapColor(MapColor.ORANGE)
 					.noCollision()
+					.replaceable()
 					.breakInstantly()
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY))));
@@ -61,6 +62,7 @@ public final class CeruleanBlocks {
 					AbstractBlock.Settings.create()
 					.mapColor(MapColor.DARK_GREEN)
 					.noCollision()
+					.replaceable()
 					.breakInstantly()
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY))));

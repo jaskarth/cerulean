@@ -103,6 +103,12 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 						st.indifference = 1;
 					}
 				}
+
+				for (Direction dir : Util.DIRECTIONS) {
+					if (this.getWorld().getBlockState(bp.offset(dir, 2)).isOf(CeruleanBlocks.INKY_VOID)) {
+						st.indifference = 1;
+					}
+				}
 			}
 
 			if (st.indifference > 60) {

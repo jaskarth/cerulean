@@ -86,6 +86,15 @@ public class BrushRecipes {
 		addRecipe("lorb", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.ORB), new ItemStack(CeruleanItems.LORB)));
 
+		addRecipe("white_dye_darkening", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
+				40, Ingredient.ofItems(Items.WHITE_DYE), new ItemStack(Items.LIGHT_GRAY_DYE)));
+
+		addRecipe("light_gray_dye_darkening", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
+				40, Ingredient.ofItems(Items.LIGHT_GRAY_DYE), new ItemStack(Items.GRAY_DYE)));
+
+		addRecipe("gray_dye_darkening", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
+				40, Ingredient.ofItems(Items.GRAY_DYE), new ItemStack(Items.BLACK_DYE)));
+
 		addRecipe("iron_ingot", new InspirationBrushRecipe(
 			CanvasRequirements.of(
 				Set.of(Color.ASH), ALL_BRIGHTNESSES,
@@ -199,7 +208,7 @@ public class BrushRecipes {
 				Ingredient.ofItems(Items.SUGAR),
 				Ingredient.ofItems(Items.SUGAR),
 				Ingredient.ofItems(Items.CHARCOAL)
-			), new ItemStack(Items.GUNPOWDER)
+			), new ItemStack(Items.GUNPOWDER, 3)
 		));
 
 		addRecipe("quartz", new InspirationBrushRecipe(
@@ -213,8 +222,8 @@ public class BrushRecipes {
 
 		addRecipe("rail", new InspirationBrushRecipe(
 				CanvasRequirements.of(
-						Set.of(Color.ASH), ALL_BRIGHTNESSES,
-						Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+						Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES,
+						Set.of(Color.LILAC), ALL_BRIGHTNESSES
 				), 40, List.of(
 				Ingredient.ofItems(Items.IRON_NUGGET),
 				Ingredient.ofItems(Items.IRON_NUGGET),
@@ -266,7 +275,7 @@ public class BrushRecipes {
 
 		addRecipe("glittering_coal", new InspirationBrushRecipe(
 				CanvasRequirements.of(
-						Set.of(Color.ASH), ALL_BRIGHTNESSES,
+						Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES,
 						Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
 				), 40, List.of(
 				Ingredient.ofItems(Items.GOLD_NUGGET),

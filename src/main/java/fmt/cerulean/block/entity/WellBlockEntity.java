@@ -152,4 +152,8 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	public FlowState getDistantExportedState(Direction direction) {
 		return FlowState.NONE;
 	}
+
+	public void setFlow(FlowState flow) {
+		this.flow = flow;
+	}
 }
