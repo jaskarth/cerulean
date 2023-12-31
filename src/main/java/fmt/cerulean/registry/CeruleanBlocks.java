@@ -19,6 +19,9 @@ public final class CeruleanBlocks {
 		new WellBlock(AbstractBlock.Settings.copy(Blocks.DEEPSLATE)));
 	public static final Block PIPE = register("pipe",
 		new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block FUCHSIA_PIPE = register("fuchsia_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
 	public static final Block SPACEROCK = register("spacerock",
 			new Block(AbstractBlock.Settings.copy(Blocks.COBBLESTONE)));
 
@@ -87,7 +90,7 @@ public final class CeruleanBlocks {
 					.pistonBehavior(PistonBehavior.DESTROY)));
 
 	public static final Block MIMIC = register("mimic",
-			new MimicBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
+			new MimicBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles()));
 
 	public static final Block INKY_VOID = register("inky_void",
 			new InkyVoidBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
@@ -95,11 +98,17 @@ public final class CeruleanBlocks {
 	public static final Block SORTED_BOOKSHELF = register("sorted_bookshelf",
 			new Block(AbstractBlock.Settings.copy(Blocks.BOOKSHELF)));
 
-	public static final Block SPACEROCK_WALL = register("spacerock_wall",
-			new WallBlock(AbstractBlock.Settings.copyShallow(SPACEROCK).solid()));
-
 	public static final Block SPACEBRICKS = register("spacebricks",
 			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block SPACEBRICK_WALL = register("spacebrick_wall",
+			new WallBlock(AbstractBlock.Settings.copyShallow(SPACEBRICKS).solid()));
+
+	public static final Block SPACEBRICK_STAIRS = register("spacebrick_stairs",
+			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
+
+	public static final Block SPACEBRICK_SLAB = register("spacebrick_slab",
+			new SlabBlock(AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
 
 	public static final Block POLISHED_SPACEROCK = register("polished_spacerock",
 			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
@@ -113,14 +122,8 @@ public final class CeruleanBlocks {
 	public static final Block SPACEROCK_SLAB = register("spacerock_slab",
 			new SlabBlock(AbstractBlock.Settings.copyShallow(SPACEROCK)));
 
-	public static final Block SPACEBRICK_WALL = register("spacebrick_wall",
-			new WallBlock(AbstractBlock.Settings.copyShallow(SPACEBRICKS).solid()));
-
-	public static final Block SPACEBRICK_SLAB = register("spacebrick_slab",
-			new SlabBlock(AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
-
-	public static final Block SPACEBRICK_STAIRS = register("spacebrick_stairs",
-			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
+	public static final Block SPACEROCK_WALL = register("spacerock_wall",
+			new WallBlock(AbstractBlock.Settings.copyShallow(SPACEROCK).solid()));
 
 	public static final Block SPACEROCK_STAIRS = register("spacerock_stairs",
 			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));

@@ -120,12 +120,119 @@ public class BrushRecipes {
 			), new ItemStack(Items.BLAZE_POWDER, 3)
 		));
 
+		addRecipe(new InspirationBrushRecipe(
+				CanvasRequirements.of(
+						Set.of(Color.LILAC), ALL_BRIGHTNESSES,
+						Set.of(Color.ASH), ALL_BRIGHTNESSES
+				), 30, List.of(
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+		), new ItemStack(Items.SLIME_BALL)
+		));
+
+		addRecipe(new InspirationBrushRecipe(
+				CanvasRequirements.of(
+						Set.of(Color.CERULEAN), ALL_BRIGHTNESSES,
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES
+				), 40, List.of(
+				Ingredient.ofItems(Items.AMETHYST_SHARD)
+		), new ItemStack(Items.QUARTZ)
+		));
+
+		addRecipe(new InspirationBrushRecipe(
+				CanvasRequirements.of(
+						Set.of(Color.ASH), ALL_BRIGHTNESSES,
+						Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+				), 40, List.of(
+				Ingredient.ofItems(Items.IRON_NUGGET),
+				Ingredient.ofItems(Items.IRON_NUGGET),
+				Ingredient.ofItems(Items.STICK)
+		), new ItemStack(Items.RAIL)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+			CanvasRequirements.of(
+				Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+			), 60, List.of(
+				Ingredient.ofItems(Items.GOLD_INGOT),
+				Ingredient.ofItems(Items.REDSTONE),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+			), new ItemStack(CeruleanItems.FUCHSIA_INGOT)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(Items.APPLE),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+		), new ItemStack(CeruleanItems.CANDY_APPLE)
+		));
+
+		toolRecipes();
+
 		addRecipe(new InspirationBrushRecipe.Uninspired(
 			CanvasRequirements.of(
 				Set.of(Color.LILAC), ALL_BRIGHTNESSES
 			), 5000, List.of(
 				Ingredient.ofItems(Items.MUSIC_DISC_STAL)
 			), new ItemStack(Items.MUSIC_DISC_WAIT)
+		));
+	}
+
+	private static void toolRecipes() {
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(Items.IRON_SWORD)
+		), new ItemStack(CeruleanItems.FUCHSIA_SWORD)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(Items.IRON_PICKAXE)
+		), new ItemStack(CeruleanItems.FUCHSIA_PICKAXE)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(Items.IRON_AXE)
+		), new ItemStack(CeruleanItems.FUCHSIA_AXE)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(Items.IRON_SHOVEL)
+		), new ItemStack(CeruleanItems.FUCHSIA_SHOVEL)
+		));
+
+		addRecipe(new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(Items.IRON_HOE)
+		), new ItemStack(CeruleanItems.FUCHSIA_HOE)
 		));
 	}
 

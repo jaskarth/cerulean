@@ -1,0 +1,18 @@
+{
+  "values": [
+    "cerulean:spacerock",
+    "cerulean:star_well",
+    "cerulean:pipe",
+    "cerulean:spacerock_wall",
+    "cerulean:spacebricks",
+    "cerulean:polished_spacerock",
+    "cerulean:chiseled_spacerock",
+    "cerulean:smooth_spacerock",
+    "cerulean:spacerock_slab",
+    "cerulean:spacebrick_wall",
+    "cerulean:spacebrick_slab",
+    "cerulean:spacebrick_stairs",
+    "cerulean:spacerock_stairs"
+  ],
+  "replace": false
+}

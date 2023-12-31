@@ -1,5 +1,6 @@
 {
   "block.cerulean.pipe": "Pipe",
+  "block.cerulean.fuchsia_pipe": "Fuchsia Pipe",
   "block.cerulean.star_well": "Star Well",
   "block.cerulean.spacerock": "Spacerock",
   "block.cerulean.coral": "Coral",
@@ -24,6 +25,7 @@
   "block.cerulean.spacebrick_stairs": "Spacebrick Stairs",
 
   "item.cerulean.pipe": "Pipe",
+  "item.cerulean.fuchsia_pipe": "Fuchsia Pipe",
   "item.cerulean.star_well": "Star Well",
   "item.cerulean.spacerock": "Spacerock",
   "item.cerulean.coral": "Coral",
@@ -55,6 +57,13 @@
   "item.cerulean.exposed_copper_ingot": "Exposed Copper Ingot",
   "item.cerulean.weathered_copper_ingot": "Weathered Copper Ingot",
   "item.cerulean.oxidized_copper_ingot": "Oxidized Copper Ingot",
+  "item.cerulean.fuchsia_ingot": "Fuchsia Ingot",
+  "item.cerulean.fuchsia_sword": "Fuchsia Sword",
+  "item.cerulean.fuchsia_axe": "Fuchsia Axe",
+  "item.cerulean.fuchsia_pickaxe": "Fuchsia Pickaxe",
+  "item.cerulean.fuchsia_shovel": "Fuchsia Shovel",
+  "item.cerulean.fuchsia_hoe": "Fuchsia Hoe",
+  "item.cerulean.candy_apple": "Candy Apple",
 
   "item.cerulean.brilliant_ash_star": "Brilliant Ash Star",
   "item.cerulean.brilliant_cerulean_star": "Brilliant Cerulean Star",

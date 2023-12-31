@@ -83,7 +83,11 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 	}
 
 	public static boolean canConnect(BlockState state, Direction dir) {
-		return state.isOf(CeruleanBlocks.PIPE) || (state.getBlock() instanceof WellBlock && dir == Direction.UP);
+		return isPipe(state) || (state.getBlock() instanceof WellBlock && dir == Direction.UP);
+	}
+
+	public static boolean isPipe(BlockState state) {
+		return state.getBlock() instanceof PipeBlock;
 	}
 
 	@Override

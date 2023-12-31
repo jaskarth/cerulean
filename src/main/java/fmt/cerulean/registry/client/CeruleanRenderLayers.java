@@ -9,6 +9,7 @@ public class CeruleanRenderLayers {
 	public static void init() {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
 				CeruleanBlocks.PIPE,
+				CeruleanBlocks.FUCHSIA_PIPE,
 				CeruleanBlocks.CORAL,
 				CeruleanBlocks.SKYGRASS,
 				CeruleanBlocks.SPARKBLOSSOM,

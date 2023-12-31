@@ -28,7 +28,7 @@ public class DreamscapeTeleporter {
 			if (p.isSleeping()) {
 				TeleportGroup gp = new TeleportGroup();
 				gp.players.add(p);
-				gp.target = box(p.getBoundingBox().expand(6, 3, 6));
+				gp.target = box(p.getBoundingBox().expand(10, 6, 10));
 				group.add(gp);
 			}
 		}

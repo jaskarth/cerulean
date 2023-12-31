@@ -1,5 +1,6 @@
 package fmt.cerulean.block.entity;
 
+import fmt.cerulean.block.PipeBlock;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowResource;
@@ -48,7 +49,7 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	public void clientTick(World world, BlockPos pos, BlockState state) {
-		boolean piped = world.getBlockState(pos.offset(Direction.UP)).isOf(CeruleanBlocks.PIPE);
+		boolean piped = PipeBlock.isPipe(world.getBlockState(pos.offset(Direction.UP)));
 		if (!piped) {
 			WellBlockEntity.spew(world, pos, Direction.UP, flow);
 		}

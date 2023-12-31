@@ -10,8 +10,8 @@ import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.item.*;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
+import fmt.cerulean.util.FuchsiaToolMaterial;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
@@ -32,6 +32,13 @@ public class CeruleanItems {
 	public static final Item EXPOSED_COPPER_INGOT = register("exposed_copper_ingot", new Item(new Item.Settings()));
 	public static final Item WEATHERED_COPPER_INGOT = register("weathered_copper_ingot", new Item(new Item.Settings()));
 	public static final Item OXIDIZED_COPPER_INGOT = register("oxidized_copper_ingot", new Item(new Item.Settings()));
+	public static final Item FUCHSIA_INGOT = register("fuchsia_ingot", new Item(new Item.Settings()));
+	public static final Item FUCHSIA_SWORD = register("fuchsia_sword", new SwordItem(FuchsiaToolMaterial.INSTANCE, 3, -2.4F, new Item.Settings()));
+	public static final Item FUCHSIA_SHOVEL = register("fuchsia_shovel", new ShovelItem(FuchsiaToolMaterial.INSTANCE, 1.5F, -3.0F, new Item.Settings()));
+	public static final Item FUCHSIA_PICKAXE = register("fuchsia_pickaxe", new PickaxeItem(FuchsiaToolMaterial.INSTANCE, 1, -2.8F, new Item.Settings()));
+	public static final Item FUCHSIA_AXE = register("fuchsia_axe", new AxeItem(FuchsiaToolMaterial.INSTANCE, 6.0F, -3.0F, new Item.Settings()));
+	public static final Item FUCHSIA_HOE = register("fuchsia_hoe", new HoeItem(FuchsiaToolMaterial.INSTANCE, 0, -3.0F, new Item.Settings()));
+	public static final Item CANDY_APPLE = register("candy_apple", new Item(new Item.Settings()));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();
