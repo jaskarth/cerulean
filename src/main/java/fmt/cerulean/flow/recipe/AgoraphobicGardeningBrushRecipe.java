@@ -2,6 +2,7 @@ package fmt.cerulean.flow.recipe;
 
 import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowState;
+import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -9,11 +10,16 @@ public class AgoraphobicGardeningBrushRecipe implements BrushRecipe {
 	public final CanvasRequirements canvas;
 	public final Color color;
 	public final float wiltChance;
+	public final Block block;
 
-	public AgoraphobicGardeningBrushRecipe(CanvasRequirements canvas, Color color, float wiltChance) {
+	public AgoraphobicGardeningBrushRecipe(CanvasRequirements canvas, Block block, Color color, float wiltChance) {
 		this.canvas = canvas;
+		this.block = block;
 		this.color = color;
 		this.wiltChance = wiltChance;
+		if (!canvas.validBlocks.contains(block)) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override

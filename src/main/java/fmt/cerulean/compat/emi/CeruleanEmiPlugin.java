@@ -112,7 +112,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					List.of(),
 					of(Set.of(real.color), real.wiltChance > 0 ? ALL_BRIGHTNESSES : ALL_BRIGHTNESSES_EXCEPT_BRILLIANT),
 					List.of(),
-					List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
+					List.of(real.block.getDefaultState()),
 					real.wiltChance > 0 ? Text.translatable("info.cerulean.agoraphobic_gardening") : Text.translatable("info.cerulean.agoraphobic_gardening_simple")
 				));
 			} else if (recipe instanceof CinderingAfterglowBrushRecipe real) {

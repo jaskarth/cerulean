@@ -34,11 +34,13 @@ public class BrushRecipes {
 	public static void init() {
 		addRecipe("kelp_agoraphobia", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Set.of(Blocks.KELP, Blocks.KELP_PLANT), Set.of(Color.LILAC), ALL_BRIGHTNESSES),
+			Blocks.KELP,
 			Color.ASH,
 			0.03f
 		));
 		addRecipe("bamboo_agoraphobia", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.BAMBOO, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES),
+			Blocks.BAMBOO,
 			Color.TURQUOISE,
 			0.05f
 		));
@@ -318,36 +320,43 @@ public class BrushRecipes {
 		// start simple color changing
 		addRecipe("lily_of_the_valley_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.LILY_OF_THE_VALLEY,
 			Color.LILAC,
 			0f
 		));
 		addRecipe("dandelion_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.DANDELION, Set.of(Color.ASH), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.DANDELION,
 			Color.CHARTREUSE,
 			0f
 		));
 		addRecipe("rose_bush_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.ROSE_BUSH, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.ROSE_BUSH,
 			Color.ROSE,
 			0f
 		));
 		addRecipe("allium_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.ALLIUM, Set.of(Color.LILAC), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.ALLIUM,
 			Color.VIRIDIAN,
 			0f
 		));
 		addRecipe("blue_orchid_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.BLUE_ORCHID, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.BLUE_ORCHID,
 			Color.TURQUOISE,
 			0f
 		));
 		addRecipe("cornflower_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.CORNFLOWER, Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.CORNFLOWER,
 			Color.CERULEAN,
 			0f
 		));
 		addRecipe("azure_bluet_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.AZURE_BLUET, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES_EXCEPT_DIM),
+			Blocks.AZURE_BLUET,
 			Color.ASH,
 			0f
 		));

@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.WellBlockEntity;
@@ -17,6 +18,7 @@ import fmt.cerulean.item.StarItem;
 import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.text.OrderedText;
@@ -80,47 +82,6 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		Random random = Random.create(10);
 		List<GuiParticle> particles = Lists.newArrayList();
 		int starY = inputItems.isEmpty() ? 0 : 20;
-		if (inputStars.size() > 0) {
-			widgets.addSlot(PIPE, 0, starY).drawBack(false);
-			widgets.addSlot(inputStars.get(0), 18, starY).drawBack(false);
-			addParticles(particles, inputStars.get(0), starY, true, false, random);
-		}
-		int cx = getDisplayWidth() / 2 - inputItems.size() * 9;
-		for (EmiIngredient i : inputItems) {
-			widgets.addSlot(i, cx, 0);
-			cx += 18;
-		}
-		if (!outputStar.isEmpty()) {
-			widgets.addSlot(outputStar, 64, starY).recipeContext(this).drawBack(false);
-			widgets.addSlot(PIPE, 82, starY).drawBack(false);
-			addParticles(particles, outputStar, starY, false, true, random);
-		}
-		if (!blocks.isEmpty()) {
-			widgets.addDrawable(getDisplayWidth() / 2, starY + 1, 0, 0, (draw, mouseX, mouseY, delta) -> {
-				draw.getMatrices().translate(-2, 10, 0);
-				draw.getMatrices().scale(14, -14, 1);
-				draw.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
-				draw.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-30));
-				BlockState state = blocks.get(0);
-				client.getBlockRenderManager().renderBlockAsEntity(state, draw.getMatrices(), draw.getVertexConsumers(), LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
-			});
-		}
-		if (inputStars.size() > 1) {
-			widgets.addSlot(inputStars.get(1), 64, starY).drawBack(false);
-			widgets.addSlot(PIPE, 82, starY).drawBack(false);
-			addParticles(particles, inputStars.get(1), starY, false, false, random);
-		}
-		cx = getDisplayWidth() / 2 - outputItems.size() * 9;
-		for (EmiIngredient o : outputItems) {
-			widgets.addSlot(o, cx, starY + 20).recipeContext(this);
-			cx += 18;
-		}
-		int infoY = starY + 18 + 3 + (outputItems.isEmpty() ? 0 : 20);
-		for (OrderedText i : info) {
-			int tw = client.textRenderer.getWidth(i);
-			widgets.addText(i, (getDisplayWidth() - tw) / 2, infoY, 0xFFFFFFFF, true);
-			infoY += 12;
-		}
 		widgets.addDrawable(0, 0, 0, 0, (draw, mouseX, mouseY, delta) -> {
 			RenderSystem.enableDepthTest();
 			long time = System.currentTimeMillis() / 40;
@@ -138,9 +99,44 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 					draw.setShaderColor(p.r, p.g, p.b, a);
 					draw.drawTexture(STAR_TEXTURE, x - 4, y - 4, 0, 0, 8, 8, 8, 8);
 					draw.setShaderColor(1, 1, 1, 1);
+					draw.draw();
 				}
 			}
 		});
+		if (inputStars.size() > 0) {
+			widgets.addSlot(PIPE, 0, starY).drawBack(false);
+			widgets.addSlot(inputStars.get(0), 18, starY).drawBack(false);
+			addParticles(particles, inputStars.get(0), starY, true, false, random);
+		}
+		int cx = getDisplayWidth() / 2 - inputItems.size() * 9;
+		for (EmiIngredient i : inputItems) {
+			widgets.addSlot(i, cx, 0);
+			cx += 18;
+		}
+		if (!outputStar.isEmpty()) {
+			widgets.addSlot(outputStar, 64, starY).recipeContext(this).drawBack(false);
+			widgets.addSlot(PIPE, 82, starY).drawBack(false);
+			addParticles(particles, outputStar, starY, false, true, random);
+		}
+		if (!blocks.isEmpty()) {
+			widgets.add(new BlockSlotWidget(blocks.get(0), getDisplayWidth() / 2 - 9, starY + 1)).drawBack(false);
+		}
+		if (inputStars.size() > 1) {
+			widgets.addSlot(inputStars.get(1), 64, starY).drawBack(false);
+			widgets.addSlot(PIPE, 82, starY).drawBack(false);
+			addParticles(particles, inputStars.get(1), starY, false, false, random);
+		}
+		cx = getDisplayWidth() / 2 - outputItems.size() * 9;
+		for (EmiIngredient o : outputItems) {
+			widgets.addSlot(o, cx, starY + 20).recipeContext(this);
+			cx += 18;
+		}
+		int infoY = starY + 18 + 3 + (outputItems.isEmpty() ? 0 : 20);
+		for (OrderedText i : info) {
+			int tw = client.textRenderer.getWidth(i);
+			widgets.addText(i, (getDisplayWidth() - tw) / 2, infoY, 0xFFFFFFFF, true);
+			infoY += 12;
+		}
 	}
 
 	private void addParticles(List<GuiParticle> particles, EmiIngredient stack, int sy, boolean left, boolean output, Random random) {
@@ -190,5 +186,27 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		float r, g, b;
 		float x, y, dx, dy;
 		long time;
+	}
+
+	private static class BlockSlotWidget extends SlotWidget {
+		private final BlockState state;
+
+		public BlockSlotWidget(BlockState state, int x, int y) {
+			super(EmiStack.of(state.getBlock()), x, y);
+			this.state = state;
+		}
+
+		@Override
+		public void drawStack(DrawContext draw, int mouseX, int mouseY, float delta) {
+			draw.getMatrices().push();
+			draw.getMatrices().translate(x - 2 + 9, y + 9, 0);
+			draw.getMatrices().scale(14, -14, 1);
+			draw.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
+			draw.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-30));
+			MinecraftClient client = MinecraftClient.getInstance();
+			client.getBlockRenderManager().renderBlockAsEntity(state, draw.getMatrices(), draw.getVertexConsumers(), LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+			draw.getMatrices().pop();
+			draw.getVertexConsumers().draw();
+		}
 	}
 }
