@@ -128,7 +128,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 				registry.addRecipe(new EmiBrushRecipe(id,
 					List.of(of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_BRILLIANT)),
 					List.of(),
-					of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_BRILLIANT),
+					of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_DIM),
 					List.of(),
 					List.of(Blocks.BREWING_STAND.getDefaultState()),
 					Text.translatable("info.cerulean.bevvy_tasting")

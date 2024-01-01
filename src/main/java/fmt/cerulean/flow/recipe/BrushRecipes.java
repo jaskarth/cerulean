@@ -52,14 +52,14 @@ public class BrushRecipes {
 				Blocks.CARROTS, Set.of(Color.CERULEAN), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.CARROTS, Color.VIRIDIAN));
 
-		addRecipe("potatoes_unblight", new UnblightBrushRecipe(
+		addRecipe("beetroots_unblight", new UnblightBrushRecipe(
 				CanvasRequirements.of(
-				Blocks.POTATOES, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES
+				Blocks.BEETROOTS, Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.BEETROOTS, Color.ROSE));
 
-		addRecipe("_unblight", new UnblightBrushRecipe(
+		addRecipe("potatoes_unblight", new UnblightBrushRecipe(
 			CanvasRequirements.of(
-				Blocks.BEETROOTS, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
+				Blocks.POTATOES, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES
 			), (CropBlock) Blocks.POTATOES, Color.LILAC));
 
 		addRecipe("nether_wart_unblight", new UnblightBrushRecipe(
@@ -75,6 +75,8 @@ public class BrushRecipes {
 			40, Ingredient.ofItems(CeruleanItems.EXPOSED_COPPER_INGOT), new ItemStack(CeruleanItems.WEATHERED_COPPER_INGOT)));
 		addRecipe("oxidized_copper_ingot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
 			40, Ingredient.ofItems(CeruleanItems.WEATHERED_COPPER_INGOT), new ItemStack(CeruleanItems.OXIDIZED_COPPER_INGOT)));
+		addRecipe("oxidized_carrot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
+			40, Ingredient.ofItems(Items.CARROT), new ItemStack(CeruleanItems.OXIDIZED_CARROT)));
 		addRecipe("orb", new InspirationBrushRecipe(CanvasRequirements.of(Set.of(Color.ROSE), ALL_BRIGHTNESSES, Set.of(Color.TURQUOISE), ALL_BRIGHTNESSES),
 			40, List.of(Ingredient.ofItems(CeruleanItems.OXIDIZED_COPPER_INGOT), Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB), Ingredient.ofItems(Items.REDSTONE)), new ItemStack(CeruleanItems.ORB)));
 		addRecipe("movrb", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.ASH), ALL_BRIGHTNESSES),
@@ -166,9 +168,6 @@ public class BrushRecipes {
 				Ingredient.ofItems(CeruleanItems.GLITTERING_COAL)
 			), new ItemStack(Items.COPPER_INGOT, 4)
 		));
-
-		addRecipe("oxidized_carrot", new InspirationBrushRecipe.Uninspired(CanvasRequirements.of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES),
-				40, Ingredient.ofItems(Items.CARROT), new ItemStack(CeruleanItems.OXIDIZED_CARROT)));
 
 		addRecipe("book", new InspirationBrushRecipe(
 			CanvasRequirements.of(

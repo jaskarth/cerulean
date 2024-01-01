@@ -98,6 +98,11 @@ public class Soul implements IMixinConfigPlugin {
 											e.printStackTrace();
 										}
 									}
+									if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+										if (s.toLowerCase().contains("client")) {
+											return;
+										}
+									}
 									if (!s.startsWith(holy) && !s.startsWith(unholy)) {
 										targets.add("L" + s + ";");
 									}
