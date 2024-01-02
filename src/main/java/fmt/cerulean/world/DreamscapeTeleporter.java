@@ -11,10 +11,13 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.border.WorldBorder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DreamscapeTeleporter {
 	private static class TeleportGroup {
@@ -81,6 +84,28 @@ public class DreamscapeTeleporter {
 				continue;
 			}
 
+			int startX = target.getMinX();
+			int startY = target.getMinY();
+			int startZ = target.getMaxZ();
+
+			WorldBorder border = world.getWorldBorder();
+			int minX = (int) border.getBoundWest() + 25;
+			int minZ = (int) border.getBoundNorth() + 25;
+			int maxX = (int) border.getBoundEast() - target.getBlockCountX() - 25;
+			int maxZ = (int) border.getBoundSouth() - target.getBlockCountZ() - 25;
+			int minY = -48;
+			int maxY = 280;
+
+			int endX = world.random.nextInt(maxX - minX) + minX;
+			int endY = world.random.nextInt(maxY - minY) + minY;
+			int endZ = world.random.nextInt(maxZ - minZ) + minZ;
+
+			int transX = endX - startX;
+			int transY = endY - startY;
+			int transZ = endZ - startZ;
+
+			System.out.println(new BlockPos(startX, startY, startZ) + " -> " + new BlockPos(endX, endY, endZ) + " :" + new BlockPos(transX, transY, transZ));
+
 			ServerWorld dreamscape = world.getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.DREAMSCAPE));
 
 			if (dreamscape == null) {
@@ -143,6 +168,14 @@ public class DreamscapeTeleporter {
 				continue;
 			}
 
+			// reset with translated
+			paintingOrigin = portalPainting.getBlockPos().add(transX, transY, transZ);
+			moveDir = portalPainting.getHorizontalFacing().getOpposite();
+			paintingOrigin = paintingOrigin.offset(moveDir);
+
+			otherA = paintingOrigin.offset(moveDir.rotateYClockwise());
+			otherB = paintingOrigin.offset(moveDir.rotateYCounterclockwise());
+
 			BlockBox expanded = target.expand(1);
 
 			// Facade copy
@@ -150,10 +183,11 @@ public class DreamscapeTeleporter {
 				for (int z = expanded.getMinZ(); z <= expanded.getMaxZ(); z++) {
 					for (int y = expanded.getMinY(); y <= expanded.getMaxY(); y++) {
 						BlockPos local = new BlockPos(x, y, z);
+						BlockPos set = local.add(transX, transY, transZ);
 						if (expanded.contains(local) && !target.contains(local)) {
-							dreamscape.setBlockState(local, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
+							dreamscape.setBlockState(set, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
 						} else {
-							dreamscape.setBlockState(local, world.getBlockState(local), Block.SKIP_DROPS);
+							dreamscape.setBlockState(set, filterState(world, local), Block.SKIP_DROPS);
 						}
 					}
 				}
@@ -191,11 +225,20 @@ public class DreamscapeTeleporter {
 					}
 				});
 
-
-				FabricDimensions.teleport(p, dreamscape, new TeleportTarget(p.getPos(), Vec3d.ZERO, p.getYaw(), p.getPitch()));
+				FabricDimensions.teleport(p, dreamscape, new TeleportTarget(p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch()));
 			}
 		}
 	}
+
+	private static BlockState filterState(ServerWorld world, BlockPos local) {
+		BlockState st = world.getBlockState(local);
+		if (st.isOf(Blocks.PISTON) || st.isOf(Blocks.MOVING_PISTON) || st.isOf(Blocks.STICKY_PISTON) || st.isOf(Blocks.PISTON_HEAD)) {
+			return Blocks.AIR.getDefaultState();
+		}
+
+		return st;
+	}
+
 	private static void place(ServerWorld world, BlockPos pos, BlockState state, int dist, Direction facing, boolean alone) {
 		world.setBlockState(pos, CeruleanBlocks.MIMIC.getDefaultState(), Block.SKIP_DROPS);
 		MimicBlockEntity.set(world.getBlockEntity(pos), state, dist, facing, alone);

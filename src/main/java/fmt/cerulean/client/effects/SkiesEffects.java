@@ -2,6 +2,7 @@ package fmt.cerulean.client.effects;
 
 import net.minecraft.client.render.DimensionEffects;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Nullable;
 
 public class SkiesEffects extends DimensionEffects {
 	public SkiesEffects() {
@@ -16,5 +17,11 @@ public class SkiesEffects extends DimensionEffects {
 	@Override
 	public boolean useThickFog(int camX, int camY) {
 		return false;
+	}
+
+	@Nullable
+	@Override
+	public float[] getFogColorOverride(float skyAngle, float tickDelta) {
+		return null;
 	}
 }

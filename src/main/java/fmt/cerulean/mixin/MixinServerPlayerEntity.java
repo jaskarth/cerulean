@@ -94,18 +94,18 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				}
 			}
 
+			if (st.dissonance >= 1800) {
+				if (st.indifference == 0) {
+					st.indifference = 1;
+				}
+			}
+
 			if (st.indifference > 0) {
 				st.indifference++;
 			} else if ((this.getWorld().getTime() & 7) == 0) {
 				BlockPos bp = this.getBlockPos();
 				for (Direction dir : Util.DIRECTIONS) {
 					if (this.getWorld().getBlockState(bp.offset(dir)).isOf(CeruleanBlocks.INKY_VOID)) {
-						st.indifference = 1;
-					}
-				}
-
-				for (Direction dir : Util.DIRECTIONS) {
-					if (this.getWorld().getBlockState(bp.offset(dir, 2)).isOf(CeruleanBlocks.INKY_VOID)) {
 						st.indifference = 1;
 					}
 				}
@@ -131,7 +131,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 					throw new RuntimeException("I stepped into the light, but only darkness engulfed me...");
 				}
 
-				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, this.getBlockPos());
+				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0));
 
 				if (tp != null) {
 					FabricDimensions.teleport(this, skies, new TeleportTarget(tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch()));
@@ -149,6 +149,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 					st.sync((ServerPlayerEntity) (Object)this);
 				}
 			}
+		}
+	}
+
+	@Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
+	private void cerulean$noDrops(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
+		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			cir.setReturnValue(false);
 		}
 	}
 

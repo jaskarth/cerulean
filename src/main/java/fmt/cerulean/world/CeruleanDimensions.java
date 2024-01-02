@@ -1,6 +1,9 @@
 package fmt.cerulean.world;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.util.Vec2d;
+import fmt.cerulean.util.Vec2i;
+import fmt.cerulean.util.Voronoi;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -24,15 +27,25 @@ public class CeruleanDimensions {
 		int maxLen = X;
 		int maxI = maxLen * maxLen;
 
+		Voronoi vn = new Voronoi(world.getSeed());
+
+		// sssh. all's right in the world.
 		for (int i = 0; i < maxI; i++){
 			if ((-X / 2 <= x) && (x <= X / 2) && (-Z / 2 <= z) && (z <= Z / 2)) {
-				BlockPos bp = new BlockPos(origin.getX() + (x << 4) + 8, 0, origin.getZ() + (z << 4) + 8);
-				Chunk chunk = world.getChunk(bp.getX() / 16, bp.getZ() / 16);
-				int topY = chunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, bp.getX(), bp.getZ()) + 1;
+				BlockPos pos = new BlockPos(origin.getX() + (x << 4), 0, origin.getZ() + (z << 4));
 
-				if (topY > 80) {
-					return bp.withY(topY);
-				}
+				int vx = pos.getX();
+				int vz = pos.getZ();
+
+				double scale = 48.0 * 4;
+				Vec2d cp = vn.getCellPos(vx / scale, vz / scale, scale);
+				Vec2i center = cp.floor();
+
+				BlockPos out = new BlockPos(center.x() + 4, 0, center.z() + 4);
+
+				int topY = world.getChunk(out).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, center.x(), center.z()) + 2;
+
+				return out.withY(topY);
 			}
 
 			if( (x == z) || ((x < 0) && (x == -z)) || ((x > 0) && (x == 1 - z))) {

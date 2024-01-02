@@ -12,7 +12,8 @@
     "MixinPlayerEntity",
     "MixinWorld",
     "MixinServerPlayerEntity",
-    "MixinEnchantmentScreenHandler"
+    "MixinEnchantmentScreenHandler",
+    "MixinRedstoneView"
   ],
   "client": [
     "client.MixinClientPlayNetworkHandler",
@@ -20,7 +21,8 @@
     "client.MixinInGameHud",
     "client.MixinLightmapTextureManager",
     "client.MixinClientPlayerEntity",
-    "client.MixinWorldRenderer"
+    "client.MixinWorldRenderer",
+    "client.MixinClientPlayerNetworkManager"
   ],
   "injectors": {
     "defaultRequire": 1

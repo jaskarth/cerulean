@@ -37,8 +37,8 @@ public class CeruleanItems {
 			.food(new FoodComponent.Builder()
 					.hunger(3)
 					.saturationModifier(0.1f)
-					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 1200, 1), 1.0F)
-					.statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 300, 0), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 400, 1), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0), 1.0F)
 					.build()
 			)));
 	public static final Item EXPOSED_COPPER_INGOT = register("exposed_copper_ingot", new Item(new Item.Settings()));
@@ -58,6 +58,7 @@ public class CeruleanItems {
 					.statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0), 1.0F)
 					.statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 3600, 2), 1.0F)
 					.statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 3600, 1), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 3600, 0), 1.0F)
 					.build()
 	)));
 
