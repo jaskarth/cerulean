@@ -47,7 +47,7 @@ public abstract class MixinLightmapTextureManager {
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
     private void cerulean$updateCustomDimensions(float delta, CallbackInfo ci) {
         ClientWorld world = MinecraftClient.getInstance().world;
-        if (world != null && CeruleanDimensions.DREAMSCAPE.equals(world.getDimensionKey().getValue())) {
+        if (world != null && CeruleanDimensions.DREAMSCAPE.equals(world.getDimensionEntry().getKey().get().getValue())) {
             cerulean$updateDreamscape(delta);
             ci.cancel();
         }

@@ -15,7 +15,7 @@ public interface MixinRedstoneView {
 	@Inject(method = {"getStrongRedstonePower", "getEmittedRedstonePower*"}, at = @At("HEAD"), cancellable = true)
 	private void cerulean$powerless(CallbackInfoReturnable<Integer> cir) {
 		if (((Object)this) instanceof World world) {
-			if (world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				cir.setReturnValue(0);
 			}
 		}

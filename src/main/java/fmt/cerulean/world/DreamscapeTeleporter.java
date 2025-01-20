@@ -3,7 +3,6 @@ package fmt.cerulean.world;
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.*;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.registry.RegistryKey;
@@ -225,7 +224,7 @@ public class DreamscapeTeleporter {
 					}
 				});
 
-				FabricDimensions.teleport(p, dreamscape, new TeleportTarget(p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch()));
+				p.teleportTo(new TeleportTarget(dreamscape, p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch(), e -> {}));
 			}
 		}
 	}

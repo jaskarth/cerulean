@@ -16,7 +16,7 @@ public abstract class CeruleanRenderTypes extends RenderLayer {
 		return RenderLayer.MultiPhaseParameters.builder()
 				.lightmap(ENABLE_LIGHTMAP)
 				.program(program)
-				.texture(new RenderPhase.Texture(new Identifier("textures/misc/white.png"), false, false))
+				.texture(new RenderPhase.Texture(Identifier.of("textures/misc/white.png"), false, false))
 				.transparency(TRANSLUCENT_TRANSPARENCY)
 				.target(TRANSLUCENT_TARGET)
 				.cull(RenderPhase.DISABLE_CULLING);

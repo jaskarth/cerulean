@@ -1,6 +1,7 @@
 package fmt.cerulean.world;
 
 import fmt.cerulean.net.CeruleanNetworking;
+import fmt.cerulean.net.packet.CeruleanStateSyncPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
@@ -31,10 +32,7 @@ public class DimensionState {
 	}
 
 	public void sync(ServerPlayerEntity player) {
-		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeNbt(nbt());
-
-		ServerPlayNetworking.send(player, CeruleanNetworking.DS_SYNC, buf);
+		ServerPlayNetworking.send(player, new CeruleanStateSyncPacket(nbt()));
 	}
 
 	public void read(NbtCompound nbt) {

@@ -42,7 +42,7 @@ public abstract class MixinServerWorld extends World implements StructureWorldAc
 	@Override
 	public GameRules getGameRules() {
 		GameRules rules = super.getGameRules();
-		if (this.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			return new DreamscapeGamerules(rules);
 		}
 		return rules;
@@ -50,7 +50,7 @@ public abstract class MixinServerWorld extends World implements StructureWorldAc
 
 	@Inject(method = "spawnEntity", at = @At("HEAD"), cancellable = true)
 	private void cerulean$noEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-		if (this.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			if (!(entity instanceof PlayerEntity)) {
 				cir.setReturnValue(false);
 			}

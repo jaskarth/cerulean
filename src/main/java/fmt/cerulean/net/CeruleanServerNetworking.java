@@ -1,6 +1,8 @@
 package fmt.cerulean.net;
 
 import fmt.cerulean.block.entity.MimicBlockEntity;
+import fmt.cerulean.net.packet.CloseBehindPacket;
+import fmt.cerulean.net.packet.MagicAttackPacket;
 import fmt.cerulean.registry.CeruleanBlocks;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -8,23 +10,23 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class CeruleanServerNetworking {
 	public static void init() {
-		ServerPlayNetworking.registerGlobalReceiver(CeruleanNetworking.MAGIC_ATTACK, (s, p, h, buf, rs) -> {
-			int eId = buf.readVarInt();
-
-			s.execute(() -> {
-				Entity entity = p.getServerWorld().getEntityById(eId);
+		ServerPlayNetworking.registerGlobalReceiver(MagicAttackPacket.ID, (payload, ctx) -> {
+			ctx.server().execute(() -> {
+				Entity entity = ctx.player().getServerWorld().getEntityById(payload.id());
 				entity.damage(entity.getDamageSources().magic(), 12);
 			});
 		});
 
-		ServerPlayNetworking.registerGlobalReceiver(CeruleanNetworking.CLOSE_BEHIND, (s, p, h, buf, rs) -> {
-			s.execute(() -> {
+		ServerPlayNetworking.registerGlobalReceiver(CloseBehindPacket.ID, (payload, ctx) -> {
+			ctx.server().execute(() -> {
+				ServerPlayerEntity p = ctx.player();
 				ServerWorld world = p.getServerWorld();
 
 				BlockPos pos = p.getLandingPos();

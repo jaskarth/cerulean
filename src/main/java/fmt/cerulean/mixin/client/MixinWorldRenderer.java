@@ -18,7 +18,7 @@ public class MixinWorldRenderer {
 
 	@Redirect(method = "processWorldEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
 	private void cerulean$noPortalSounds(SoundManager instance, SoundInstance sound) {
-		Identifier id = this.world.getDimensionKey().getValue();
+		Identifier id = this.world.getDimensionEntry().getKey().get().getValue();
 		if (id.equals(CeruleanDimensions.DREAMSCAPE)) {
 			return;
 		}

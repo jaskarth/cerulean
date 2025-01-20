@@ -1,6 +1,7 @@
 package fmt.cerulean.world.gen;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.registry.RegistryCodecs;
 import net.minecraft.registry.RegistryKeys;
@@ -13,7 +14,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import java.util.stream.Stream;
 
 public class DreamscapeBiomeSource extends BiomeSource {
-	public static final Codec<DreamscapeBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<DreamscapeBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			RegistryCodecs.entryList(RegistryKeys.BIOME, Biome.CODEC).fieldOf("biomes").forGetter((source) -> source.entries)
 	).apply(instance, DreamscapeBiomeSource::new));
 
@@ -24,7 +25,7 @@ public class DreamscapeBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	protected Codec<? extends BiomeSource> getCodec() {
+	protected MapCodec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
 

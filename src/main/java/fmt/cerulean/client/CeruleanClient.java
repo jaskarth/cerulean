@@ -36,7 +36,7 @@ public class CeruleanClient implements ClientModInitializer {
 		CeruleanClientNetworking.init();
 
 		ColorProviderRegistry.ITEM.register((stack, index) -> {
-			return WellBlockEntity.getRgb(((StarItem) stack.getItem()).resource);
+			return 0xFF000000 | WellBlockEntity.getRgb(((StarItem) stack.getItem()).resource);
 		}, CeruleanItems.STARS.values().stream().toArray(i -> new ItemConvertible[i]));
 	}
 }

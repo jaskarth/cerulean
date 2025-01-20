@@ -25,7 +25,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements Counterf
 
 	@Inject(method = "isBlockBreakingRestricted", at = @At("HEAD"), cancellable = true)
 	private void cerulean$dreamscapeInteraction(World world, BlockPos pos, GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
-		if (world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			cir.setReturnValue(true);
 		}
 	}
@@ -33,7 +33,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements Counterf
 	@Override
 	protected void tickInVoid() {
 		World world = this.getWorld();
-		if (!world.isClient() && world.getDimensionKey().getValue().equals(CeruleanDimensions.SKIES)) {
+		if (!world.isClient() && world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
 			cerulean$dimensionState.melancholy++;
 			cerulean$dimensionState.sync((ServerPlayerEntity) (Object)this);
 		} else {

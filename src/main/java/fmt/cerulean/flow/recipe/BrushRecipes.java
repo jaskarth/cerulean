@@ -431,6 +431,7 @@ public class BrushRecipes {
 	}
 
 	private static void addRecipe(String path, BrushRecipe recipe) {
+		path = "/" + path;
 		Identifier id = Cerulean.id(path);
 		if (BY_ID.containsKey(id)) {
 			throw new IllegalArgumentException("Brush recipe " + id + " is already registered!");
@@ -452,7 +453,7 @@ public class BrushRecipes {
 			checked = DUAL_RECIPES;
 		}
 		for (BrushRecipe recipe : checked) {
-			if (recipe.matches(inventory, inventory.world)) {
+			if (recipe.matches(inventory.asInput(), inventory.world)) {
 				return recipe;
 			}
 		}

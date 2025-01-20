@@ -8,7 +8,8 @@ import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ProgressScreen;
+import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -27,47 +27,55 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class MixinMinecraftClient {
 	@Shadow @Nullable public ClientWorld world;
 	@Shadow @Nullable public ClientPlayerInteractionManager interactionManager;
+
+	@Shadow public abstract void setScreen(@Nullable Screen screen);
+
 	@Unique
 	private ClientWorld cerulean$changingWorld;
 
 	@Inject(method = "joinWorld", at = @At("HEAD"))
-	private void cerulean$captureJoinedWorld(ClientWorld world, CallbackInfo ci) {
+	private void cerulean$captureJoinedWorld(ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, CallbackInfo ci) {
 		cerulean$changingWorld = world;
 	}
 
-	@ModifyVariable(method = "joinWorld", at = @At("STORE"), index = 2)
-	private ProgressScreen cerulean$changeWorldJoined(ProgressScreen screen) {
-		if (cerulean$changingWorld.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+	@Inject(method = "reset", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", shift = At.Shift.AFTER))
+	private void cerulean$changeWorldJoined(Screen resettingScreen, CallbackInfo ci) {
+		if (!(resettingScreen instanceof DownloadingTerrainScreen)) {
+			return;
+		}
+
+		if (cerulean$changingWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			ClientState.virtigo = 45;
 			ClientState.virtigoColor = 0x101020;
 
-			return new ColorProgressScreen(true, 0xFF101020);
+			setScreen(new ColorProgressScreen(true, 0xFF101020));
+			return;
 		}
 
-		if (cerulean$changingWorld.getDimensionKey().getValue().equals(CeruleanDimensions.SKIES)) {
-			if (this.world != null && this.world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (cerulean$changingWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
+			if (this.world != null && this.world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				ClientState.virtigo = 45;
 				ClientState.virtigoColor = 0xFFFFFF;
 
-				return new ColorProgressScreen(true, 0xFFFFFFFF);
+				setScreen(new ColorProgressScreen(true, 0xFFFFFFFF));
+
 			}
 		}
 
-		if (this.world != null && this.world.getDimensionKey().getValue().equals(CeruleanDimensions.SKIES)) {
+		if (this.world != null && this.world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
 			ClientState.virtigo = 45;
 			ClientState.virtigoColor = 0x000000;
 
-			return new ColorProgressScreen(true, 0xFF000000);
+			setScreen(new ColorProgressScreen(true, 0xFF000000));
+			return;
 		}
 
-		if (this.world != null && this.world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.world != null && this.world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			ClientState.virtigo = 45;
 			ClientState.virtigoColor = 0x000000;
 
-			return new ColorProgressScreen(true, 0xFF000000);
+			setScreen(new ColorProgressScreen(true, 0xFF000000));
 		}
-
-		return screen;
 	}
 
 	@Inject(method = "handleBlockBreaking", at = @At(value = "INVOKE", target =

@@ -7,7 +7,6 @@ import fmt.cerulean.util.Counterful;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.DimensionState;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,6 +23,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,8 +46,10 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 
 	@Shadow @Final public MinecraftServer server;
 
-	@Inject(method = "moveToWorld", at = @At("RETURN"))
-	private void cerulean$resetState(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
+	@Shadow public abstract @Nullable Entity teleportTo(TeleportTarget teleportTarget);
+
+	@Inject(method = "teleportTo", at = @At("RETURN"))
+	private void cerulean$resetState(TeleportTarget teleportTarget, CallbackInfoReturnable<Entity> cir) {
 		DimensionState st = Counterful.get((PlayerEntity) (Object) this);
 		st.reset();
 		st.sync((ServerPlayerEntity) (Object)this);
@@ -78,7 +80,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 			return;
 		}
 
-		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getWorld().getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			st.dissonance++;
 
 			if (st.ennui > 0) {
@@ -134,7 +136,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0));
 
 				if (tp != null) {
-					FabricDimensions.teleport(this, skies, new TeleportTarget(tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch()));
+					teleportTo(new TeleportTarget(skies, tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch(), e -> {}));
 
 					st.reset();
 					st.sync((ServerPlayerEntity) (Object)this);
@@ -154,7 +156,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 
 	@Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
 	private void cerulean$noDrops(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
-		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getWorld().getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			cir.setReturnValue(false);
 		}
 	}

@@ -6,9 +6,10 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
-public interface BrushRecipe extends Recipe<PigmentInventory> {
+public interface BrushRecipe extends Recipe<BrushInput> {
 
 	int getCraftTime();
 
@@ -23,27 +24,16 @@ public interface BrushRecipe extends Recipe<PigmentInventory> {
 	}
 
 	@Override
-	default boolean matches(PigmentInventory inventory, World world) {
-		if (inventory.opposing.empty() != (getRequiredFlowInputs() == 1)) {
+	default boolean matches(BrushInput input, World world) {
+		if (input.inventory.opposing.empty() != (getRequiredFlowInputs() == 1)) {
 			return false;
 		}
-		return canCraft(inventory);
-	}
-
-	@Override
-	default ItemStack craft(PigmentInventory inventory, DynamicRegistryManager registryManager) {
-		craft(inventory);
-		return ItemStack.EMPTY;
+		return canCraft(input.inventory);
 	}
 
 	@Override
 	default boolean fits(int width, int height) {
 		return true;
-	}
-
-	@Override
-	default ItemStack getResult(DynamicRegistryManager registryManager) {
-		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -54,5 +44,15 @@ public interface BrushRecipe extends Recipe<PigmentInventory> {
 	@Override
 	default RecipeType<?> getType() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default ItemStack craft(BrushInput input, RegistryWrapper.WrapperLookup lookup) {
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	default ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
+		return ItemStack.EMPTY;
 	}
 }

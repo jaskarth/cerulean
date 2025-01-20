@@ -176,7 +176,7 @@ public final class CeruleanBlocks {
 
 	private static AbstractBlock.Settings offsetter(AbstractBlock.Settings settings) {
 
-		((BlockSettingsAccessor)settings).setOffsetter(Optional.of(new SixSideOffsetter()));
+		((BlockSettingsAccessor)settings).setOffsetter(new SixSideOffsetter());
 
 		return settings;
 	}

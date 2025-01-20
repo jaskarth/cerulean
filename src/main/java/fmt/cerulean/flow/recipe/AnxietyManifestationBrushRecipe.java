@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -35,9 +36,9 @@ public class AnxietyManifestationBrushRecipe implements BrushRecipe {
 				try {
 					BlockPos pos = inventory.pos.offset(inventory.direction, i);
 					BlockState state = world.getBlockState(pos);
-					if (!(state.getBlock() instanceof SaplingBlock) && ti.isSuitableFor(stack, state)) {
+					if (!(state.getBlock() instanceof SaplingBlock) && ti.isCorrectForDrops(stack, state)) {
 						world.breakBlock(pos, true);
-						stack.damage(1, world.getRandom(), null);
+						stack.damage(1, (ServerWorld) world, null, u -> {});
 						return;
 					}
 				} catch (Exception e) {

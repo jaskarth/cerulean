@@ -2,16 +2,17 @@ package fmt.cerulean.client.render;
 
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 
 public class RenderVFX {
-	public static VertexBuffer renderStars(BufferBuilder buffer) {
+	public static VertexBuffer renderStars(Tessellator tessellator) {
 		VertexBuffer vbo = new VertexBuffer(VertexBuffer.Usage.STATIC);
 		Random random = Random.create(10842L);
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+		BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
 		for(int i = 0; i < 15000; ++i) {
 			double d = (double)(random.nextFloat() * 2.0F - 1.0F);
@@ -50,7 +51,8 @@ public class RenderVFX {
 					double ae = 0.0 * q - aa * r;
 					double af = ae * n - ab * o;
 					double ah = ab * n + ae * o;
-					buffer.vertex(j + af, k + ad, l + ah).color((color >> 16) & 0xFF, (color >> 8) & 0xFF, (color >> 0) & 0xFF, 255).next();
+					buffer.vertex((float) (j + af), (float) (k + ad), (float) (l + ah))
+							.color((color >> 16) & 0xFF, (color >> 8) & 0xFF, (color >> 0) & 0xFF, 255);
 				}
 			}
 		}

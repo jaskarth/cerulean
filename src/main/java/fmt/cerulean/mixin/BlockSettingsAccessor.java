@@ -9,5 +9,5 @@ import java.util.Optional;
 @Mixin(AbstractBlock.Settings.class)
 public interface BlockSettingsAccessor {
 	@Accessor
-	void setOffsetter(Optional<AbstractBlock.Offsetter> offsetter);
+	void setOffsetter(AbstractBlock.Offsetter offsetter);
 }

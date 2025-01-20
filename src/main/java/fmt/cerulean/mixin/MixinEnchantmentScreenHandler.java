@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EnchantmentScreenHandler.class)
 public class MixinEnchantmentScreenHandler {
-	// TODO: this injection point sucks
 	@Redirect(method = "method_17411", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;calculateRequiredExperienceLevel(Lnet/minecraft/util/math/random/Random;IILnet/minecraft/item/ItemStack;)I"))
 	private int cerulean$sortedBookshelfBoost(Random random, int slotIndex, int bookshelfCount, ItemStack stack, ItemStack wtf, World world, BlockPos pos) {
 		int extra = 0;

@@ -4,6 +4,8 @@ import fmt.cerulean.flow.FlowState;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.block.entity.BrewingStandBlockEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -11,7 +13,8 @@ import net.minecraft.item.LingeringPotionItem;
 import net.minecraft.item.PotionItem;
 import net.minecraft.item.ThrowablePotionItem;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
@@ -39,7 +42,8 @@ public class BevvyTastingBrushRecipe implements BrushRecipe {
 		if (world.getBlockEntity(inventory.pos) instanceof BrewingStandBlockEntity bsbe) {
 			for (int i = 0; i < 3; i++) {
 				ItemStack stack = bsbe.getStack(i);
-				if (stack.getItem() instanceof PotionItem && !PotionUtil.getPotion(stack).getEffects().isEmpty()) {
+				PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);
+				if (stack.getItem() instanceof PotionItem && potionContents != null) {
 					return true;
 				}
 			}
@@ -56,7 +60,8 @@ public class BevvyTastingBrushRecipe implements BrushRecipe {
 			for (int i = 0; i < 3; i++) {
 				ItemStack stack = bsbe.getStack(i);
 				Item item = stack.getItem();
-				if (item instanceof PotionItem && !PotionUtil.getPotion(stack).getEffects().isEmpty()) {
+				PotionContentsComponent potionContents = stack.getOrDefault(DataComponentTypes.POTION_CONTENTS, null);
+				if (item instanceof PotionItem && potionContents != null) {
 					candidates.add(i);
 					quality += 10;
 					if (item instanceof ThrowablePotionItem) {
@@ -65,11 +70,12 @@ public class BevvyTastingBrushRecipe implements BrushRecipe {
 							quality += 17;
 						}
 					}
-					Potion p = PotionUtil.getPotion(stack);
+					RegistryEntry<Potion> entry = potionContents.potion().get();
+					Potion p = entry.value();
 					if (p.hasInstantEffect()) {
 						quality += 5;
 					}
-					String cool = p.getRegistryEntry().getKey().get().getValue().getPath();
+					String cool = entry.getKey().get().getValue().getPath();
 					if (cool.startsWith("long_")) {
 						quality += 8;
 					} else if (cool.startsWith("strong_")) {

@@ -69,7 +69,7 @@ public class ReedsPlantBlock extends AbstractPlantBlock {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (state.get(BERRIES)) {
 			Block.dropStack(world, pos, new ItemStack(CeruleanItems.BERRIES, 1));
 			float f = MathHelper.nextBetween(world.random, 0.8F, 1.2F);

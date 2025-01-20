@@ -1,6 +1,8 @@
 package fmt.cerulean.client.screen;
 
 import java.util.function.BooleanSupplier;
+
+import fmt.cerulean.client.ClientState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
@@ -34,7 +36,11 @@ public class ColorDownloadScreen extends Screen {
 
 	@Override
 	public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-		context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), this.color);
+		int setColor = color;
+		if (color == 0xFFFFFFFF && ClientState.virtigo > 0) {
+			setColor = ClientState.virtigoColor;
+		}
+		context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), setColor);
 	}
 
 	@Override

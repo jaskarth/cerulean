@@ -1,10 +1,18 @@
 package fmt.cerulean.flow;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 
 public record FlowState(FlowResource resource, int pressure) {
+	public static final Codec<FlowState> CODEC = NbtCompound.CODEC.xmap(FlowState::fromNbt, FlowState::toNbt);
+	public static final PacketCodec<ByteBuf, FlowState> PACKET_CODEC = PacketCodecs.NBT_COMPOUND.xmap(FlowState::fromNbt, FlowState::toNbt);
+
 	public static final FlowState NONE = new FlowState(null, 0);
 
 	public boolean empty() {

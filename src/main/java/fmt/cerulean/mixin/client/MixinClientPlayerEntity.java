@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.net.CeruleanNetworking;
+import fmt.cerulean.net.packet.CloseBehindPacket;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -33,7 +34,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 			ClientState.virtigo--;
 		}
 
-		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getWorld().getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			if (cerulean$replaceTimer == 0) {
 				BlockPos pos = this.getLandingPos();
 
@@ -44,7 +45,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
 						if (dir == this.getHorizontalFacing()) {
 							cerulean$replaceTimer = 10;
-							ClientPlayNetworking.send(CeruleanNetworking.CLOSE_BEHIND, PacketByteBufs.empty());
+							ClientPlayNetworking.send(CloseBehindPacket.INST);
 						}
 					}
 				}
@@ -58,7 +59,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
 	@Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
 	private void cerulean$noDrops(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
-		if (this.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (this.getWorld().getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 			cir.setReturnValue(false);
 		}
 	}

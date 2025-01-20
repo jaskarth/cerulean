@@ -16,6 +16,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -162,7 +163,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 			PigmentInventory inventory = new PigmentInventory(current, opposing, world, pos.offset(spew), spew);
 			inventory.recipeProgress = recipeProgress;
 			if (activeRecipe != null) {
-				if (!activeRecipe.matches(inventory, world)) {
+				if (!activeRecipe.matches(inventory.asInput(), world)) {
 					activeRecipe = null;
 					spewed = FlowState.NONE;
 				}
@@ -175,7 +176,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 			if (activeRecipe != null) {
 				recipeProgress++;
 				if (recipeProgress >= activeRecipe.getCraftTime()) {
-					activeRecipe.craft(inventory, world.getRegistryManager());
+					activeRecipe.craft(inventory);
 					recipeProgress = 0;
 				}
 				spewed = activeRecipe.getProcessedFlow(current, recipeProgress);
@@ -226,8 +227,8 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
+	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(nbt, registryLookup);
 		if (nbt.contains("Input")) {
 			inputDir = Direction.byId(nbt.getInt("Input"));
 		}
@@ -243,7 +244,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	@Override
-	public void writeNbt(NbtCompound nbt) {
+	public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
 		if (inputDir != null) {
 			nbt.putInt("Input", inputDir.getId());
 		}
@@ -251,11 +252,11 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
+	public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
 		NbtCompound nbt = new NbtCompound();
 		nbt.put("Spewed", spewed.toNbt());
 		nbt.putBoolean("Processing", activeRecipe != null);
-		writeNbt(nbt);
+		writeNbt(nbt, registryLookup);
 		return nbt;
 	}
 

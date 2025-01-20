@@ -14,7 +14,7 @@ public class MixinClientPlayerNetworkManager {
 	@Inject(method = "clickSlot", at = @At("HEAD"), cancellable = true)
 	private void cerulean$dontThrowSlot(int syncId, int slotId, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
 		if (actionType == SlotActionType.THROW || (actionType == SlotActionType.PICKUP && slotId == -999)) {
-			if (player.getWorld().getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (player.getWorld().getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				ci.cancel();
 			}
 		}

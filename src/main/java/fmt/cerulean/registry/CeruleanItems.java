@@ -12,6 +12,7 @@ import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.item.*;
 import fmt.cerulean.util.FuchsiaToolMaterial;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
@@ -20,11 +21,11 @@ import net.minecraft.registry.Registry;
 
 public class CeruleanItems {
 	public static final Item BERRIES = register("berries", new BerryItem(CeruleanBlocks.REEDS, new Item.Settings()
-			.food(new FoodComponent.Builder().hunger(4).saturationModifier(0.1f).alwaysEdible().build())
+			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.1f).alwaysEdible().build())
 	));
 
 	public static final Item GLIMMERCRUMB = register("glimmercrumb", new Item(new Item.Settings()
-			.food(new FoodComponent.Builder().hunger(8).saturationModifier(0.2f).build())
+			.food(new FoodComponent.Builder().nutrition(8).saturationModifier(0.2f).build())
 	));
 
 	public static final Item ORB = register("orb", new Item(new Item.Settings()));
@@ -35,7 +36,7 @@ public class CeruleanItems {
 	public static final Item GLITTERING_COAL = register("glittering_coal", new Item(new Item.Settings()));
 	public static final Item OXIDIZED_CARROT = register("oxidized_carrot", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder()
-					.hunger(3)
+					.nutrition(3)
 					.saturationModifier(0.1f)
 					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 400, 1), 1.0F)
 					.statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0), 1.0F)
@@ -45,14 +46,19 @@ public class CeruleanItems {
 	public static final Item WEATHERED_COPPER_INGOT = register("weathered_copper_ingot", new Item(new Item.Settings()));
 	public static final Item OXIDIZED_COPPER_INGOT = register("oxidized_copper_ingot", new Item(new Item.Settings()));
 	public static final Item FUCHSIA_INGOT = register("fuchsia_ingot", new Item(new Item.Settings()));
-	public static final Item FUCHSIA_SWORD = register("fuchsia_sword", new SwordItem(FuchsiaToolMaterial.INSTANCE, 3, -2.4F, new Item.Settings()));
-	public static final Item FUCHSIA_SHOVEL = register("fuchsia_shovel", new ShovelItem(FuchsiaToolMaterial.INSTANCE, 1.5F, -3.0F, new Item.Settings()));
-	public static final Item FUCHSIA_PICKAXE = register("fuchsia_pickaxe", new PickaxeItem(FuchsiaToolMaterial.INSTANCE, 1, -2.8F, new Item.Settings()));
-	public static final Item FUCHSIA_AXE = register("fuchsia_axe", new AxeItem(FuchsiaToolMaterial.INSTANCE, 6.0F, -3.0F, new Item.Settings()));
-	public static final Item FUCHSIA_HOE = register("fuchsia_hoe", new HoeItem(FuchsiaToolMaterial.INSTANCE, 0, -3.0F, new Item.Settings()));
+	public static final Item FUCHSIA_SWORD = register("fuchsia_sword", new SwordItem(FuchsiaToolMaterial.INSTANCE,  new Item.Settings()
+			.attributeModifiers(SwordItem.createAttributeModifiers(FuchsiaToolMaterial.INSTANCE, 3, -2.4F))));
+	public static final Item FUCHSIA_SHOVEL = register("fuchsia_shovel", new ShovelItem(FuchsiaToolMaterial.INSTANCE, new Item.Settings()
+			.attributeModifiers(ShovelItem.createAttributeModifiers(FuchsiaToolMaterial.INSTANCE, 1.5F, -3.0F))));
+	public static final Item FUCHSIA_PICKAXE = register("fuchsia_pickaxe", new PickaxeItem(FuchsiaToolMaterial.INSTANCE, new Item.Settings()
+			.attributeModifiers(PickaxeItem.createAttributeModifiers(FuchsiaToolMaterial.INSTANCE, 1, -2.8F))));
+	public static final Item FUCHSIA_AXE = register("fuchsia_axe", new AxeItem(FuchsiaToolMaterial.INSTANCE, new Item.Settings()
+			.attributeModifiers(AxeItem.createAttributeModifiers(FuchsiaToolMaterial.INSTANCE, 6.0F, -3.0F))));
+	public static final Item FUCHSIA_HOE = register("fuchsia_hoe", new HoeItem(FuchsiaToolMaterial.INSTANCE, new Item.Settings()
+			.attributeModifiers(HoeItem.createAttributeModifiers(FuchsiaToolMaterial.INSTANCE, 0, -3.0F))));
 	public static final Item CANDY_APPLE = register("candy_apple", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder()
-					.hunger(8)
+					.nutrition(8)
 					.saturationModifier(0.2f)
 					.alwaysEdible()
 					.statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0), 1.0F)

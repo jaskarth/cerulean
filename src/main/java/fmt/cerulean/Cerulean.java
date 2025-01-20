@@ -3,12 +3,9 @@ package fmt.cerulean;
 import java.util.List;
 
 import fmt.cerulean.flow.recipe.BrushRecipes;
+import fmt.cerulean.net.CeruleanNetworking;
 import fmt.cerulean.net.CeruleanServerNetworking;
-import fmt.cerulean.registry.CeruleanBlockEntities;
-import fmt.cerulean.registry.CeruleanBlocks;
-import fmt.cerulean.registry.CeruleanItemGroups;
-import fmt.cerulean.registry.CeruleanItems;
-import fmt.cerulean.registry.CeruleanParticleTypes;
+import fmt.cerulean.registry.*;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.gen.DreamscapeBiomeSource;
 import fmt.cerulean.world.gen.DreamscapeChunkGenerator;
@@ -40,12 +37,14 @@ public class Cerulean implements ModInitializer {
 		CeruleanBlockEntities.init();
 		CeruleanParticleTypes.init();
 
+		CeruleanItemComponents.init();
 		CeruleanItems.init();
 
 		CeruleanItemGroups.init();
 
 		BiomeDecorator.init();
 
+		CeruleanNetworking.init();
 		CeruleanServerNetworking.init();
 
 		BrushRecipes.init();
@@ -57,10 +56,10 @@ public class Cerulean implements ModInitializer {
 		Registry.register(Registries.CHUNK_GENERATOR, id("dreamscape"), DreamscapeChunkGenerator.CODEC);
 		Registry.register(Registries.CHUNK_GENERATOR, id("skies"), SkiesChunkGenerator.CODEC);
 
-		Registry.register(Registries.PAINTING_VARIANT, id("dreams"), new PaintingVariant(16, 32));
+//		Registry.register(Registries.PAINTING_VARIANT, id("dreams"), new PaintingVariant(16, 32));
 
 		UseItemCallback.EVENT.register((player, world, hand) -> {
-			if (world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				return TypedActionResult.fail(ItemStack.EMPTY);
 			}
 
@@ -68,7 +67,7 @@ public class Cerulean implements ModInitializer {
 		});
 
 		UseBlockCallback.EVENT.register((player, world, hand, res) -> {
-			if (player.getAbilities().allowModifyWorld && !player.getStackInHand(hand).isEmpty() && world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (player.getAbilities().allowModifyWorld && !player.getStackInHand(hand).isEmpty() && world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				return ActionResult.FAIL;
 			}
 
@@ -98,6 +97,6 @@ public class Cerulean implements ModInitializer {
 	}
 
 	public static Identifier id(String path) {
-		return new Identifier(ID, path);
+		return Identifier.of(ID, path);
 	}
 }

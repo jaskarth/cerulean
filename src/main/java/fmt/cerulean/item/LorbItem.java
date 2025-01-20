@@ -6,6 +6,7 @@ import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.net.CeruleanNetworking;
+import fmt.cerulean.net.packet.MagicAttackPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;
@@ -60,9 +61,7 @@ public class LorbItem extends Item {
 			EntityHitResult ehit = ProjectileUtil.raycast(user, start, end, box, entityx -> !entityx.isSpectator() && entityx.canHit(), 32);
 
 			if (ehit != null) {
-				PacketByteBuf buf = PacketByteBufs.create();
-				buf.writeVarInt(ehit.getEntity().getId());
-				ClientPlayNetworking.send(CeruleanNetworking.MAGIC_ATTACK, buf);
+				ClientPlayNetworking.send(new MagicAttackPacket(ehit.getEntity().getId()));
 			}
 		} else {
 			if (!user.getAbilities().creativeMode) {

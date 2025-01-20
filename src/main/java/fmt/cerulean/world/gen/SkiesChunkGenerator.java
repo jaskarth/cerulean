@@ -1,6 +1,7 @@
 package fmt.cerulean.world.gen;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.*;
@@ -40,7 +41,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class SkiesChunkGenerator extends ChunkGenerator {
-	public static final Codec<SkiesChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<SkiesChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BiomeSource.CODEC.fieldOf("biome_source").forGetter(b -> b.biomeSource)
 	).apply(instance, SkiesChunkGenerator::new));
 
@@ -51,7 +52,7 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected MapCodec<? extends ChunkGenerator> getCodec() {
 		return CODEC;
 	}
 
@@ -141,7 +142,7 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
+	public CompletableFuture<Chunk> populateNoise(Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
 		ChunkPos pos = chunk.getPos();
 		int chunkX = pos.x;
 		int chunkZ = pos.z;

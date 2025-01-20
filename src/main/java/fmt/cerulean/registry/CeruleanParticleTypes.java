@@ -13,16 +13,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public class CeruleanParticleTypes {
-	public static final ParticleType<StarParticleType> STAR = register("star", FabricParticleTypes.complex(new ParticleEffect.Factory<StarParticleType>() {
-		@Override
-		public StarParticleType read(ParticleType<StarParticleType> type, StringReader reader) throws CommandSyntaxException {
-			throw new UnsupportedOperationException("Unimplemented method 'read'");
-		}
-		@Override
-		public StarParticleType read(ParticleType<StarParticleType> type, PacketByteBuf buf) {
-			throw new UnsupportedOperationException("Unimplemented method 'read'");
-		}
-	}));
+	public static final ParticleType<StarParticleType> STAR = register("star", FabricParticleTypes.complex(StarParticleType.CODEC, StarParticleType.PACKET_CODEC));
 
 	public static void init() {
 	}

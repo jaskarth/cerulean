@@ -4,6 +4,7 @@ import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.screen.ColorDownloadScreen;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.ClientConnection;
@@ -29,25 +30,25 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 	}
 
 	@Inject(method = "startWorldLoading", at = @At("HEAD"), cancellable = true)
-	private void cerulean$handleWorldLoad(ClientPlayerEntity player, ClientWorld world, CallbackInfo ci) {
+	private void cerulean$handleWorldLoad(ClientPlayerEntity player, ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, CallbackInfo ci) {
 		ClientWorld lastWorld = ClientState.lastWorld;
 		ClientState.lastWorld = null;
 
 		if (lastWorld != null) {
-			if (world.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				this.worldLoadingState = new WorldLoadingState(player, world, this.client.worldRenderer);
 				this.client.setScreen(new ColorDownloadScreen(this.worldLoadingState::isReady, 0xFF101020));
 				ci.cancel();
 			}
 
-			if (lastWorld.getDimensionKey().getValue().equals(CeruleanDimensions.SKIES)) {
+			if (lastWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
 				this.worldLoadingState = new WorldLoadingState(player, world, this.client.worldRenderer);
 				this.client.setScreen(new ColorDownloadScreen(this.worldLoadingState::isReady, 0xFF000000));
 				ci.cancel();
 			}
 
-			if (lastWorld.getDimensionKey().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
-				if (world.getDimensionKey().getValue().equals(CeruleanDimensions.SKIES)) {
+			if (lastWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+				if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
 					this.worldLoadingState = new WorldLoadingState(player, world, this.client.worldRenderer);
 					this.client.setScreen(new ColorDownloadScreen(this.worldLoadingState::isReady, 0xFFFFFFFF));
 					ci.cancel();

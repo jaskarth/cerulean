@@ -1,6 +1,7 @@
 package fmt.cerulean.flow.recipe;
 
 import fmt.cerulean.item.BerryItem;
+import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
 
 public class BerryFlavoringBrushRecipe implements BrushRecipe {
@@ -17,7 +18,7 @@ public class BerryFlavoringBrushRecipe implements BrushRecipe {
 
 	@Override
 	public boolean canCraft(PigmentInventory inventory) {
-		if (inventory.containsAny(s -> s.isOf(CeruleanItems.BERRIES) && s.getNbt() == null)) {
+		if (inventory.containsAny(s -> s.isOf(CeruleanItems.BERRIES) && s.get(CeruleanItemComponents.FLOW_STATE) == null)) {
 			return true;
 		}
 		return false;

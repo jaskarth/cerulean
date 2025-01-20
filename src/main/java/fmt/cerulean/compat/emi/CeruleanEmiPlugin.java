@@ -91,7 +91,8 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 			} else if (recipe instanceof AnxietyManifestationBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(id,
 					List.of(of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES)),
-					List.of(EmiIngredient.of(ItemTags.TOOLS)),
+					// TODO: make custom tool tag
+					List.of(EmiIngredient.of(ItemTags.PICKAXES)),
 					EmiStack.EMPTY,
 					List.of(),
 					List.of(),

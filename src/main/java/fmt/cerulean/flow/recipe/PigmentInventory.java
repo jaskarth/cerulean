@@ -103,4 +103,8 @@ public class PigmentInventory extends SimpleInventory {
 		ItemEntity entity = new ItemEntity(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, stack);
 		world.spawnEntity(entity);
 	}
+
+	public BrushInput asInput() {
+		return new BrushInput(this);
+	}
 }

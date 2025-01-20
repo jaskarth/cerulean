@@ -1,5 +1,6 @@
 package fmt.cerulean.client.screen;
 
+import fmt.cerulean.client.ClientState;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ProgressScreen;
 import net.minecraft.client.render.RenderLayer;
@@ -21,7 +22,11 @@ public class ColorProgressScreen extends ProgressScreen {
 				this.client.setScreen(null);
 			}
 		} else {
-			context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color);
+			int setColor = color;
+			if (color == 0xFFFFFFFF && ClientState.virtigo > 0) {
+				setColor = ClientState.virtigoColor;
+			}
+			context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), setColor);
 		}
 	}
 }
