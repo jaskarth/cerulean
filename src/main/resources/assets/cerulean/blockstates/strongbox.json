@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "weak=false": {
+      "model": "cerulean:block/strongbox"
+    },
+    "weak=true": {
+      "model": "cerulean:block/weakbox"
+    }
+  }
+}

@@ -30,6 +30,7 @@
   "block.cerulean.spacebrick_wall": "Spacebrick Wall",
   "block.cerulean.spacebrick_slab": "Spacebrick Slab",
   "block.cerulean.spacebrick_stairs": "Spacebrick Stairs",
+  "block.cerulean.strongbox": "Strongbox",
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -60,6 +61,7 @@
   "item.cerulean.spacebrick_wall": "Spacebrick Wall",
   "item.cerulean.spacebrick_slab": "Spacebrick Slab",
   "item.cerulean.spacebrick_stairs": "Spacebrick Stairs",
+  "item.cerulean.strongbox": "Strongbox",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -168,6 +170,11 @@
   "info.cerulean.cindering_afterglow": "Burns dimmer stars out",
   "info.cerulean.cindering_afterglow_twice": "Burns the dimmest stars out",
   "info.cerulean.bevvy_tasting": "Consumes potions to brighten stars",
+
+  "info.cerulean.strongbox.unknowable.0": "It won't budge.",
+  "info.cerulean.strongbox.unknowable.1": "I can't open it.",
+  "info.cerulean.strongbox.unknowable.2": "It's locked.",
+  "info.cerulean.strongbox.unknowable.3": "It won't move.",
 
   "cerulean.brightness.dim": "Dim",
   "cerulean.brightness.waning": "Waning",

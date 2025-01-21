@@ -23,7 +23,8 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.SPARKLESSBLOSSOM,
 				CeruleanBlocks.LUNARIUM,
 				CeruleanBlocks.REEDS,
-				CeruleanBlocks.REEDS_PLANT
+				CeruleanBlocks.REEDS_PLANT,
+				CeruleanBlocks.STRONGBOX
 		);
 	}
 }

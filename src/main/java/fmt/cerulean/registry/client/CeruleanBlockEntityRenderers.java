@@ -1,11 +1,13 @@
 package fmt.cerulean.registry.client;
 
 import fmt.cerulean.registry.CeruleanBlockEntities;
-import fmt.cerulean.client.render.block.MimicBlockEntityRenderer;
+import fmt.cerulean.client.render.block.MimicRenderer;
+import fmt.cerulean.client.render.block.StrongboxRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 public class CeruleanBlockEntityRenderers {
 	public static void init() {
-		BlockEntityRendererFactories.register(CeruleanBlockEntities.MIMIC, MimicBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(CeruleanBlockEntities.MIMIC, MimicRenderer::new);
+		BlockEntityRendererFactories.register(CeruleanBlockEntities.STRONGBOX, StrongboxRenderer::new);
 	}
 }

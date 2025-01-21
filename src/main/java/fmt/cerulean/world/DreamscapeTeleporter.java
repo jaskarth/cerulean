@@ -1,22 +1,23 @@
 package fmt.cerulean.world;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.block.StrongboxBlock;
 import fmt.cerulean.block.entity.MimicBlockEntity;
+import fmt.cerulean.block.entity.StrongboxBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.border.WorldBorder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class DreamscapeTeleporter {
 	private static class TeleportGroup {
@@ -181,12 +182,13 @@ public class DreamscapeTeleporter {
 			for (int x = expanded.getMinX(); x <= expanded.getMaxX(); x++) {
 				for (int z = expanded.getMinZ(); z <= expanded.getMaxZ(); z++) {
 					for (int y = expanded.getMinY(); y <= expanded.getMaxY(); y++) {
-						BlockPos local = new BlockPos(x, y, z);
-						BlockPos set = local.add(transX, transY, transZ);
-						if (expanded.contains(local) && !target.contains(local)) {
-							dreamscape.setBlockState(set, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
+						BlockPos oldPos = new BlockPos(x, y, z);
+						BlockPos newPos = oldPos.add(transX, transY, transZ);
+						if (expanded.contains(oldPos) && !target.contains(oldPos)) {
+							dreamscape.setBlockState(newPos, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
 						} else {
-							dreamscape.setBlockState(set, filterState(world, local), Block.SKIP_DROPS);
+							dreamscape.setBlockState(newPos, filterState(world, oldPos), Block.SKIP_DROPS);
+							handlePostState(dreamscape, world, oldPos, newPos);
 						}
 					}
 				}
@@ -235,7 +237,20 @@ public class DreamscapeTeleporter {
 			return Blocks.AIR.getDefaultState();
 		}
 
+		if (st.isOf(CeruleanBlocks.STRONGBOX)) {
+			return CeruleanBlocks.STRONGBOX.getDefaultState().with(StrongboxBlock.WEAK, true);
+		}
+
 		return st;
+	}
+
+	private static void handlePostState(ServerWorld newWorld, ServerWorld oldWorld, BlockPos oldPos, BlockPos newPos) {
+		BlockEntity be = newWorld.getBlockEntity(newPos);
+		if (be instanceof StrongboxBlockEntity strongbox) {
+			strongbox.originalWorld = oldWorld.getRegistryKey();
+			strongbox.originalBlockPos = oldPos;
+			strongbox.markDirty();
+		}
 	}
 
 	private static void place(ServerWorld world, BlockPos pos, BlockState state, int dist, Direction facing, boolean alone) {

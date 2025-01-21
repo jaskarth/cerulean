@@ -152,6 +152,9 @@ public final class CeruleanBlocks {
 	public static final Block SPACEROCK_STAIRS = register("spacerock_stairs",
 			new StairsBlock(SPACEBRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(SPACEBRICKS)));
 
+	public static final Block STRONGBOX = register("strongbox",
+			new StrongboxBlock(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS).strength(10.0F, 300.0F).nonOpaque()));
+
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(EXPOSED_PIPE, WEATHERED_PIPE);

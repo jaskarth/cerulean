@@ -19,12 +19,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class MimicBlockEntityRenderer implements BlockEntityRenderer<MimicBlockEntity> {
+public class MimicRenderer implements BlockEntityRenderer<MimicBlockEntity> {
 	private final BlockRenderManager manager;
 
-	public MimicBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
+	public MimicRenderer(BlockEntityRendererFactory.Context ctx) {
 		this.manager = ctx.getRenderManager();
 	}
+
 	@Override
 	public void render(MimicBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		BlockModelRenderer.enableBrightnessCache();

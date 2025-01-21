@@ -310,6 +310,17 @@ public class BrushRecipes {
 
 		toolRecipes();
 
+		addRecipe("strongbox", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES
+				), 40, List.of(
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
+				Ingredient.ofItems(CeruleanBlocks.SMOOTH_SPACEROCK),
+				Ingredient.ofItems(CeruleanItems.GLIMMERCRUMB)
+		), new ItemStack(CeruleanBlocks.STRONGBOX)
+		));
+
 		addRecipe("wait", new InspirationBrushRecipe.Uninspired(
 			CanvasRequirements.of(
 				Set.of(Color.LILAC), ALL_BRIGHTNESSES

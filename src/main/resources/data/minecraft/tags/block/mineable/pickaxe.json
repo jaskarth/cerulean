@@ -20,7 +20,8 @@
     "cerulean:spacebrick_wall",
     "cerulean:spacebrick_slab",
     "cerulean:spacebrick_stairs",
-    "cerulean:spacerock_stairs"
+    "cerulean:spacerock_stairs",
+    "cerulean:strongbox"
   ],
   "replace": false
 }
