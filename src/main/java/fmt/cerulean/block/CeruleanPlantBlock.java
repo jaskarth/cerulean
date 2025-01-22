@@ -1,6 +1,10 @@
 package fmt.cerulean.block;
 
+import fmt.cerulean.block.base.Plasticloggable;
+import fmt.cerulean.registry.CeruleanFluids;
 import net.minecraft.block.*;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -15,14 +19,16 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-public class CeruleanPlantBlock extends Block {
+public class CeruleanPlantBlock extends Block implements Plasticloggable {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
 
 	public static final DirectionProperty FACING = Properties.FACING;
 
 	public CeruleanPlantBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.UP));
+		this.setDefaultState(this.stateManager.getDefaultState()
+				.with(FACING, Direction.UP)
+				.with(PLASTICLOGGED, false));
 	}
 
 	@Override
@@ -41,8 +47,13 @@ public class CeruleanPlantBlock extends Block {
 	}
 
 	@Override
+	protected FluidState getFluidState(BlockState state) {
+		return state.get(PLASTICLOGGED) ? CeruleanFluids.POLYETHYLENE.getDefaultState() : super.getFluidState(state);
+	}
+
+	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING, PLASTICLOGGED);
 	}
 
 	@Override
@@ -60,6 +71,7 @@ public class CeruleanPlantBlock extends Block {
 	@Nullable
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getSide());
+		FluidState fluid = ctx.getWorld().getFluidState(ctx.getBlockPos());
+		return this.getDefaultState().with(FACING, ctx.getSide()).with(PLASTICLOGGED, fluid.isOf(CeruleanFluids.POLYETHYLENE));
 	}
 }

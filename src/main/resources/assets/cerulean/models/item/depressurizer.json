@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "cerulean:item/depressurizer/depressurizer_drumless"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "fluid_type": 0.01
+      },
+      "model": "cerulean:item/depressurizer/depressurizer_empty"
+    },
+    {
+      "predicate": {
+        "fluid_type": 0.02
+      },
+      "model": "cerulean:item/depressurizer/depressurizer_polyethylene"
+    },
+
+
+    {
+      "predicate": {
+        "fluid_type": 1.0
+      },
+      "model": "cerulean:item/depressurizer"
+    }
+  ]
+}

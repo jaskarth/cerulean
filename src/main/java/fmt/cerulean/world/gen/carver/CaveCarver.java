@@ -1,5 +1,6 @@
 package fmt.cerulean.world.gen.carver;
 
+import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 
@@ -20,6 +21,10 @@ public class CaveCarver extends TunnelCarver {
 
 	@Override
 	protected boolean canCarve(BlockState state) {
+		if (state.isOf(CeruleanBlocks.POLYETHYLENE)) {
+			return false;
+		}
+
 		return true;
 	}
 

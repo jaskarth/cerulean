@@ -6,19 +6,27 @@ import fmt.cerulean.client.effects.DreamscapeEffects;
 import fmt.cerulean.client.effects.SkiesEffects;
 import fmt.cerulean.client.render.DreamscapeRenderer;
 import fmt.cerulean.client.render.SkiesRenderer;
+import fmt.cerulean.fluid.CanisterFluidType;
 import fmt.cerulean.item.StarItem;
 import fmt.cerulean.net.CeruleanClientNetworking;
+import fmt.cerulean.registry.CeruleanFluids;
+import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.registry.client.CeruleanBlockEntityRenderers;
 import fmt.cerulean.registry.client.CeruleanParticles;
 import fmt.cerulean.registry.client.CeruleanRenderLayers;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.minecraft.client.item.ClampedModelPredicateProvider;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 
 public class CeruleanClient implements ClientModInitializer {
 	@Override
@@ -38,5 +46,16 @@ public class CeruleanClient implements ClientModInitializer {
 		ColorProviderRegistry.ITEM.register((stack, index) -> {
 			return 0xFF000000 | WellBlockEntity.getRgb(((StarItem) stack.getItem()).resource);
 		}, CeruleanItems.STARS.values().stream().toArray(i -> new ItemConvertible[i]));
+
+
+		FluidRenderHandlerRegistry.INSTANCE.register(CeruleanFluids.POLYETHYLENE,
+				new SimpleFluidRenderHandler(Cerulean.id("block/polyethylene"),
+						Cerulean.id("block/polyethylene"), Cerulean.id("block/transparent")));
+
+		ClampedModelPredicateProvider fluidType = (stack, world, entity, seed) -> {
+			return stack.getOrDefault(CeruleanItemComponents.FLUID_TYPE, CanisterFluidType.NONE).ordinal() / 100.f;
+		};
+		ModelPredicateProviderRegistry.register(CeruleanItems.VACUUM_PUMP, Identifier.of("fluid_type"), fluidType);
+		ModelPredicateProviderRegistry.register(CeruleanItems.DEPRESSURIZER, Identifier.of("fluid_type"), fluidType);
 	}
 }

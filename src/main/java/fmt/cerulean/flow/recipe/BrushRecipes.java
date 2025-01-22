@@ -328,6 +328,19 @@ public class BrushRecipes {
 				Ingredient.ofItems(Items.MUSIC_DISC_STAL)
 			), new ItemStack(Items.MUSIC_DISC_WAIT)
 		));
+
+		addRecipe("disc_5", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.CHARTREUSE), Set.of(Brightness.BRILLIANT)
+				), 555, List.of(
+				Ingredient.ofItems(Items.DISC_FRAGMENT_5),
+				Ingredient.ofItems(Items.DISC_FRAGMENT_5),
+				Ingredient.ofItems(Items.DISC_FRAGMENT_5),
+				Ingredient.ofItems(Items.DISC_FRAGMENT_5),
+				Ingredient.ofItems(Items.DISC_FRAGMENT_5)
+		), new ItemStack(Items.MUSIC_DISC_5)
+		));
+
 		// start simple color changing
 		addRecipe("lily_of_the_valley_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),

@@ -7,22 +7,25 @@
   "mixins": [
     "BlockSettingsAccessor",
     "ItemEntityAccessor",
-    "MixinNoiseConfig",
-    "MixinServerWorld",
-    "MixinPlayerEntity",
-    "MixinWorld",
-    "MixinServerPlayerEntity",
     "MixinEnchantmentScreenHandler",
-    "MixinRedstoneView"
+    "MixinEntity",
+    "MixinNoiseConfig",
+    "MixinPlayerEntity",
+    "MixinRedstoneView",
+    "MixinServerPlayerEntity",
+    "MixinServerWorld",
+    "MixinWorld",
+    "client.MixinGameRenderer"
   ],
   "client": [
+    "client.MixinCamera",
+    "client.MixinClientPlayerEntity",
+    "client.MixinClientPlayerNetworkManager",
     "client.MixinClientPlayNetworkHandler",
-    "client.MixinMinecraftClient",
     "client.MixinInGameHud",
     "client.MixinLightmapTextureManager",
-    "client.MixinClientPlayerEntity",
-    "client.MixinWorldRenderer",
-    "client.MixinClientPlayerNetworkManager"
+    "client.MixinMinecraftClient",
+    "client.MixinWorldRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -31,6 +31,9 @@
   "block.cerulean.spacebrick_slab": "Spacebrick Slab",
   "block.cerulean.spacebrick_stairs": "Spacebrick Stairs",
   "block.cerulean.strongbox": "Strongbox",
+  "block.cerulean.polyethylene": "Polyethylene",
+  "block.cerulean.kale": "Kale",
+  "block.cerulean.kale_plant": "Kale Plant",
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -62,6 +65,9 @@
   "item.cerulean.spacebrick_slab": "Spacebrick Slab",
   "item.cerulean.spacebrick_stairs": "Spacebrick Stairs",
   "item.cerulean.strongbox": "Strongbox",
+  "item.cerulean.polyethylene": "Polyethylene",
+  "item.cerulean.kale": "Kale",
+  "item.cerulean.kale_plant": "Kale Plant",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -82,6 +88,10 @@
   "item.cerulean.candy_apple": "Candy Apple",
   "item.cerulean.glittering_coal": "Glittering Coal",
   "item.cerulean.oxidized_carrot": "Oxidized Carrot",
+  "item.cerulean.empty_drum": "Empty Drum",
+  "item.cerulean.polyethylene_drum": "Polyethylene Drum",
+  "item.cerulean.vacuum_pump": "Vacuum Pump",
+  "item.cerulean.depressurizer": "Depressurizer",
 
   "item.cerulean.brilliant_ash_star": "Brilliant Ash Star",
   "item.cerulean.brilliant_cerulean_star": "Brilliant Cerulean Star",

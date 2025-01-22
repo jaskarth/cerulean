@@ -13,8 +13,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 
-import java.util.Optional;
-
 public final class CeruleanBlocks {
 	public static final Block STAR_WELL = register("star_well",
 		new WellBlock(AbstractBlock.Settings.copy(Blocks.DEEPSLATE)));
@@ -154,6 +152,37 @@ public final class CeruleanBlocks {
 
 	public static final Block STRONGBOX = register("strongbox",
 			new StrongboxBlock(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS).strength(10.0F, 300.0F).nonOpaque()));
+
+	public static final Block POLYETHYLENE = registerBlockOnly("polyethylene", new PolyethylyneBlock(
+			CeruleanFluids.POLYETHYLENE,
+			AbstractBlock.Settings.create()
+					.liquid()
+					.nonOpaque()
+					.replaceable()
+					.noCollision()
+					.strength(100.0F)
+					.dropsNothing()
+					.pistonBehavior(PistonBehavior.DESTROY)
+					.sounds(BlockSoundGroup.INTENTIONALLY_EMPTY)
+	));
+
+	public static final Block KALE = registerBlockOnly("kale",
+			new KaleBlock(AbstractBlock.Settings.create()
+					.mapColor(MapColor.GREEN)
+					.ticksRandomly()
+					.noCollision()
+					.breakInstantly()
+					.sounds(BlockSoundGroup.GRASS)
+					.pistonBehavior(PistonBehavior.DESTROY)));
+
+	public static final Block KALE_PLANT = registerBlockOnly("kale_plant",
+			new KalePlantBlock(AbstractBlock.Settings.create()
+					.mapColor(MapColor.GREEN)
+					.ticksRandomly()
+					.noCollision()
+					.breakInstantly()
+					.sounds(BlockSoundGroup.GRASS)
+					.pistonBehavior(PistonBehavior.DESTROY)));
 
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);

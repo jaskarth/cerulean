@@ -1,7 +1,9 @@
 package fmt.cerulean.block;
 
+import fmt.cerulean.block.base.Plasticloggable;
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.registry.CeruleanBlockEntities;
+import fmt.cerulean.registry.CeruleanFluids;
 import fmt.cerulean.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -26,7 +28,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public class PipeBlock extends Block implements BlockEntityProvider, Waterloggable {
+public class PipeBlock extends Block implements BlockEntityProvider, Waterloggable, Plasticloggable {
 	public static final BooleanProperty UP = Properties.UP;
 	public static final BooleanProperty DOWN = Properties.DOWN;
 	public static final BooleanProperty NORTH = Properties.NORTH;
@@ -46,6 +48,7 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 			.with(SOUTH, false)
 			.with(WEST, false)
 			.with(WATERLOGGED, false)
+			.with(PLASTICLOGGED, false)
 		);
 	}
 
@@ -65,7 +68,9 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 
 	private BlockState getState(WorldAccess world, BlockPos pos) {
 		FluidState fluid = world.getFluidState(pos);
-		BlockState state = this.getDefaultState().with(WATERLOGGED, fluid.isOf(Fluids.WATER));
+		BlockState state = this.getDefaultState()
+				.with(WATERLOGGED, fluid.isOf(Fluids.WATER))
+				.with(PLASTICLOGGED, fluid.isOf(CeruleanFluids.POLYETHYLENE));
 		Direction lastDir = null;
 		int connections = 0;
 		for (Direction dir : Util.DIRECTIONS) {
@@ -108,13 +113,15 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
+		builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED, PLASTICLOGGED);
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(true) : super.getFluidState(state);
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(true) :
+			   state.get(PLASTICLOGGED) ? CeruleanFluids.POLYETHYLENE.getDefaultState() :
+			   super.getFluidState(state);
 	}
 	
 	@Override

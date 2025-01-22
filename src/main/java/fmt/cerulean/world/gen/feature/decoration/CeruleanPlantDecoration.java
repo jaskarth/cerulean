@@ -5,6 +5,7 @@ import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.gen.feature.Decoration;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
@@ -36,7 +37,8 @@ public class CeruleanPlantDecoration extends Decoration {
 
 			BlockPos local = pos.add(dx, dy, dz);
 
-			if (!world.getBlockState(local).isAir()) {
+			BlockState state = world.getBlockState(local);
+			if (!state.isAir() && !state.isOf(CeruleanBlocks.POLYETHYLENE)) {
 				continue;
 			}
 
@@ -53,7 +55,9 @@ public class CeruleanPlantDecoration extends Decoration {
 			}
 
 			Direction place = Util.pick(ok, random);
-			world.setBlockState(local, this.block.getDefaultState().with(CeruleanPlantBlock.FACING, place.getOpposite()), 3);
+			world.setBlockState(local, this.block.getDefaultState()
+					.with(CeruleanPlantBlock.FACING, place.getOpposite())
+					.with(CeruleanPlantBlock.PLASTICLOGGED, state.isOf(CeruleanBlocks.POLYETHYLENE)), 3);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package fmt.cerulean.registry.client;
 
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanFluids;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;
 
@@ -24,7 +25,17 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.LUNARIUM,
 				CeruleanBlocks.REEDS,
 				CeruleanBlocks.REEDS_PLANT,
-				CeruleanBlocks.STRONGBOX
+				CeruleanBlocks.STRONGBOX,
+				CeruleanBlocks.KALE,
+				CeruleanBlocks.KALE_PLANT
+		);
+
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
+				CeruleanBlocks.POLYETHYLENE
+		);
+
+		BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(),
+				CeruleanFluids.POLYETHYLENE
 		);
 	}
 }

@@ -33,6 +33,7 @@ public class Cerulean implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		CeruleanFluids.init();
 		CeruleanBlocks.init();
 		CeruleanBlockEntities.init();
 		CeruleanParticleTypes.init();
@@ -55,8 +56,6 @@ public class Cerulean implements ModInitializer {
 
 		Registry.register(Registries.CHUNK_GENERATOR, id("dreamscape"), DreamscapeChunkGenerator.CODEC);
 		Registry.register(Registries.CHUNK_GENERATOR, id("skies"), SkiesChunkGenerator.CODEC);
-
-//		Registry.register(Registries.PAINTING_VARIANT, id("dreams"), new PaintingVariant(16, 32));
 
 		UseItemCallback.EVENT.register((player, world, hand) -> {
 			if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {

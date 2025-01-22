@@ -68,6 +68,11 @@ public class CeruleanItems {
 					.build()
 	)));
 
+	public static final Item EMPTY_DRUM = register("empty_drum", new Item(new Item.Settings()));
+	public static final Item POLYETHYLENE_DRUM = register("polyethylene_drum", new Item(new Item.Settings()));
+	public static final Item VACUUM_PUMP = register("vacuum_pump", new VacuumPumpItem(new Item.Settings().maxCount(1)));
+	public static final Item DEPRESSURIZER = register("depressurizer", new DepressurizerItem(new Item.Settings().maxCount(1)));
+
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();
 

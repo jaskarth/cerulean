@@ -14,6 +14,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.world.ChunkRegion;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.IntStream;
 
 public class SkiesChunkGenerator extends ChunkGenerator {
 	public static final MapCodec<SkiesChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -111,16 +113,13 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		int dx = center.x() - x;
 		int dz = center.z() - z;
 
-		Random random = new Random(uniq);
+		IslandParameters p = IslandParameters.get(center, uniq);
 
-		int startOff = random.nextInt(7) - 3;
-		double distOffset = random.nextDouble() * 2.5;
-
-		double distScale = (14.0 + distOffset) + (s1.sample(x / 2.21, 0, z / 2.21) * 4) + (s2.sample(x / 4.21, 0, z / 4.21) * 8);
+		double distScale = (14.0 + p.distOffset()) + (s1.sample(x / 2.21, 0, z / 2.21) * 4) + (s2.sample(x / 4.21, 0, z / 4.21) * 8);
 		double sq = Math.sqrt(dx * dx + dz * dz);
 
-		int amt = 16 + startOff;
-		int lAmt = 4 + startOff;
+		int amt = 16 + p.startOff();
+		int lAmt = 4 + p.startOff();
 
 		for (int nY = lAmt; nY < amt; nY++) {
 			double n = -1;
@@ -149,11 +148,15 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		int chunkStartX = chunkX << 4;
 		int chunkStartZ = chunkZ << 4;
 
+		long seed = ((Seedy) noiseConfig).getSeed();
+
+		OctavePerlinNoiseSampler oceanSampler = OctavePerlinNoiseSampler.create(new CheckedRandom(seed + 40), IntStream.of(-2, -1, 2));
+
 		double[] noiseData = new double[5 * 5 * 49];
 
 		for(int noiseX = 0; noiseX < 5; ++noiseX) {
 			for(int noiseZ = 0; noiseZ < 5; ++noiseZ) {
-				this.sampleNoiseColumn(((Seedy)noiseConfig).getSeed(), chunk, noiseData, chunkX * 4 + noiseX, chunkZ * 4 + noiseZ, noiseX, noiseZ);
+				this.sampleNoiseColumn(seed, chunk, noiseData, chunkX * 4 + noiseX, chunkZ * 4 + noiseZ, noiseX, noiseZ);
 			}
 		}
 
@@ -229,13 +232,15 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 								// Iterate through structures to add density
 								density = density / 2.0D - density * density * density / 24.0D;
 
+								mutable.set(realX, realY, realZ);
+
 								// Get the blockstate based on the y and density
-								BlockState state = this.getBlockState(density, realY);
+								BlockState state = this.getBlockState(density, mutable, oceanSampler);
 
 								if (state != AIR) {
 									// Add light source if the state has light
 									if (state.getLuminance() != 0) {
-										mutable.set(realX, realY, realZ);
+//										mutable.set(realX, realY, realZ);
 									}
 
 									// Place the state at the position
@@ -277,8 +282,23 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		}
 	}
 
-	private BlockState getBlockState(double density, int realY) {
-		return density > 0 ? CeruleanBlocks.SPACEROCK.getDefaultState() : AIR;
+	private BlockState getBlockState(double density, BlockPos pos, OctavePerlinNoiseSampler oceanSampler) {
+		if (density > 0) {
+			return CeruleanBlocks.SPACEROCK.getDefaultState();
+		}
+
+		//\left(\frac{2000}{x+370}-5\right)+\left(\frac{-2000}{x-560}-5\right)+1.33
+
+		int y = pos.getY();
+
+		if (y > 0 && y < 190) {
+			double off = Math.max(((2000. / (y + 370)) - 5) + ((-2000. / (y - 560)) - 5) + 1.33, 0.00);
+			if (oceanSampler.sample(pos.getX() / 50., y / 20., pos.getZ() / 50.) + off < -0.35) {
+				return CeruleanBlocks.POLYETHYLENE.getDefaultState();
+			}
+		}
+
+		return AIR;
 	}
 
 	@Override

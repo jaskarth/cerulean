@@ -20,8 +20,9 @@ public final class Voronoi {
         for (int x1 = -1; x1 <= 1; x1++) {
             for (int z1 = -1; z1 <= 1; z1++) {
                 this.random.setPopulationSeed(this.seed, xStart + x1, zStart + z1);
-                double xCenter = this.random.nextDouble() + xStart + x1;
-                double zCenter = this.random.nextDouble() + zStart + z1;
+                // [0.1, 0.9]
+                double xCenter = (this.random.nextDouble(0.8) + 0.1) + xStart + x1;
+                double zCenter = (this.random.nextDouble(0.8) + 0.1) + zStart + z1;
 
                 double ax = x - xCenter;
                 double az = z - zCenter;
@@ -47,8 +48,9 @@ public final class Voronoi {
         for (int x1 = -1; x1 <= 1; x1++) {
             for (int z1 = -1; z1 <= 1; z1++) {
                 this.random.setPopulationSeed(this.seed, xStart + x1, zStart + z1);
-                double cx = this.random.nextDouble();
-                double cz = this.random.nextDouble();
+                // [0.1, 0.9]
+                double cx = this.random.nextDouble(0.8) + 0.1;
+                double cz = this.random.nextDouble(0.8) + 0.1;
                 double xCenter = cx + xStart + x1;
                 double zCenter = cz + zStart + z1;
 

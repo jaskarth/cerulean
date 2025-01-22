@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "cerulean:item/vacuum_pump/vacuum_pump_polyethylene"
+  }
+}

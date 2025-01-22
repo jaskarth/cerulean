@@ -7,10 +7,7 @@ import fmt.cerulean.world.gen.carver.CaveCarver;
 import fmt.cerulean.world.gen.carver.SkyCarver;
 import fmt.cerulean.world.gen.carver.TendrilCarver;
 import fmt.cerulean.world.gen.carver.TunnelCarver;
-import fmt.cerulean.world.gen.feature.decoration.CeruleanPlantDecoration;
-import fmt.cerulean.world.gen.feature.decoration.IslandDecoration;
-import fmt.cerulean.world.gen.feature.decoration.ReedsDecoration;
-import fmt.cerulean.world.gen.feature.decoration.WellDecoration;
+import fmt.cerulean.world.gen.feature.decoration.*;
 import fmt.cerulean.world.gen.feature.decorator.ChanceHeightmapDecorator;
 import fmt.cerulean.world.gen.feature.decorator.ChanceRangeDecorator;
 import fmt.cerulean.world.gen.feature.decorator.CountRangeDecorator;
@@ -40,6 +37,16 @@ public class BiomeDecorator {
 		register(Biomes.SKIES,
 				new ChanceRangeDecorator(36, new IntRange(80, 140)),
 				new IslandDecoration()
+		);
+
+		register(Biomes.SKIES,
+				new NoOpDecorator(),
+				new PlasticloggingDecoration()
+		);
+
+		register(Biomes.SKIES,
+				new NoOpDecorator(),
+				new KaleDecoration()
 		);
 
 		register(Biomes.SKIES,
