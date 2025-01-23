@@ -1,0 +1,30 @@
+{
+  "criteria": {
+    "entered_dream": {
+      "conditions": {
+        "to": "cerulean:skies"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "cerulean:textures/gui/sky.png",
+    "description": {
+      "translate": "advancements.cerulean.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "cerulean:brilliant_cerulean_star"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.cerulean.root"
+    }
+  },
+  "requirements": [
+    [
+      "entered_dream"
+    ]
+  ]
+}

@@ -2,9 +2,13 @@ package fmt.cerulean.item;
 
 import fmt.cerulean.block.base.Plasticloggable;
 import fmt.cerulean.fluid.CanisterFluidType;
+import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanFluids;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -65,12 +69,20 @@ public class VacuumPumpItem extends FluidHandlerItem {
 
 		BlockState blockState = world.getBlockState(blockPos);
 		if (type == CanisterFluidType.EMPTY || type == CanisterFluidType.POLYETHYLENE) {
-			if (blockState.getBlock() instanceof Plasticloggable plastic) {
+			if (blockState.getBlock() instanceof Plasticloggable plastic && fluidAmt <= (10_000 - 250)) {
 				if (plastic.tryDrainPlastic(user, world, blockPos, blockState)) {
 					itemStack.set(CeruleanItemComponents.FLUID_TYPE, CanisterFluidType.POLYETHYLENE);
 					itemStack.set(CeruleanItemComponents.FLUID_AMOUNT, fluidAmt + 250);
 					return TypedActionResult.success(itemStack);
 				}
+			}
+
+			if (blockState.isOf(CeruleanBlocks.REALIZED_POLYETHYLENE) && blockState.getFluidState().isStill() && fluidAmt <= (10_000 - 1_000)) {
+				world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+
+				itemStack.set(CeruleanItemComponents.FLUID_TYPE, CanisterFluidType.POLYETHYLENE);
+				itemStack.set(CeruleanItemComponents.FLUID_AMOUNT, fluidAmt + 1_000);
+				return TypedActionResult.success(itemStack);
 			}
 		}
 

@@ -1,0 +1,34 @@
+{
+  "parent": "cerulean:cerulean/root",
+  "criteria": {
+    "polyethylene": {
+      "conditions": {
+        "location": [
+          {
+            "block": "cerulean:realized_polyethylene",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.cerulean.the_presupposition.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "cerulean:polyethylene_drum"
+    },
+    "title": {
+      "translate": "advancements.cerulean.the_presupposition"
+    }
+  },
+  "requirements": [
+    [
+      "polyethylene"
+    ]
+  ]
+}

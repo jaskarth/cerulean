@@ -3,6 +3,7 @@ package fmt.cerulean.mixin;
 import fmt.cerulean.registry.CeruleanFluids;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.entity.Entity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -46,7 +47,8 @@ public abstract class MixinEntity {
 				for (int r = m; r < n; r++) {
 					mutable.set(p, q, r);
 					FluidState fluidState = this.getWorld().getFluidState(mutable);
-					if (fluidState.getFluid() == CeruleanFluids.POLYETHYLENE) {
+					Fluid fluid = fluidState.getFluid();
+					if (fluid == CeruleanFluids.POLYETHYLENE || fluid == CeruleanFluids.REALIZED_POLYETHYLENE || fluid == CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING) {
 						ci.cancel();
 					}
 				}

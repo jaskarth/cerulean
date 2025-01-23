@@ -1,0 +1,29 @@
+{
+  "parent": "cerulean:cerulean/root",
+  "criteria": {
+    "entered_dream": {
+      "conditions": {
+        "to": "cerulean:skies"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.cerulean.the_commutation.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "cerulean:spacerock"
+    },
+    "title": {
+      "translate": "advancements.cerulean.the_commutation"
+    }
+  },
+  "requirements": [
+    [
+      "entered_dream"
+    ]
+  ]
+}

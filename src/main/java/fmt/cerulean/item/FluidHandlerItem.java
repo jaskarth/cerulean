@@ -3,7 +3,11 @@ package fmt.cerulean.item;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.List;
 
 public class FluidHandlerItem extends Item {
 	public FluidHandlerItem(Settings settings) {
@@ -27,5 +31,13 @@ public class FluidHandlerItem extends Item {
 	@Override
 	public int getItemBarColor(ItemStack stack) {
 		return MathHelper.packRgb(0.9F, 0.9F, 0.9F);
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+		if (stack.getOrDefault(CeruleanItemComponents.FLUID_TYPE, null) != null) {
+			int val = stack.getOrDefault(CeruleanItemComponents.FLUID_AMOUNT, 0);
+			tooltip.add(Text.literal(val + " / " + 10_000));
+		}
 	}
 }

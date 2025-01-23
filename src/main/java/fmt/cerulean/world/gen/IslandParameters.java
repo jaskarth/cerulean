@@ -16,7 +16,7 @@ public record IslandParameters(
 		int startOff = random.nextInt(7) - 3;
 		double distOffset = random.nextDouble() * 2.5;
 
-		boolean plasticlogged = random.nextInt(15) == 0;
+		boolean plasticlogged = random.nextInt(12) == 0;
 
 		return new IslandParameters(
 				center,

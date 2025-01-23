@@ -7,6 +7,7 @@ import fmt.cerulean.util.Counterful;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.DimensionState;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,11 +69,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void cerulean$playerTick(CallbackInfo ci) {
 		DimensionState st = Counterful.get((PlayerEntity) (Object) this);
+		World world = getWorld();
 		if (st.melancholy > 230) {
 			this.detach();
 			this.notInAnyWorld = true;
 			this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
 
+			Criteria.CHANGED_DIMENSION.trigger((ServerPlayerEntity) (Object) this, world.getRegistryKey(), World.OVERWORLD);
 			this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
 
 			st.reset();

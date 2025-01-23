@@ -27,7 +27,8 @@ public class MixinCamera implements CameraFluid {
 	public void cerulean$noPolyethyleneFog(CallbackInfoReturnable<CameraSubmersionType> cir) {
 		if (cir.getReturnValue() == CameraSubmersionType.WATER) {
 			FluidState fluidState = this.area.getFluidState(this.blockPos);
-			if (fluidState.getFluid() == CeruleanFluids.POLYETHYLENE) {
+			Fluid fluid = fluidState.getFluid();
+			if (fluid == CeruleanFluids.POLYETHYLENE || fluid == CeruleanFluids.REALIZED_POLYETHYLENE || fluid == CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING) {
 				cir.setReturnValue(CameraSubmersionType.NONE);
 			}
 		}

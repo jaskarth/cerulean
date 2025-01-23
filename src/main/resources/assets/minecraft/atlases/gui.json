@@ -1,0 +1,8 @@
+{
+    "sources": [
+        {
+            "type": "single",
+            "resource": "cerulean:gui/box_obtained_large"
+        }
+    ]
+}

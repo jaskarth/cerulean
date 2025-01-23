@@ -31,11 +31,14 @@ public class CeruleanRenderLayers {
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
-				CeruleanBlocks.POLYETHYLENE
+				CeruleanBlocks.POLYETHYLENE,
+				CeruleanBlocks.REALIZED_POLYETHYLENE
 		);
 
 		BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(),
-				CeruleanFluids.POLYETHYLENE
+				CeruleanFluids.POLYETHYLENE,
+				CeruleanFluids.REALIZED_POLYETHYLENE,
+				CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING
 		);
 	}
 }

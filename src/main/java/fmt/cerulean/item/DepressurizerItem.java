@@ -6,12 +6,17 @@ import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanFluids;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.world.CeruleanDimensions;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -24,6 +29,9 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class DepressurizerItem extends FluidHandlerItem {
 	public DepressurizerItem(Settings settings) {
@@ -81,40 +89,72 @@ public class DepressurizerItem extends FluidHandlerItem {
 
 		BlockState targetState = world.getBlockState(targetPos);
 		if (type == CanisterFluidType.POLYETHYLENE) {
-			if (targetState.getBlock() instanceof Plasticloggable plastic) {
-				if (plastic.tryFillWithPlastic(world, targetPos, targetState, CeruleanFluids.POLYETHYLENE.getDefaultState())) {
-					decrementAmount(fluidAmt, itemStack);
-					return TypedActionResult.success(itemStack);
-				}
-			}
-
-			BlockState offsetState = world.getBlockState(offsetPos);
-			if (offsetState.isAir() || (offsetState.isReplaceable() && !offsetState.isOf(CeruleanBlocks.POLYETHYLENE))) {
-				boolean canBucketPlace = targetState.canBucketPlace(CeruleanFluids.POLYETHYLENE);
-
-				if (offsetState.getBlock() instanceof Plasticloggable plastic) {
-					if (plastic.tryFillWithPlastic(world, offsetPos, offsetState, CeruleanFluids.POLYETHYLENE.getDefaultState())) {
-						decrementAmount(fluidAmt, itemStack);
-						return TypedActionResult.success(itemStack);
-					}
-				} else {
-					if (!world.isClient && canBucketPlace && !targetState.isLiquid()) {
-						world.breakBlock(offsetPos, true);
-					}
-
-					world.setBlockState(offsetPos, CeruleanFluids.POLYETHYLENE.getDefaultState().getBlockState(), Block.NOTIFY_ALL_AND_REDRAW);
-
-					decrementAmount(fluidAmt, itemStack);
-					return TypedActionResult.success(itemStack);
-				}
+			if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES) && fluidAmt >= 250) {
+				return placeDreamPolyethylene(world, targetState, targetPos, fluidAmt, itemStack, offsetPos);
+			} else if (fluidAmt >= 1000) {
+				return placeRealizedPolyethylene(user, world, targetState, targetPos, fluidAmt, itemStack, offsetPos);
 			}
 		}
 
 		return TypedActionResult.pass(itemStack);
 	}
 
-	private static void decrementAmount(int fluidAmt, ItemStack itemStack) {
-		int newAmt = fluidAmt - 250;
+	private static TypedActionResult<ItemStack> placeDreamPolyethylene(World world, BlockState targetState, BlockPos targetPos, int fluidAmt, ItemStack itemStack, BlockPos offsetPos) {
+		if (targetState.getBlock() instanceof Plasticloggable plastic) {
+			if (plastic.tryFillWithPlastic(world, targetPos, targetState, CeruleanFluids.POLYETHYLENE.getDefaultState())) {
+				decrementAmount(fluidAmt, itemStack, 250);
+				return TypedActionResult.success(itemStack);
+			}
+		}
+
+		BlockState offsetState = world.getBlockState(offsetPos);
+		if (offsetState.isAir() || (offsetState.isReplaceable() && !offsetState.isOf(CeruleanBlocks.POLYETHYLENE))) {
+			boolean canBucketPlace = targetState.canBucketPlace(CeruleanFluids.POLYETHYLENE);
+
+			if (offsetState.getBlock() instanceof Plasticloggable plastic) {
+				if (plastic.tryFillWithPlastic(world, offsetPos, offsetState, CeruleanFluids.POLYETHYLENE.getDefaultState())) {
+					decrementAmount(fluidAmt, itemStack, 250);
+					return TypedActionResult.success(itemStack);
+				}
+			} else {
+				if (!world.isClient && canBucketPlace && !targetState.isLiquid()) {
+					world.breakBlock(offsetPos, true);
+				}
+
+				world.setBlockState(offsetPos, CeruleanFluids.POLYETHYLENE.getDefaultState().getBlockState(), Block.NOTIFY_ALL_AND_REDRAW);
+
+				decrementAmount(fluidAmt, itemStack, 250);
+				return TypedActionResult.success(itemStack);
+			}
+		}
+
+		return TypedActionResult.pass(itemStack);
+	}
+
+	private static TypedActionResult<ItemStack> placeRealizedPolyethylene(PlayerEntity user, World world, BlockState targetState, BlockPos targetPos, int fluidAmt, ItemStack itemStack, BlockPos offsetPos) {
+		BlockState offsetState = world.getBlockState(offsetPos);
+
+		if (offsetState.isAir() || (offsetState.isReplaceable() && offsetState.getFluidState().getFluid() != CeruleanFluids.REALIZED_POLYETHYLENE)) {
+			boolean canBucketPlace = targetState.canBucketPlace(CeruleanFluids.REALIZED_POLYETHYLENE);
+			if (!world.isClient && canBucketPlace && !targetState.isLiquid()) {
+				world.breakBlock(offsetPos, true);
+			}
+
+			world.setBlockState(offsetPos, CeruleanFluids.REALIZED_POLYETHYLENE.getDefaultState().getBlockState(), Block.NOTIFY_ALL_AND_REDRAW);
+
+			if (user instanceof ServerPlayerEntity spe) {
+				Criteria.PLACED_BLOCK.trigger(spe, offsetPos, itemStack);
+			}
+
+			decrementAmount(fluidAmt, itemStack, 1000);
+			return TypedActionResult.success(itemStack);
+		}
+
+		return TypedActionResult.pass(itemStack);
+	}
+
+	private static void decrementAmount(int fluidAmt, ItemStack itemStack, int amt) {
+		int newAmt = fluidAmt - amt;
 		itemStack.set(CeruleanItemComponents.FLUID_AMOUNT, newAmt);
 		if (newAmt <= 0) {
 			itemStack.set(CeruleanItemComponents.FLUID_TYPE, CanisterFluidType.EMPTY);

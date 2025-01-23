@@ -57,5 +57,7 @@ public class CeruleanClient implements ClientModInitializer {
 		};
 		ModelPredicateProviderRegistry.register(CeruleanItems.VACUUM_PUMP, Identifier.of("fluid_type"), fluidType);
 		ModelPredicateProviderRegistry.register(CeruleanItems.DEPRESSURIZER, Identifier.of("fluid_type"), fluidType);
+
+		FluidRenderHandlerRegistry.INSTANCE.register(CeruleanFluids.REALIZED_POLYETHYLENE, CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING, SimpleFluidRenderHandler.coloredWater(0x999999));
 	}
 }

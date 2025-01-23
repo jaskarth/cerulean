@@ -1,6 +1,8 @@
 {
   "values": [
-    "cerulean:polyethylene"
+    "cerulean:polyethylene",
+    "cerulean:realized_polyethylene",
+    "cerulean:flowing_realized_polyethylene"
   ],
   "replace": false
 }

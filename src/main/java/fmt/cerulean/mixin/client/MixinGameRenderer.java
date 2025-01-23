@@ -22,7 +22,7 @@ public class MixinGameRenderer {
 	@Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
 	public void cerulean$modifyFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
 		Fluid f = ((CameraFluid)camera).cerulean$getFluid();
-		if (f == CeruleanFluids.POLYETHYLENE) {
+		if (f == CeruleanFluids.POLYETHYLENE || f == CeruleanFluids.REALIZED_POLYETHYLENE || f == CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING) {
 			cir.setReturnValue(cir.getReturnValueD() * MathHelper.lerp(this.client.options.getFovEffectScale().getValue(), 1.0, 0.85714287F));
 		}
 	}

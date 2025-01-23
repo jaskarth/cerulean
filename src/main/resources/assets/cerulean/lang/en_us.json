@@ -200,5 +200,17 @@
   "cerulean.color.chartreuse": "Chartreuse",
   "cerulean.color.turquoise": "Turquoise",
 
+  "advancements.cerulean.root": "Cerulean",
+  "advancements.cerulean.root.desc": "Cerulean",
+
+  "advancements.toast.cerulean": "Memory Retrieved",
+
+  "advancements.cerulean.the_commutation": "The Commutation",
+  "advancements.cerulean.the_commutation.desc": "One enters; another departs",
+  "advancements.cerulean.the_precipice": "The Precipice",
+  "advancements.cerulean.the_precipice.desc": "Return home from the world beyond",
+  "advancements.cerulean.the_presupposition": "The Presupposition",
+  "advancements.cerulean.the_presupposition.desc": "It didn't do that last time...?",
+
   "cerulean.group": "Cerulean"
 }

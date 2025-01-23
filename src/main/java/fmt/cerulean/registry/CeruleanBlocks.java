@@ -7,6 +7,8 @@ import fmt.cerulean.util.SixSideOffsetter;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.fluid.FlowableFluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -183,6 +185,22 @@ public final class CeruleanBlocks {
 					.breakInstantly()
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY)));
+
+	public static final Block REALIZED_POLYETHYLENE = registerBlockOnly(
+			"realized_polyethylene",
+			new FluidBlock(
+					(FlowableFluid) CeruleanFluids.REALIZED_POLYETHYLENE,
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.GRAY)
+							.replaceable()
+							.noCollision()
+							.strength(100.0F)
+							.pistonBehavior(PistonBehavior.DESTROY)
+							.dropsNothing()
+							.liquid()
+							.sounds(BlockSoundGroup.INTENTIONALLY_EMPTY)
+			)
+	);
 
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);
