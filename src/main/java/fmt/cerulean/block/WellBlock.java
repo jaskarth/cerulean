@@ -42,7 +42,7 @@ public class WellBlock extends Block implements BlockEntityProvider {
 				double x = pos.getX() + 0.5;
 				double y = pos.getY() + 0.5;
 				double z = pos.getZ() + 0.5;
-				FlowState flow = wbe.getExportedState(Direction.UP);
+				FlowState flow = wbe.getExportedState(state.get(FACING));
 				if (!flow.empty()) {
 					for (int i = 0; i < 400; i++) {
 						StarParticleType star = WellBlockEntity.createParticle(flow.resource(), false, false, random);

@@ -341,6 +341,15 @@ public class BrushRecipes {
 		), new ItemStack(Items.MUSIC_DISC_5)
 		));
 
+		addRecipe("eye_of_vendor", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.CERULEAN), Set.of(Brightness.BRILLIANT)
+				), 60, List.of(
+				Ingredient.ofItems(Items.ECHO_SHARD),
+				Ingredient.ofItems(Items.ENDER_EYE)
+		), new ItemStack(CeruleanItems.EYE_OF_VENDOR)
+		));
+
 		// start simple color changing
 		addRecipe("lily_of_the_valley_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),

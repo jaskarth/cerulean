@@ -60,7 +60,7 @@ public class CeruleanAdvancementTab extends AdvancementTab {
 		renderStarLayer(matrices, ox, oz, 0.75f, (tick / 6.4) % 48., (tick / 8.7) % 48., -2, 3, 0.15f);
 		renderStarLayer(matrices, ox, oz, 1f, (-tick / 5.5) % 64, (-tick / 7.5) % 64, -2, 3, 0.25f);
 		renderStarLayer(matrices, ox, oz, 1.5f, (tick / 3.5) % 96, (-tick / 4.5) % 96, -2, 3, 0.4f);
-		renderStarLayer(matrices, ox, oz, 2, ((-tick / 2.2) % 128.), (tick / 2.4d) % 128., -2, 2, 0.8f);
+		renderStarLayer(matrices, ox, oz, 2, (-tick / 2.2) % 128., (tick / 2.4d) % 128., -2, 2, 0.8f);
 
 		RenderSystem.disableBlend();
 

@@ -67,11 +67,20 @@ public class CeruleanItems {
 					.statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 3600, 0), 1.0F)
 					.build()
 	)));
-
 	public static final Item EMPTY_DRUM = register("empty_drum", new Item(new Item.Settings()));
 	public static final Item POLYETHYLENE_DRUM = register("polyethylene_drum", new Item(new Item.Settings()));
 	public static final Item VACUUM_PUMP = register("vacuum_pump", new VacuumPumpItem(new Item.Settings().maxCount(1)));
 	public static final Item DEPRESSURIZER = register("depressurizer", new DepressurizerItem(new Item.Settings().maxCount(1)));
+	public static final Item EYE_OF_VENDOR = register("eye_of_vendor", new EyeOfVendorItem(new Item.Settings()));
+	public static final Item HALITE = register("halite", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())
+	));
+	public static final Item CRUSHED_HALITE = register("crushed_halite", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())
+	));
+	public static final Item HALITE_SALAD = register("halite_salad", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.8f).usingConvertsTo(Items.BOWL).build())
+	));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();

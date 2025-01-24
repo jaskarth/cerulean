@@ -6,6 +6,7 @@ import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.block.*;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluids;
@@ -201,6 +202,38 @@ public final class CeruleanBlocks {
 							.sounds(BlockSoundGroup.INTENTIONALLY_EMPTY)
 			)
 	);
+
+	public static final Block OAK_GAPDOOR = register("oak_gapdoor",
+			new GapDoorBlock(BlockSetType.OAK, AbstractBlock.Settings.copy(Blocks.OAK_TRAPDOOR)));
+
+	public static final Block HALITE_BLOCK = register("halite_block",
+			new HaliteBlock(AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK).mapColor(MapColor.GREEN)));
+
+	public static final Block SLASHED_HALITE_BLOCK = register("slashed_halite_block",
+			new SlashedHaliteBlock(AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK)
+					.ticksRandomly()
+					.mapColor(MapColor.GREEN)));
+
+	public static final Block HALITE_OUTCROPPING = register("halite_outcropping",
+			new HaliteOutcroppingBlock(
+					7.0F,
+					3.0F,
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.GREEN)
+							.solid()
+							.nonOpaque()
+							.sounds(BlockSoundGroup.AMETHYST_CLUSTER)
+							.strength(1.5F)
+							.pistonBehavior(PistonBehavior.DESTROY)));
+
+	public static final Block HALITE_OUTCROPPING_LARGE = register("halite_outcropping_large",
+			new HaliteOutcroppingBlock(7.0F, 3.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
+
+	public static final Block HALITE_OUTCROPPING_MEDIUM = register("halite_outcropping_medium",
+			new HaliteOutcroppingBlock(4.0F, 3.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
+
+	public static final Block HALITE_OUTCROPPING_SMALL = register("halite_outcropping_small",
+			new HaliteOutcroppingBlock(3.0F, 4.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
 
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);

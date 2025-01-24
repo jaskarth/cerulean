@@ -52,7 +52,7 @@ public class PlasticloggingDecoration extends Decoration {
 
 						if (dst + (detailNoise.sample(wx / 20., wy / 10., wz / 20.) * 0.5) < 1) {
 							BlockState state = world.getBlockState(local);
-							if (state.isAir()) {
+							if (state.isAir() || state.isOf(CeruleanBlocks.REEDS) || state.isOf(CeruleanBlocks.REEDS_PLANT)) {
 								world.setBlockState(local, CeruleanBlocks.POLYETHYLENE.getDefaultState(), 3);
 							} else if (state.contains(Plasticloggable.PLASTICLOGGED)) {
 								world.setBlockState(local, state.with(Plasticloggable.PLASTICLOGGED, true), 3);

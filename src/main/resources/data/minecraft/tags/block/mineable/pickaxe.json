@@ -21,7 +21,13 @@
     "cerulean:spacebrick_slab",
     "cerulean:spacebrick_stairs",
     "cerulean:spacerock_stairs",
-    "cerulean:strongbox"
+    "cerulean:strongbox",
+    "cerulean:halite_block",
+    "cerulean:slashed_halite_block",
+    "cerulean:halite_outcropping",
+    "cerulean:halite_outcropping_large",
+    "cerulean:halite_outcropping_medium",
+    "cerulean:halite_outcropping_small"
   ],
   "replace": false
 }

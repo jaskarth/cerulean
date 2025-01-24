@@ -27,7 +27,12 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.REEDS_PLANT,
 				CeruleanBlocks.STRONGBOX,
 				CeruleanBlocks.KALE,
-				CeruleanBlocks.KALE_PLANT
+				CeruleanBlocks.KALE_PLANT,
+				CeruleanBlocks.OAK_GAPDOOR,
+				CeruleanBlocks.HALITE_OUTCROPPING,
+				CeruleanBlocks.HALITE_OUTCROPPING_LARGE,
+				CeruleanBlocks.HALITE_OUTCROPPING_MEDIUM,
+				CeruleanBlocks.HALITE_OUTCROPPING_SMALL
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),

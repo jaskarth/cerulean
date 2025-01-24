@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "cerulean:block/halite_outcropping_large"
+  },
+  "display": {
+    "fixed": {
+      "translation": [ 0, 4, 0 ]
+    }
+  }
+}
