@@ -117,6 +117,9 @@ public final class CeruleanBlocks {
 	public static final Block MIMIC = register("mimic",
 			new MimicBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles()));
 
+	public static final Block FAUX = register("faux",
+			new FauxBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().suffocates(Blocks::never)));
+
 	public static final Block INKY_VOID = register("inky_void",
 			new InkyVoidBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
 

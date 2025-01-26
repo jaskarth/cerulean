@@ -1,6 +1,7 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.block.entity.FauxBlockEntity;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
@@ -19,6 +20,7 @@ public class CeruleanBlockEntities {
 			CeruleanBlocks.WAXED_PIPE, CeruleanBlocks.WAXED_EXPOSED_PIPE, CeruleanBlocks.WAXED_WEATHERED_PIPE, CeruleanBlocks.WAXED_OXIDIZED_PIPE,
 			CeruleanBlocks.FUCHSIA_PIPE);
 	public static final BlockEntityType<MimicBlockEntity> MIMIC = register("mimic", MimicBlockEntity::new, CeruleanBlocks.MIMIC);
+	public static final BlockEntityType<FauxBlockEntity> FAUX = register("faux", FauxBlockEntity::new, CeruleanBlocks.FAUX);
 	public static final BlockEntityType<StrongboxBlockEntity> STRONGBOX = register("strongbox", StrongboxBlockEntity::new, CeruleanBlocks.STRONGBOX);
 
 	public static void init() {
