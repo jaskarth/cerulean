@@ -2,6 +2,7 @@ package fmt.cerulean.mixin.client;
 
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.screen.ColorDownloadScreen;
+import fmt.cerulean.client.screen.MessageScreen;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
@@ -49,8 +50,13 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
 
 			if (lastWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
 				if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
-					this.worldLoadingState = new WorldLoadingState(player, world, this.client.worldRenderer);
-					this.client.setScreen(new ColorDownloadScreen(this.worldLoadingState::isReady, 0xFFFFFFFF));
+					if (ClientState.truthful) {
+						this.client.setScreen(new MessageScreen());
+					} else {
+						this.worldLoadingState = new WorldLoadingState(player, world, this.client.worldRenderer);
+						this.client.setScreen(new ColorDownloadScreen(this.worldLoadingState::isReady, 0xFFFFFFFF));
+					}
+
 					ci.cancel();
 				} else {
 					this.worldLoadingState = new WorldLoadingState(player, world, this.client.worldRenderer);

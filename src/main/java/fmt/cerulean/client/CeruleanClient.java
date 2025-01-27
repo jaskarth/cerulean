@@ -6,9 +6,14 @@ import fmt.cerulean.client.effects.DreamscapeEffects;
 import fmt.cerulean.client.effects.SkiesEffects;
 import fmt.cerulean.client.render.DreamscapeRenderer;
 import fmt.cerulean.client.render.SkiesRenderer;
+import fmt.cerulean.client.render.entity.MemoryFrameRenderer;
+import fmt.cerulean.client.render.item.EyeOfVenderer;
+import fmt.cerulean.client.tex.CeruleanAtlasSource;
+import fmt.cerulean.client.tex.CeruleanModelLoadingPlugin;
 import fmt.cerulean.fluid.CanisterFluidType;
 import fmt.cerulean.item.StarItem;
 import fmt.cerulean.net.CeruleanClientNetworking;
+import fmt.cerulean.registry.CeruleanEntities;
 import fmt.cerulean.registry.CeruleanFluids;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
@@ -17,12 +22,13 @@ import fmt.cerulean.registry.client.CeruleanParticles;
 import fmt.cerulean.registry.client.CeruleanRenderLayers;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.texture.atlas.AtlasSourceType;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -59,5 +65,12 @@ public class CeruleanClient implements ClientModInitializer {
 		ModelPredicateProviderRegistry.register(CeruleanItems.DEPRESSURIZER, Identifier.of("fluid_type"), fluidType);
 
 		FluidRenderHandlerRegistry.INSTANCE.register(CeruleanFluids.REALIZED_POLYETHYLENE, CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING, SimpleFluidRenderHandler.coloredWater(0x999999));
+
+		ModelLoadingPlugin.register(new CeruleanModelLoadingPlugin());
+		AtlasSourceTypeRegistry.register(Identifier.of("cerulean"), CeruleanAtlasSource.TYPE);
+
+		BuiltinItemRendererRegistry.INSTANCE.register(CeruleanItems.EYE_OF_VENDOR, new EyeOfVenderer());
+
+		EntityRendererRegistry.register(CeruleanEntities.MEMORY_FRAME, MemoryFrameRenderer::new);
 	}
 }

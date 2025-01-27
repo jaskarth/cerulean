@@ -4,7 +4,9 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.StrongboxBlock;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
+import fmt.cerulean.entity.MemoryFrameEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.util.Counterful;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
@@ -12,15 +14,25 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Pair;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.world.BlockStateRaycastContext;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DreamscapeTeleporter {
+	private static final Direction[] HORIZONTAL = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+
 	private static class TeleportGroup {
+		BlockPos origin;
 		private BlockBox target;
 		private List<ServerPlayerEntity> players = new ArrayList<>();
 	}
@@ -32,6 +44,7 @@ public class DreamscapeTeleporter {
 				TeleportGroup gp = new TeleportGroup();
 				gp.players.add(p);
 				gp.target = box(p.getBoundingBox().expand(10, 6, 10));
+				gp.origin = p.getBlockPos();
 				group.add(gp);
 			}
 		}
@@ -62,6 +75,7 @@ public class DreamscapeTeleporter {
 		}
 
 		for (TeleportGroup g : group) {
+			BlockPos originPos = g.origin;
 			BlockBox target = g.target;
 			List<PaintingEntity> paintings = world.getEntitiesByClass(PaintingEntity.class, Box.from(target), e -> true);
 			boolean found = false;
@@ -103,8 +117,6 @@ public class DreamscapeTeleporter {
 			int transX = endX - startX;
 			int transY = endY - startY;
 			int transZ = endZ - startZ;
-
-			System.out.println(new BlockPos(startX, startY, startZ) + " -> " + new BlockPos(endX, endY, endZ) + " :" + new BlockPos(transX, transY, transZ));
 
 			ServerWorld dreamscape = world.getServer().getWorld(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.DREAMSCAPE));
 
@@ -216,6 +228,64 @@ public class DreamscapeTeleporter {
 
 			place(dreamscape, paintingOrigin.offset(moveDir, 20), c[2],  20, moveDir, alone);
 			place(dreamscape, paintingOrigin.down().offset(moveDir, 20), c[1], 20, moveDir, alone);
+
+			CeruleanWorldState worldState = CeruleanWorldState.get(world);
+
+			boolean spawnMemory = false;
+			for (ServerPlayerEntity player : g.players) {
+				spawnMemory |= (worldState.getFor(player).worldworn && !worldState.getFor(player).truthful);
+			}
+
+			if (spawnMemory) {
+				List<BlockPos> memoryLocations = new ArrayList<>();
+				for (int x = -8; x <= 8; x++) {
+					for (int z = -8; z <= 8; z++) {
+						memoryLocations.add(originPos.add(transX, transY, transZ).add(x, 1, z));
+					}
+				}
+				Collections.shuffle(memoryLocations);
+
+
+				BlockPos targetPos = originPos.add(transX, transY, transZ).up();
+
+				List<Pair<BlockPos, Direction>> candidates = new ArrayList<>();
+
+				for (BlockPos memoryLocation : memoryLocations) {
+					for (Direction d : HORIZONTAL) {
+						BlockPos local = memoryLocation.offset(d);
+
+						if (local.isWithinDistance(originPos.add(transX, transY, transZ), 3)) {
+							continue;
+						}
+
+						if (local.isWithinDistance(paintingOrigin, 2)) {
+							continue;
+						}
+
+						BlockState state = dreamscape.getBlockState(memoryLocation);
+						if (dreamscape.isAir(local)
+								&& state.isSideSolidFullSquare(dreamscape, memoryLocation, d)
+								&& !(state.getBlock() instanceof BlockEntityProvider)
+								&& dreamscape.getLightLevel(local) < 12
+								&& dreamscape.getLightLevel(local) > 7
+						) {
+							BlockHitResult res = dreamscape.raycast(new RaycastContext(local.toCenterPos().offset(d, 1.0E-5F),
+									targetPos.toCenterPos(), RaycastContext.ShapeType.VISUAL,
+									RaycastContext.FluidHandling.NONE, ShapeContext.absent()));
+
+							if (res.getBlockPos().equals(targetPos)) {
+								candidates.add(new Pair<>(local, d));
+							}
+						}
+					}
+				}
+
+				if (!candidates.isEmpty()) {
+					Pair<BlockPos, Direction> v = candidates.getFirst();
+
+					dreamscape.spawnEntity(MemoryFrameEntity.place(dreamscape, v.getLeft(), v.getRight()));
+				}
+			}
 
 			// Reset occupied state
 			for (ServerPlayerEntity p : g.players) {

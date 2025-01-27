@@ -1,0 +1,8 @@
+{
+    "sources": [
+        {
+            "type": "cerulean",
+            "resource": "cerulean:texgen/dynamic_eye"
+        }
+    ]
+}

@@ -33,6 +33,8 @@ public class Cerulean implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		CeruleanCriteria.init();
+
 		CeruleanFluids.init();
 		CeruleanBlocks.init();
 		CeruleanBlockEntities.init();
@@ -42,6 +44,8 @@ public class Cerulean implements ModInitializer {
 		CeruleanItems.init();
 
 		CeruleanItemGroups.init();
+
+		CeruleanEntities.init();
 
 		BiomeDecorator.init();
 

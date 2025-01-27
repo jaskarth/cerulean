@@ -10,6 +10,7 @@
     "MixinAdvancementPositioner",
     "MixinEnchantmentScreenHandler",
     "MixinEntity",
+    "MixinInventoryChangedCriterion",
     "MixinNoiseConfig",
     "MixinPlayerEntity",
     "MixinRedstoneView",
@@ -19,6 +20,7 @@
     "client.MixinGameRenderer"
   ],
   "client": [
+    "client.GameRendererAccessor",
     "client.MixinAdvancementTab",
     "client.MixinAdvancementToast",
     "client.MixinCamera",
@@ -28,7 +30,11 @@
     "client.MixinInGameHud",
     "client.MixinLightmapTextureManager",
     "client.MixinMinecraftClient",
-    "client.MixinWorldRenderer"
+    "client.MixinSprite",
+    "client.MixinTextRenderer",
+    "client.MixinTextureManager",
+    "client.MixinWorldRenderer",
+    "client.RenderSystemAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

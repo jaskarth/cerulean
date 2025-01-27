@@ -2,6 +2,8 @@ package fmt.cerulean.mixin;
 
 import java.util.function.Supplier;
 
+import fmt.cerulean.entity.DreamscapeEntity;
+import fmt.cerulean.entity.MemoryFrameEntity;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.DreamscapeGamerules;
 import net.minecraft.entity.Entity;
@@ -51,7 +53,7 @@ public abstract class MixinServerWorld extends World implements StructureWorldAc
 	@Inject(method = "spawnEntity", at = @At("HEAD"), cancellable = true)
 	private void cerulean$noEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
-			if (!(entity instanceof PlayerEntity)) {
+			if (!(entity instanceof PlayerEntity || entity instanceof DreamscapeEntity)) {
 				cir.setReturnValue(false);
 			}
 		}

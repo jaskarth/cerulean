@@ -32,7 +32,8 @@ public abstract class MixinAdvancementToast implements Toast {
 	private void cerulean$draw(DrawContext context, ToastManager manager, long startTime, CallbackInfoReturnable<Toast.Visibility> cir) {
 		AdvancementDisplay advancementDisplay = this.advancement.value().display().orElse(null);
 
-		if (advancementDisplay != null && this.advancement.id().getNamespace().equals(Cerulean.ID)) {
+		Identifier id = this.advancement.id();
+		if (advancementDisplay != null && id.getNamespace().equals(Cerulean.ID)) {
 			context.drawGuiTexture(TEXTURE, 0, 0, this.getWidth(), this.getHeight());
 			List<OrderedText> list = manager.getClient().textRenderer.wrapLines(advancementDisplay.getTitle(), 125);
 			int color = advancementDisplay.getFrame() == AdvancementFrame.CHALLENGE ? 0xff88ff : 0xffff00;
@@ -56,7 +57,13 @@ public abstract class MixinAdvancementToast implements Toast {
 			}
 
 			context.drawItemWithoutEntity(advancementDisplay.getIcon(), 8, 8);
-			cir.setReturnValue((double)startTime >= 5000.0 * manager.getNotificationDisplayTimeMultiplier() ? Toast.Visibility.HIDE : Toast.Visibility.SHOW);
+
+			double extra = 0;
+			if (id.getPath().equals("cerulean/the_supplication")) {
+				extra = 0.75;
+			}
+
+			cir.setReturnValue((double)startTime >= 5000.0 * (extra + manager.getNotificationDisplayTimeMultiplier()) ? Toast.Visibility.HIDE : Toast.Visibility.SHOW);
 		}
 	}
 }

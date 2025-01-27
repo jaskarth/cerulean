@@ -230,6 +230,12 @@
   "advancements.cerulean.the_precipice.desc": "Return home from the world beyond",
   "advancements.cerulean.the_presupposition": "The Presupposition",
   "advancements.cerulean.the_presupposition.desc": "It didn't do that last time...?",
+  "advancements.cerulean.the_desire": "The Desire",
+  "advancements.cerulean.the_desire.desc": "Something has changed.",
+  "advancements.cerulean.the_supplication": "The Supplication",
+  "advancements.cerulean.the_supplication.desc": "I have been here before.",
+  "advancements.cerulean.the_allegory": "The Allegory",
+  "advancements.cerulean.the_allegory.desc": "Discover the world behind the wall",
 
   "cerulean.group": "Cerulean"
 }

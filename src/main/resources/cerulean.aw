@@ -26,3 +26,5 @@ accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget t
 accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget title Lnet/minecraft/text/OrderedText;
 accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget description Ljava/util/List;
 accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget width I
+
+accessible class net/minecraft/client/texture/ResourceTexture$TextureData

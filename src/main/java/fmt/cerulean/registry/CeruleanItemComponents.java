@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.fluid.CanisterFluidType;
+import fmt.cerulean.item.EyeOfVendorItem;
 import net.minecraft.component.ComponentType;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
@@ -23,6 +24,11 @@ public class CeruleanItemComponents {
 	public static final ComponentType<CanisterFluidType> FLUID_TYPE = register("fluid_type", ComponentType.<CanisterFluidType>builder()
 			.codec(CanisterFluidType.CODEC)
 			.packetCodec(CanisterFluidType.PACKET_CODEC)
+			.build());
+
+	public static final ComponentType<EyeOfVendorItem.Mode> EYE_MODE = register("eye_mode", ComponentType.<EyeOfVendorItem.Mode>builder()
+			.codec(EyeOfVendorItem.Mode.CODEC)
+			.packetCodec(EyeOfVendorItem.Mode.PACKET_CODEC)
 			.build());
 
 	public static void init() {

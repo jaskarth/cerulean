@@ -3,9 +3,11 @@ package fmt.cerulean.mixin;
 import com.mojang.authlib.GameProfile;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanCriteria;
 import fmt.cerulean.util.Counterful;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.CeruleanDimensions;
+import fmt.cerulean.world.CeruleanWorldState;
 import fmt.cerulean.world.DimensionState;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.entity.BlockEntity;
@@ -68,18 +70,19 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void cerulean$playerTick(CallbackInfo ci) {
-		DimensionState st = Counterful.get((PlayerEntity) (Object) this);
+		DimensionState st = Counterful.get(this);
 		World world = getWorld();
+		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 		if (st.melancholy > 230) {
 			this.detach();
 			this.notInAnyWorld = true;
-			this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
+			this.getServerWorld().removePlayer(player, Entity.RemovalReason.CHANGED_DIMENSION);
 
-			Criteria.CHANGED_DIMENSION.trigger((ServerPlayerEntity) (Object) this, world.getRegistryKey(), World.OVERWORLD);
+			Criteria.CHANGED_DIMENSION.trigger(player, world.getRegistryKey(), World.OVERWORLD);
 			this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
 
 			st.reset();
-			st.sync((ServerPlayerEntity) (Object)this);
+			st.sync(player);
 			return;
 		}
 
@@ -119,15 +122,15 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 			if (st.indifference > 60) {
 				this.detach();
 				this.notInAnyWorld = true;
-				this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
+				this.getServerWorld().removePlayer(player, Entity.RemovalReason.CHANGED_DIMENSION);
 
 				this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
 				st.reset();
-				st.sync((ServerPlayerEntity) (Object)this);
+				st.sync(player);
 				return;
 			}
 
-			st.sync((ServerPlayerEntity) (Object)this);
+			st.sync(player);
 
 			if (st.ennui > 50) {
 				ServerWorld skies = this.server.getWorld(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.SKIES));
@@ -139,19 +142,23 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0));
 
 				if (tp != null) {
+					if (CeruleanWorldState.get(getServerWorld()).getFor(player).truthful) {
+						CeruleanCriteria.CRITERION.trigger(player, 1);
+					}
+
 					teleportTo(new TeleportTarget(skies, tp.up(2).toCenterPos(), Vec3d.ZERO, this.getYaw(), this.getPitch(), e -> {}));
 
 					st.reset();
-					st.sync((ServerPlayerEntity) (Object)this);
+					st.sync(player);
 				} else {
 					this.detach();
 					this.notInAnyWorld = true;
-					this.getServerWorld().removePlayer((ServerPlayerEntity) (Object) this, Entity.RemovalReason.CHANGED_DIMENSION);
+					this.getServerWorld().removePlayer(player, Entity.RemovalReason.CHANGED_DIMENSION);
 
 					this.networkHandler.onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
 
 					st.reset();
-					st.sync((ServerPlayerEntity) (Object)this);
+					st.sync(player);
 				}
 			}
 		}

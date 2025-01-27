@@ -26,7 +26,8 @@ public class CeruleanAdvancementWidget extends AdvancementWidget {
 	}
 
 	public void renderWidgets(DrawContext context, int x, int y) {
-		if (!this.display.isHidden() || this.progress != null && this.progress.isDone() && !advancement.getAdvancementEntry().id().getPath().equals("cerulean/root")) {
+		Identifier id = advancement.getAdvancementEntry().id();
+		if (!this.display.isHidden() || this.progress != null && this.progress.isDone() && !id.getPath().equals("cerulean/root")) {
 			float f = this.progress == null ? 0.0F : this.progress.getProgressBarPercentage();
 			if (f >= 1.0F) {
 				context.drawTexture(Cerulean.id("textures/gui/star_frame_obtained.png"), x + this.x + 3, y + this.y, 30, 30, 0, 0, 26, 26, 26, 26);

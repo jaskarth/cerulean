@@ -1,0 +1,29 @@
+{
+  "parent": "cerulean:cerulean/root",
+  "criteria": {
+    "supplication": {
+      "conditions": {
+        "value": 1
+      },
+      "trigger": "cerulean:cerulean"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.cerulean.the_supplication.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "cerulean:candy_apple"
+    },
+    "title": {
+      "translate": "advancements.cerulean.the_supplication"
+    }
+  },
+  "requirements": [
+    [
+      "supplication"
+    ]
+  ]
+}

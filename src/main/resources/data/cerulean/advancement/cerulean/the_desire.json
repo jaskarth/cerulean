@@ -1,0 +1,33 @@
+{
+  "parent": "cerulean:cerulean/root",
+  "criteria": {
+    "fuchsia_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cerulean:fuchsia_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.cerulean.the_desire.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "cerulean:fuchsia_ingot"
+    },
+    "title": {
+      "translate": "advancements.cerulean.the_desire"
+    }
+  },
+  "requirements": [
+    [
+      "fuchsia_ingot"
+    ]
+  ]
+}
