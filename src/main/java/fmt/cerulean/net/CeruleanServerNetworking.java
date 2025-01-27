@@ -1,7 +1,9 @@
 package fmt.cerulean.net;
 
+import fmt.cerulean.block.base.Obedient;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.net.packet.CloseBehindPacket;
+import fmt.cerulean.net.packet.InfluencePacket;
 import fmt.cerulean.net.packet.MagicAttackPacket;
 import fmt.cerulean.registry.CeruleanBlocks;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -78,6 +80,30 @@ public class CeruleanServerNetworking {
 					world.setBlockState(oOrigin.down().offset(moveDir, amt), CeruleanBlocks.MIMIC.getDefaultState(), Block.FORCE_STATE);
 					MimicBlockEntity.set(world.getBlockEntity(oOrigin.down().offset(moveDir, amt)), c[1], 20, moveDir, true);
 				}
+			});
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(InfluencePacket.ID, (payload, ctx) -> {
+			ctx.server().execute(() -> {
+				ServerWorld world = ctx.player().getServerWorld();
+				payload.target().ifLeft(pos -> {
+					BlockState state = world.getBlockState(pos);
+					Block block = state.getBlock();
+					if (Obedient.willCede(block)) {
+						ctx.player().sendMessage(Obedient.cede((Obedient) block, payload.intuition()), true);
+					} else {
+						BlockEntity be = world.getBlockEntity(pos);
+						if (Obedient.willCede(be)) {
+							ctx.player().sendMessage(Obedient.cede((Obedient) be, payload.intuition()), true);
+						}
+					}
+				}).ifRight(entityId -> {
+					Entity entity = world.getEntityById(entityId);
+					if (Obedient.willCede(entity)) {
+						ctx.player().sendMessage(Obedient.cede((Obedient) entity, payload.intuition()), true);
+					}
+				});
+
 			});
 		});
 	}

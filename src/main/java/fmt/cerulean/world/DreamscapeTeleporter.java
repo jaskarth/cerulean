@@ -7,6 +7,7 @@ import fmt.cerulean.block.entity.StrongboxBlockEntity;
 import fmt.cerulean.entity.MemoryFrameEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Counterful;
+import fmt.cerulean.util.PaintingDuck;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
@@ -82,7 +83,7 @@ public class DreamscapeTeleporter {
 
 			PaintingEntity portalPainting = null;
 			for (PaintingEntity painting : paintings) {
-				if (painting.getVariant().matchesKey(RegistryKey.of(RegistryKeys.PAINTING_VARIANT, Cerulean.id("dreams")))) {
+				if (painting instanceof PaintingDuck duck && duck.manifestsInDreams()) {
 					if (found) {
 						// Found two portal paintings?
 						found = false;

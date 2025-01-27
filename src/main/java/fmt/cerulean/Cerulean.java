@@ -6,6 +6,7 @@ import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.net.CeruleanNetworking;
 import fmt.cerulean.net.CeruleanServerNetworking;
 import fmt.cerulean.registry.*;
+import fmt.cerulean.util.PaintingDuck;
 import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.gen.DreamscapeBiomeSource;
 import fmt.cerulean.world.gen.DreamscapeChunkGenerator;
@@ -82,7 +83,7 @@ public class Cerulean implements ModInitializer {
 			boolean found = false;
 
 			for (PaintingEntity painting : paintings) {
-				if (painting.getVariant().matchesKey(RegistryKey.of(RegistryKeys.PAINTING_VARIANT, Cerulean.id("dreams")))) {
+				if (painting instanceof PaintingDuck duck && duck.manifestsInDreams() && duck.lethargic()) {
 					if (found) {
 						// Found two portal paintings?
 						found = false;

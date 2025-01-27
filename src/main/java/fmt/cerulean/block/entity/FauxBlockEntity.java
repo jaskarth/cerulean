@@ -1,10 +1,13 @@
 package fmt.cerulean.block.entity;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import com.google.common.collect.Sets;
 
+import fmt.cerulean.block.base.Obedient;
 import fmt.cerulean.client.render.block.FauxBlockEntityRenderer;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
@@ -25,10 +28,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class FauxBlockEntity extends BlockEntity {
+public class FauxBlockEntity extends BlockEntity implements Obedient {
+	private boolean reckon = false;
+	private int demanifest = 7, manifest = 3;
 	public BlockState state;
 	public Direction facing = Direction.NORTH;
-	private boolean reckon = false;
 	public BlockPos beholdent = null;
 	public Set<BlockPos> carefulNow = Set.of();
 
@@ -114,7 +118,7 @@ public class FauxBlockEntity extends BlockEntity {
 			boolean impulse = FauxBlockEntityRenderer.adrenaline(pos);
 			int detachment = FauxBlockEntityRenderer.intuitDetachment(pos);
 			if (impulse == false && detachment > 2 && detachment < 14) {
-				if (world.getRandom().nextInt(fbe.reckon ? 3 : 7) == 0) {
+				if (world.getRandom().nextInt(fbe.reckon ? fbe.manifest : fbe.demanifest) == 0) {
 					for (BlockPos c : fbe.carefulNow) {
 						if (FauxBlockEntityRenderer.adrenaline(c)) {
 							return;
@@ -139,6 +143,12 @@ public class FauxBlockEntity extends BlockEntity {
 
 		state = NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("Block"));
 		facing = Direction.byId(nbt.getByte("Dir"));
+		if (nbt.contains("Demanifest")) {
+			demanifest = nbt.getInt("Demanifest");
+		}
+		if (nbt.contains("Manifest")) {
+			manifest = nbt.getInt("Manifest");
+		}
 	}
 
 	@Override
@@ -147,6 +157,8 @@ public class FauxBlockEntity extends BlockEntity {
 
 		nbt.put("Block", NbtHelper.fromBlockState(this.state == null ? Blocks.BEDROCK.getDefaultState() : state));
 		nbt.putByte("Dir", (byte) facing.getId());
+		nbt.putInt("Demanifest", demanifest);
+		nbt.putInt("Manifest", manifest);
 	}
 
 	public static void set(BlockEntity be, BlockState state, Direction facing) {
@@ -159,5 +171,23 @@ public class FauxBlockEntity extends BlockEntity {
 		if (world instanceof ServerWorld sw) {
 			sw.getChunkManager().markForUpdate(fbe.getPos());
 		}
+	}
+
+	public void shareImpulse(Consumer<FauxBlockEntity> consumer) {
+		Set<BlockPos> held = Sets.newHashSet();
+		behold(held, this.pos);
+		for (BlockPos pos : held) {
+			if (this.world.getBlockEntity(pos) instanceof FauxBlockEntity fbe) {
+				consumer.accept(fbe);
+			}
+		}
+	}
+
+	@Override
+	public Map<String, Consumer<String>> cede() {
+		return Map.of(
+			"demanifest", intuition -> shareImpulse(fbe -> fbe.demanifest = Math.max(1, Obedient.count(intuition))),
+			"manifest", intuition -> shareImpulse(fbe -> fbe.manifest = Math.max(1, Obedient.count(intuition)))
+		);
 	}
 }

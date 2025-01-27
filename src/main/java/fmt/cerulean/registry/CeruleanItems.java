@@ -72,6 +72,7 @@ public class CeruleanItems {
 	public static final Item VACUUM_PUMP = register("vacuum_pump", new VacuumPumpItem(new Item.Settings().maxCount(1)));
 	public static final Item DEPRESSURIZER = register("depressurizer", new DepressurizerItem(new Item.Settings().maxCount(1)));
 	public static final Item EYE_OF_VENDOR = register("eye_of_vendor", new EyeOfVendorItem(new Item.Settings()));
+	public static final Item BRUSH = register("brush", new StrictBrushItem(new Item.Settings().maxCount(1)));
 	public static final Item HALITE = register("halite", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())
 	));

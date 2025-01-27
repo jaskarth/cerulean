@@ -1,19 +1,26 @@
 package fmt.cerulean.mixin;
 
-import fmt.cerulean.util.Counterful;
-import fmt.cerulean.world.DimensionState;
-import fmt.cerulean.world.CeruleanDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameMode;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import fmt.cerulean.block.base.Obedient;
+import fmt.cerulean.item.StrictBrushItem;
+import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.util.Counterful;
+import fmt.cerulean.world.CeruleanDimensions;
+import fmt.cerulean.world.DimensionState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameMode;
+import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity implements Counterful {
@@ -22,6 +29,17 @@ public abstract class MixinPlayerEntity extends LivingEntity implements Counterf
 	protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
+
+	@Inject(at = @At("HEAD"), method = "interact", cancellable = true)
+	public void cerulean$interact(Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> info) {
+		if (hand == Hand.MAIN_HAND && ((PlayerEntity) (Object) this).isHolding(CeruleanItems.BRUSH)) {
+			if (Obedient.willCede(entity)) {
+				StrictBrushItem.explain(entity.getWorld(), (Obedient) entity);
+				info.setReturnValue(ActionResult.SUCCESS);
+			}
+		}
+	}
+
 
 	@Inject(method = "isBlockBreakingRestricted", at = @At("HEAD"), cancellable = true)
 	private void cerulean$dreamscapeInteraction(World world, BlockPos pos, GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
