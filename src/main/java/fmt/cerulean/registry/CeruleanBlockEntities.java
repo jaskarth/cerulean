@@ -1,11 +1,7 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
-import fmt.cerulean.block.entity.FauxBlockEntity;
-import fmt.cerulean.block.entity.MimicBlockEntity;
-import fmt.cerulean.block.entity.PipeBlockEntity;
-import fmt.cerulean.block.entity.StrongboxBlockEntity;
-import fmt.cerulean.block.entity.WellBlockEntity;
+import fmt.cerulean.block.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,6 +18,7 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<MimicBlockEntity> MIMIC = register("mimic", MimicBlockEntity::new, CeruleanBlocks.MIMIC);
 	public static final BlockEntityType<FauxBlockEntity> FAUX = register("faux", FauxBlockEntity::new, CeruleanBlocks.FAUX);
 	public static final BlockEntityType<StrongboxBlockEntity> STRONGBOX = register("strongbox", StrongboxBlockEntity::new, CeruleanBlocks.STRONGBOX);
+	public static final BlockEntityType<ItemDetectorBlockEntity> ITEM_DETECTOR = register("item_detector", ItemDetectorBlockEntity::new, CeruleanBlocks.ITEM_DETECTOR);
 
 	public static void init() {
 	}

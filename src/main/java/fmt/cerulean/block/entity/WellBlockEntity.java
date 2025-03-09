@@ -2,6 +2,7 @@ package fmt.cerulean.block.entity;
 
 import fmt.cerulean.block.PipeBlock;
 import fmt.cerulean.block.WellBlock;
+import fmt.cerulean.block.base.Obedient;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowResource;
@@ -21,7 +22,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class WellBlockEntity extends BlockEntity implements FlowOutreach {
+import java.util.Map;
+import java.util.function.Consumer;
+
+public class WellBlockEntity extends BlockEntity implements FlowOutreach, Obedient {
 	private FlowState flow = FlowState.NONE;
 
 	public WellBlockEntity(BlockPos pos, BlockState state) {
@@ -156,5 +160,29 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach {
 
 	public void setFlow(FlowState flow) {
 		this.flow = flow;
+	}
+
+	private void setColor(Color color) {
+		setFlow(new FlowState(FlowResources.star(color, flow.resource().getBrightness()), flow.pressure()));
+		markDirty();
+	}
+
+	private void setBrightness(Brightness brightness) {
+		setFlow(new FlowState(FlowResources.star(flow.resource().getColor(), brightness), flow.pressure()));
+		markDirty();
+	}
+
+	private void setPressure(int pressure) {
+		setFlow(new FlowState(flow.resource(), pressure));
+		markDirty();
+	}
+
+	@Override
+	public Map<String, Consumer<String>> cede() {
+		return Map.of(
+			"color", intuition -> setColor(Obedient.dissolve(intuition, Color::fromName)),
+			"brightness", intuition -> setBrightness(Obedient.dissolve(intuition, Brightness::fromName)),
+			"pressure", intuition -> setPressure(Obedient.count(intuition))
+		);
 	}
 }

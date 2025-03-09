@@ -42,6 +42,8 @@
   "block.cerulean.halite_outcropping_large": "Large Halite Outcropping",
   "block.cerulean.halite_outcropping_medium": "Medium Halite Outcropping",
   "block.cerulean.halite_outcropping_small": "Small Halite Outcropping",
+  "block.cerulean.item_detector": "Item Detector",
+  "block.cerulean.destiny_detector": "Destiny Detector",
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -83,6 +85,8 @@
   "item.cerulean.halite_outcropping_large": "Large Halite Outcropping",
   "item.cerulean.halite_outcropping_medium": "Medium Halite Outcropping",
   "item.cerulean.halite_outcropping_small": "Small Halite Outcropping",
+  "item.cerulean.item_detector": "Item Detector",
+  "item.cerulean.destiny_detector": "Destiny Detector",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -242,7 +246,7 @@
   "advancements.cerulean.the_presupposition": "The Presupposition",
   "advancements.cerulean.the_presupposition.desc": "It didn't do that last time...?",
   "advancements.cerulean.the_desire": "The Desire",
-  "advancements.cerulean.the_desire.desc": "Something has changed.",
+  "advancements.cerulean.the_desire.desc": "Something is happening.",
   "advancements.cerulean.the_supplication": "The Supplication",
   "advancements.cerulean.the_supplication.desc": "I have been here before.",
   "advancements.cerulean.the_allegory": "The Allegory",

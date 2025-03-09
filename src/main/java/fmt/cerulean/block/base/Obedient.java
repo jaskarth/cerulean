@@ -2,6 +2,7 @@ package fmt.cerulean.block.base;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,6 +94,20 @@ public interface Obedient {
 			return Integer.parseInt(intuition);
 		} catch (Exception e) {
 			throw new IllegalArgumentException();
+		}
+	}
+
+	public static <T> T dissolve(String intuition, Function<String, T> func) {
+		try {
+			T t = func.apply(intuition);
+
+			if (t == null) {
+				throw new IllegalArgumentException();
+			}
+
+			return t;
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
 		}
 	}
 

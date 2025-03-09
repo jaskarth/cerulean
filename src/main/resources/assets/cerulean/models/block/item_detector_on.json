@@ -1,0 +1,6 @@
+{
+    "parent": "cerulean:block/item_detector",
+    "textures": {
+        "bottom": "block/observer_back_on"
+    }
+}

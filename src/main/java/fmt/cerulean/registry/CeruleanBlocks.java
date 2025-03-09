@@ -238,6 +238,12 @@ public final class CeruleanBlocks {
 	public static final Block HALITE_OUTCROPPING_SMALL = register("halite_outcropping_small",
 			new HaliteOutcroppingBlock(3.0F, 4.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
 
+	public static final Block ITEM_DETECTOR = register("item_detector",
+			new ItemDetectorBlock(AbstractBlock.Settings.copy(Blocks.OBSERVER)));
+
+	public static final Block DESTINY_DETECTOR = register("destiny_detector",
+			new DestinyDetectorBlock(AbstractBlock.Settings.copy(Blocks.STONE).ticksRandomly()));
+
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(EXPOSED_PIPE, WEATHERED_PIPE);

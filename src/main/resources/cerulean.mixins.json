@@ -11,6 +11,7 @@
     "MixinEnchantmentScreenHandler",
     "MixinEntity",
     "MixinInventoryChangedCriterion",
+    "MixinItemEntity",
     "MixinNoiseConfig",
     "MixinPaintingEntity",
     "MixinPlayerEntity",

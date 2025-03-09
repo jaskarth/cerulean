@@ -287,7 +287,7 @@ public class BrushRecipes {
 
 		addRecipe("fuchsia_ingot", new InspirationBrushRecipe.Uninspired(
 			CanvasRequirements.of(
-				Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+				Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 			), 60, List.of(
 				Ingredient.ofItems(Items.GOLD_INGOT),
 				Ingredient.ofItems(Items.REDSTONE),
@@ -297,7 +297,7 @@ public class BrushRecipes {
 
 		addRecipe("candy_apple", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 60, List.of(
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
@@ -331,7 +331,7 @@ public class BrushRecipes {
 
 		addRecipe("disc_5", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.CHARTREUSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 555, List.of(
 				Ingredient.ofItems(Items.DISC_FRAGMENT_5),
 				Ingredient.ofItems(Items.DISC_FRAGMENT_5),
@@ -413,7 +413,7 @@ public class BrushRecipes {
 	private static void toolRecipes() {
 		addRecipe("fuchsia_sword", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 60, List.of(
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
@@ -423,7 +423,7 @@ public class BrushRecipes {
 
 		addRecipe("fuchsia_pickaxe", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 60, List.of(
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
@@ -434,7 +434,7 @@ public class BrushRecipes {
 
 		addRecipe("fuchsia_axe", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 60, List.of(
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
@@ -445,7 +445,7 @@ public class BrushRecipes {
 
 		addRecipe("fuchsia_shovel", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 60, List.of(
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
 				Ingredient.ofItems(Items.IRON_SHOVEL)
@@ -454,7 +454,7 @@ public class BrushRecipes {
 
 		addRecipe("fuchsia_hoe", new InspirationBrushRecipe.Uninspired(
 				CanvasRequirements.of(
-						Set.of(Color.ROSE), Set.of(Brightness.BRILLIANT)
+						Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), 60, List.of(
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),
 				Ingredient.ofItems(CeruleanItems.FUCHSIA_INGOT),

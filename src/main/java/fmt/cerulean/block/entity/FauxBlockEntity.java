@@ -179,6 +179,7 @@ public class FauxBlockEntity extends BlockEntity implements Obedient {
 		for (BlockPos pos : held) {
 			if (this.world.getBlockEntity(pos) instanceof FauxBlockEntity fbe) {
 				consumer.accept(fbe);
+				fbe.markDirty();
 			}
 		}
 	}
