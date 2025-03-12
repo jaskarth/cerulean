@@ -7,6 +7,7 @@
   "mixins": [
     "BlockSettingsAccessor",
     "ItemEntityAccessor",
+    "MinecraftServerAccessor",
     "MixinAdvancementPositioner",
     "MixinEnchantmentScreenHandler",
     "MixinEntity",
@@ -30,7 +31,9 @@
     "client.MixinClientPlayerEntity",
     "client.MixinClientPlayerNetworkManager",
     "client.MixinClientPlayNetworkHandler",
+    "client.MixinHeldItemRenderer",
     "client.MixinInGameHud",
+    "client.MixinItemFrameEntityRenderer",
     "client.MixinLightmapTextureManager",
     "client.MixinMinecraftClient",
     "client.MixinSprite",

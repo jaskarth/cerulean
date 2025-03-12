@@ -82,6 +82,12 @@ public class CeruleanItems {
 	public static final Item HALITE_SALAD = register("halite_salad", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.8f).usingConvertsTo(Items.BOWL).build())
 	));
+	public static final Item GLASS_LENS = register("glass_lens", new Item(new Item.Settings()));
+	public static final Item REFLECTIVE_LENS = register("reflective_lens", new ReflectiveLensItem(new Item.Settings()));
+	public static final Item CAMERA = register("camera", new CameraItem(new Item.Settings()));
+	public static final Item FILM = register("film", new Item(new Item.Settings()));
+	public static final Item PHOTONEGATIVE = register("photonegative", new PhotonegativeItem(new Item.Settings()));
+	public static final Item PHOTOGRAPH = register("photograph", new PhotoItem(new Item.Settings()));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();

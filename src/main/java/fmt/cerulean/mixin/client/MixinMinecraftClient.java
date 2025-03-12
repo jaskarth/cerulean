@@ -5,13 +5,18 @@ import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.client.screen.ColorProgressScreen;
 import fmt.cerulean.flow.FlowState;
+import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -21,6 +26,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(MinecraftClient.class)
@@ -30,6 +36,8 @@ public abstract class MixinMinecraftClient {
 
 	@Shadow public abstract void setScreen(@Nullable Screen screen);
 
+	@Shadow @Nullable public ClientPlayerEntity player;
+	@Shadow @Final public GameOptions options;
 	@Unique
 	private ClientWorld cerulean$changingWorld;
 
@@ -101,6 +109,37 @@ public abstract class MixinMinecraftClient {
 
 				world.addParticle(star, true, x, y, z, vx, vy, vz);
 			}
+		}
+	}
+
+	@Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;wasPressed()Z", ordinal = 10,
+			shift = At.Shift.BEFORE))
+	public void cerulean$leftClickActionWhileHoldingDown(CallbackInfo ci) {
+		while (this.options.attackKey.wasPressed()) {
+			if (this.player.isUsingItem() && this.player.getActiveItem().isOf(CeruleanItems.CAMERA) && !this.player.getItemCooldownManager().isCoolingDown(CeruleanItems.CAMERA)) {
+
+				int idx = this.player.getInventory().indexOf(new ItemStack(CeruleanItems.FILM));
+				if (idx != -1) {
+					this.player.getInventory().getStack(idx).decrement(1);
+					this.player.getItemCooldownManager().set(CeruleanItems.CAMERA, 9999); // Server knows best
+
+					ClientState.remember = true;
+					ClientState.forget = true;
+					if (!this.options.getHideLightningFlashes().getValue()) {
+						ClientState.virtigo = 10;
+						ClientState.virtigoColor = 0xFFFFFF;
+					}
+				}
+			}
+		}
+	}
+
+	@Inject(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;resetEquipProgress(Lnet/minecraft/util/Hand;)V", shift = At.Shift.BEFORE),
+			locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+	private void cerulean$holdDownPhoto(CallbackInfo ci, Hand[] var1, int var2, int var3, Hand hand) {
+		ItemStack itemStack = this.player.getStackInHand(hand);
+		if (itemStack.isOf(CeruleanItems.PHOTOGRAPH)) {
+			ci.cancel();
 		}
 	}
 }

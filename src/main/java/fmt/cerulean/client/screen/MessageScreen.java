@@ -15,6 +15,7 @@ public class MessageScreen extends Screen {
 	private int life = -12;
 	private int death = 0;
 	private int alpha = 255;
+
 	public MessageScreen() {
 		super(Text.empty());
 		ClientState.truthful = false;

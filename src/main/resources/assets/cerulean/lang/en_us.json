@@ -44,6 +44,8 @@
   "block.cerulean.halite_outcropping_small": "Small Halite Outcropping",
   "block.cerulean.item_detector": "Item Detector",
   "block.cerulean.destiny_detector": "Destiny Detector",
+  "block.cerulean.lustrous_block": "Lustrous Block",
+  "block.cerulean.ductile_block": "Ductile Block",
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -87,6 +89,8 @@
   "item.cerulean.halite_outcropping_small": "Small Halite Outcropping",
   "item.cerulean.item_detector": "Item Detector",
   "item.cerulean.destiny_detector": "Destiny Detector",
+  "item.cerulean.lustrous_block": "Lustrous Block",
+  "item.cerulean.ductile_block": "Ductile Block",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -116,6 +120,10 @@
   "item.cerulean.halite": "Halite",
   "item.cerulean.crushed_halite": "Crushed Halite",
   "item.cerulean.halite_salad": "Halite Salad",
+  "item.cerulean.camera": "Camera",
+  "item.cerulean.film": "Film",
+  "item.cerulean.photonegative": "Photonegative",
+  "item.cerulean.photograph": "Photograph",
 
   "item.cerulean.brilliant_ash_star": "Brilliant Ash Star",
   "item.cerulean.brilliant_cerulean_star": "Brilliant Cerulean Star",

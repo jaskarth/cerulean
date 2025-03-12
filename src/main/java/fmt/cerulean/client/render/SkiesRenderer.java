@@ -2,7 +2,7 @@ package fmt.cerulean.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fmt.cerulean.util.Counterful;
-import fmt.cerulean.world.DimensionState;
+import fmt.cerulean.world.data.DimensionState;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;

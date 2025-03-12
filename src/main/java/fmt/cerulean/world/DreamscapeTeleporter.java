@@ -1,13 +1,12 @@
 package fmt.cerulean.world;
 
-import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.StrongboxBlock;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
 import fmt.cerulean.entity.MemoryFrameEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
-import fmt.cerulean.util.Counterful;
 import fmt.cerulean.util.PaintingDuck;
+import fmt.cerulean.world.data.CeruleanWorldState;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
@@ -17,12 +16,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
-import net.minecraft.world.BlockStateRaycastContext;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.TeleportTarget;
-import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 
 import java.util.ArrayList;

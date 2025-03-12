@@ -1,6 +1,6 @@
 package fmt.cerulean.util;
 
-import fmt.cerulean.world.DimensionState;
+import fmt.cerulean.world.data.DimensionState;
 import net.minecraft.entity.player.PlayerEntity;
 
 public interface Counterful {

@@ -350,6 +350,15 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.EYE_OF_VENDOR)
 		));
 
+		addRecipe("photonegative_coloring", new TriviaStainingRecipe(
+				CanvasRequirements.of(Blocks.AIR, ALL_COLORS, ALL_BRIGHTNESSES),
+				CeruleanItems.PHOTONEGATIVE, false
+		));
+
+		addRecipe("photo_imprinting", new ImprintingRecipe(
+				CanvasRequirements.of(CeruleanBlocks.POLYETHYLENE, ALL_COLORS, ALL_BRIGHTNESSES)
+		));
+
 		// start simple color changing
 		addRecipe("lily_of_the_valley_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),

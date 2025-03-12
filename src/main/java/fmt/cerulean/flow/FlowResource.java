@@ -1,6 +1,9 @@
 package fmt.cerulean.flow;
 
+import fmt.cerulean.util.Util;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
+import org.joml.Vector3f;
 
 public interface FlowResource {
 
@@ -77,6 +80,15 @@ public interface FlowResource {
 				}
 			}
 			return null;
+		}
+
+		public Vector3f toRGBVec() {
+			int rgb = toRGB();
+			return new Vector3f(((rgb >> 0) & 0xFF) / 255.f, ((rgb >> 8) & 0xFF) / 255.f, ((rgb >> 16) & 0xFF) / 255.f);
+		}
+
+		public int toRGB() {
+			return MathHelper.hsvToRgb(h / 360f, s, v * 0.9f);
 		}
 
 		public Text text() {

@@ -2,18 +2,21 @@ package fmt.cerulean.client.tex;
 
 import fmt.cerulean.client.tex.gen.ArgutiaeMentisRecordari;
 import fmt.cerulean.client.tex.gen.DynamicEyeTexture;
+import fmt.cerulean.client.tex.gen.StaticTexture;
 import fmt.cerulean.client.tex.gen.TabulaeMentisRecordari;
 import net.minecraft.client.texture.TextureManager;
 
 public class CeruleanTextures {
 	public static void init(TextureManager manager) {
 		DynamicEyeTexture.init(manager);
+		StaticTexture.init(manager);
 		ArgutiaeMentisRecordari.incipit(manager);
 		TabulaeMentisRecordari.incipit(manager);
 	}
 
 	public static void close() {
 		DynamicEyeTexture.close();
+		StaticTexture.close();
 		ArgutiaeMentisRecordari.interficit();
 		TabulaeMentisRecordari.interficit();
 	}

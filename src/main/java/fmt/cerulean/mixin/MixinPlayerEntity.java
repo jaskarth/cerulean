@@ -10,7 +10,7 @@ import fmt.cerulean.item.StrictBrushItem;
 import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.util.Counterful;
 import fmt.cerulean.world.CeruleanDimensions;
-import fmt.cerulean.world.DimensionState;
+import fmt.cerulean.world.data.DimensionState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

@@ -1,11 +1,8 @@
-package fmt.cerulean.world;
+package fmt.cerulean.world.data;
 
-import fmt.cerulean.net.CeruleanNetworking;
 import fmt.cerulean.net.packet.CeruleanStateSyncPacket;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class DimensionState {

@@ -1,13 +1,11 @@
 package fmt.cerulean.mixin;
 
 import fmt.cerulean.registry.CeruleanItems;
-import fmt.cerulean.util.Counterful;
-import fmt.cerulean.world.CeruleanWorldState;
+import fmt.cerulean.world.data.CeruleanWorldState;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

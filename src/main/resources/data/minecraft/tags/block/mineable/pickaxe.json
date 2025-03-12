@@ -27,7 +27,9 @@
     "cerulean:halite_outcropping",
     "cerulean:halite_outcropping_large",
     "cerulean:halite_outcropping_medium",
-    "cerulean:halite_outcropping_small"
+    "cerulean:halite_outcropping_small",
+    "cerulean:lustrous_block",
+    "cerulean:ductile_block"
   ],
   "replace": false
 }

@@ -5,6 +5,8 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.fluid.CanisterFluidType;
 import fmt.cerulean.item.EyeOfVendorItem;
+import fmt.cerulean.item.component.ColorTriplex;
+import fmt.cerulean.item.component.PhotoComponent;
 import net.minecraft.component.ComponentType;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
@@ -29,6 +31,16 @@ public class CeruleanItemComponents {
 	public static final ComponentType<EyeOfVendorItem.Mode> EYE_MODE = register("eye_mode", ComponentType.<EyeOfVendorItem.Mode>builder()
 			.codec(EyeOfVendorItem.Mode.CODEC)
 			.packetCodec(EyeOfVendorItem.Mode.PACKET_CODEC)
+			.build());
+
+	public static final ComponentType<ColorTriplex> COLOR_TRIPLEX = register("color_triplex", ComponentType.<ColorTriplex>builder()
+			.codec(ColorTriplex.CODEC)
+			.packetCodec(ColorTriplex.PACKET_CODEC)
+			.build());
+
+	public static final ComponentType<PhotoComponent> PHOTO = register("photo", ComponentType.<PhotoComponent>builder()
+			.codec(PhotoComponent.CODEC)
+			.packetCodec(PhotoComponent.PACKET_CODEC)
 			.build());
 
 	public static void init() {

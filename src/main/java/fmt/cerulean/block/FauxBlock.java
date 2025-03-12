@@ -1,5 +1,6 @@
 package fmt.cerulean.block;
 
+import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;

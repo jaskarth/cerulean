@@ -11,4 +11,12 @@ public class Util {
 	public static <T> T pick(List<T> list, Random random) {
 		return list.get(random.nextInt(list.size()));
 	}
+
+	public static int remuxColor(int c) {
+		int r = c & 0xFF;
+		int g = (c >> 8) & 0xFF;
+		int b = (c >> 16) & 0xFF;
+
+		return (r << 16) | (g << 8) | (b << 0);
+	}
 }

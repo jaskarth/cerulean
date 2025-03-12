@@ -2,10 +2,15 @@ package fmt.cerulean.net;
 
 import fmt.cerulean.block.base.Obedient;
 import fmt.cerulean.block.entity.MimicBlockEntity;
-import fmt.cerulean.net.packet.CloseBehindPacket;
-import fmt.cerulean.net.packet.InfluencePacket;
-import fmt.cerulean.net.packet.MagicAttackPacket;
+import fmt.cerulean.item.component.ColorTriplex;
+import fmt.cerulean.item.component.PhotoComponent;
+import fmt.cerulean.net.packet.*;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanItemComponents;
+import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.world.data.PhotoMeta;
+import fmt.cerulean.world.data.PhotoState;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,10 +18,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CeruleanServerNetworking {
 	public static void init() {
@@ -104,6 +112,130 @@ public class CeruleanServerNetworking {
 					}
 				});
 
+			});
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(UploadMemoryPacket.ID, (payload, ctx) -> {
+			byte[] data = payload.data();
+			float yaw = payload.yaw();
+			float pitch = payload.pitch();
+
+			ctx.server().execute(() -> {
+				ServerPlayerEntity player = ctx.player();
+
+				int idx = player.getInventory().indexOf(new ItemStack(CeruleanItems.FILM));
+				if (idx != -1) {
+					player.getInventory().getStack(idx).decrement(1);
+				}
+
+				PhotoState photos = PhotoState.get(player.getServerWorld());
+				player.getItemCooldownManager().set(CeruleanItems.CAMERA, 30);
+				if (photos.canAllocFor(player)) {
+					int id = photos.allocNextId(player);
+
+					Vec3d vec = Vec3d.fromPolar(new Vec2f(pitch, yaw));
+					Vec3d cursor = player.getBlockPos().toCenterPos();
+
+					// It's fast. I promise.
+					LongOpenHashSet set = new LongOpenHashSet();
+					Set<BlockPos> pos = new HashSet<>();
+					for (int i = 0; i <= 10; i++) {
+						cursor = cursor.add(vec.multiply(3));
+
+						int r = (int) MathHelper.clampedMap(i / 10.0, 0, 1, 4, 15);
+
+						for (int x = -r; x <= r; x++) {
+							for (int z = -r; z <= r; z++) {
+								for (int y = -r; y <= r; y++) {
+									BlockPos local = BlockPos.ofFloored(cursor).add(x, y, z);
+									long l = local.asLong();
+									if (set.add(l)) {
+										if (player.getWorld().getBlockState(local).isOf(CeruleanBlocks.LUSTROUS_BLOCK)) {
+											pos.add(local);
+										}
+									}
+								}
+							}
+						}
+					}
+
+					PhotoMeta meta = new PhotoMeta();
+					meta.id = id;
+					meta.fulfilled = false;
+					BlockBox encompass = BlockBox.encompassPositions(pos).orElse(null);
+					if (encompass != null) {
+						meta.neededBox = encompass;
+					}
+					meta.positions.addAll(pos);
+
+					photos.add(id, data, meta);
+
+
+					ItemStack stack = new ItemStack(CeruleanItems.PHOTONEGATIVE);
+					stack.set(CeruleanItemComponents.PHOTO, PhotoComponent.create(id));
+					stack.set(CeruleanItemComponents.COLOR_TRIPLEX, ColorTriplex.empty());
+
+					if (!player.giveItemStack(stack)) {
+						player.dropItem(stack, false);
+					}
+				}
+			});
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(RequestMemoryPacket.ID, (payload, ctx) -> {
+			int id = payload.id();
+
+			ctx.server().execute(() -> {
+				ServerPlayerEntity player = ctx.player();
+
+				PhotoState photos = PhotoState.get(player.getServerWorld());
+				byte[] data = photos.getStore().get(id);
+				System.out.println("Supplying id " + id);
+				if (data != null) {
+					ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, data));
+				}
+			});
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(StaringPacket.ID, (payload, ctx) -> {
+			int id = payload.id();
+			float yaw = payload.yaw();
+			float pitch = payload.pitch();
+
+			ctx.server().execute(() -> {
+				ServerPlayerEntity player = ctx.player();
+
+				PhotoState photos = PhotoState.get(player.getServerWorld());
+
+				PhotoMeta meta = photos.getMeta(id);
+
+				if (meta != null && !meta.fulfilled && !meta.positions.isEmpty()) {
+					Vec3d rotVec = Vec3d.fromPolar(new Vec2f(pitch, yaw)).normalize();
+					Vec3d center = meta.neededBox.getCenter().toCenterPos();
+					Vec3d dist = new Vec3d(center.x - player.getX(), center.y - player.getEyeY(), center.z - player.getZ());
+					double length = dist.length();
+					dist = dist.normalize();
+					double dot = rotVec.dotProduct(dist);
+					Vec3i dim = meta.neededBox.getDimensions();
+					// TODO: addend depends on FOV!
+					double dx = dim.getX() + 1.5;
+					double dy = dim.getY() + 1.5;
+					double dz = dim.getZ() + 1.5;
+					double angular = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+					double size = 0.01;
+					if (length > angular && length < 20 && (dot > (1.0 - (size * length)))) {
+//						System.out.println("e = " + dot + ", l = " + length + ", d = " + (size * length) +
+//								", md = " + (1.0 - (size * length) + ", a =" + angular + ", b = " + (dot > (1.0 - (size * length)))));
+
+						for (BlockPos pos : meta.positions) {
+							if (player.getWorld().getBlockState(pos).isOf(CeruleanBlocks.LUSTROUS_BLOCK)) {
+								player.getWorld().setBlockState(pos, CeruleanBlocks.DUCTILE_BLOCK.getDefaultState());
+							}
+						}
+						meta.fulfilled = true;
+						photos.markDirty();
+					}
+				}
 			});
 		});
 	}

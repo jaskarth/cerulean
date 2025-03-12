@@ -1,7 +1,9 @@
 package fmt.cerulean.flow.recipe;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import com.google.common.collect.Lists;
@@ -75,19 +77,24 @@ public class PigmentInventory extends SimpleInventory {
 		return ItemStack.EMPTY;
 	}
 
-	public void killItems(Predicate<ItemStack> predicate, int amount) {
+	public Set<ItemStack> killItems(Predicate<ItemStack> predicate, int amount) {
+		Set<ItemStack> stacks = new HashSet<>();
+
 		int slain = 0;
 		for (int i = 0; i < size(); i++) {
 			if (slain >= amount) {
-				return;
+				return stacks;
 			}
 			ItemStack stack = getStack(i);
 			if (predicate.test(stack)) {
 				int coveted = Math.min(amount, stack.getCount());
+				stacks.add(stack.copy());
 				stack.decrement(coveted);
 				slain += coveted;
 			}
 		}
+
+		return stacks;
 	}
 
 	public void keepAlive(ItemStack stack) {

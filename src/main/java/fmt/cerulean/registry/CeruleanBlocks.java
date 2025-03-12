@@ -159,6 +159,12 @@ public final class CeruleanBlocks {
 	public static final Block STRONGBOX = register("strongbox",
 			new StrongboxBlock(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS).strength(10.0F, 300.0F).nonOpaque()));
 
+	public static final Block LUSTROUS_BLOCK = register("lustrous_block",
+			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+
+	public static final Block DUCTILE_BLOCK = register("ductile_block",
+			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+
 	public static final Block POLYETHYLENE = registerBlockOnly("polyethylene", new PolyethylyneBlock(
 			CeruleanFluids.POLYETHYLENE,
 			AbstractBlock.Settings.create()

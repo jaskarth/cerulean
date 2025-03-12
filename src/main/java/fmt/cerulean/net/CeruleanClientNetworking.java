@@ -1,6 +1,8 @@
 package fmt.cerulean.net;
 
+import fmt.cerulean.client.ClientState;
 import fmt.cerulean.net.packet.CeruleanStateSyncPacket;
+import fmt.cerulean.net.packet.SupplyMemoryPacket;
 import fmt.cerulean.util.Counterful;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -12,6 +14,16 @@ public class CeruleanClientNetworking {
 			if (client.player != null) {
 				Counterful.get(client.player).read(payload.nbt());
 			}
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(SupplyMemoryPacket.ID, (payload, ctx) -> {
+			int id = payload.id();
+			byte[] data = payload.data();
+
+			ctx.client().execute(() -> {
+				System.out.println("Received data " + id);
+				ClientState.PHOTOS.add(id, data);
+			});
 		});
 	}
 }

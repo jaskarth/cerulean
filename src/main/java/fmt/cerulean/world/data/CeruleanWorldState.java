@@ -1,4 +1,4 @@
-package fmt.cerulean.world;
+package fmt.cerulean.world.data;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;

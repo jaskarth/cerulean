@@ -8,7 +8,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 
 public record MagicAttackPacket(int id) implements CustomPayload {
-	public static final Id<MagicAttackPacket> ID = new Id<>(CeruleanNetworking.DS_SYNC);
+	public static final Id<MagicAttackPacket> ID = new Id<>(CeruleanNetworking.MAGIC_ATTACK);
 	public static final PacketCodec<RegistryByteBuf, MagicAttackPacket> CODEC = PacketCodec.tuple(
 			PacketCodecs.INTEGER, p -> p.id,
 			MagicAttackPacket::new
