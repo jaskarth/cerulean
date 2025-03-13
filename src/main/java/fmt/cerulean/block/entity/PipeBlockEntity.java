@@ -202,7 +202,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		Direction unconnected = null;
 		for (Direction dir : Util.DIRECTIONS) {
 			if (state.get(ConnectingBlock.FACING_PROPERTIES.get(dir))) {
-				boolean connect = PipeBlock.canConnect(world.getBlockState(pos.offset(dir)), dir.getOpposite());
+				boolean connect = PipeBlock.canConnect(state, world.getBlockState(pos.offset(dir)), dir.getOpposite());
 				connections++;
 				if (!connect && dir != inputDir) {
 					unconnected = dir;
@@ -268,7 +268,7 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 	private FlowState depressure(FlowState state, int connections) {
 		int div = Math.max(1, connections - 1);
 		int p = state.pressure() / div - 10;
-		if (getCachedState().isOf(CeruleanBlocks.FUCHSIA_PIPE)) {
+		if (PipeBlock.isEfficient(getCachedState())) {
 			p = p * 29 / 30;
 		} else {
 			p = p * 19 / 20;

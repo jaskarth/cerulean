@@ -59,6 +59,10 @@ public class ClientPhotoStore implements PhotoStore {
 	}
 
 	public void close() {
+		for (NativeImageBackedTexture value : store.values()) {
+			value.close();
+		}
+
 		store.clear();
 		ids.clear();
 		lastAsked.clear();

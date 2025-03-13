@@ -14,7 +14,7 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<PipeBlockEntity> PIPE = register("pipe", PipeBlockEntity::new,
 			CeruleanBlocks.PIPE, CeruleanBlocks.EXPOSED_PIPE, CeruleanBlocks.WEATHERED_PIPE, CeruleanBlocks.OXIDIZED_PIPE,
 			CeruleanBlocks.WAXED_PIPE, CeruleanBlocks.WAXED_EXPOSED_PIPE, CeruleanBlocks.WAXED_WEATHERED_PIPE, CeruleanBlocks.WAXED_OXIDIZED_PIPE,
-			CeruleanBlocks.FUCHSIA_PIPE);
+			CeruleanBlocks.FUCHSIA_PIPE, CeruleanBlocks.LUSTROUS_PIPE, CeruleanBlocks.DUCTILE_PIPE, CeruleanBlocks.CHIMERIC_PIPE);
 	public static final BlockEntityType<MimicBlockEntity> MIMIC = register("mimic", MimicBlockEntity::new, CeruleanBlocks.MIMIC);
 	public static final BlockEntityType<FauxBlockEntity> FAUX = register("faux", FauxBlockEntity::new, CeruleanBlocks.FAUX);
 	public static final BlockEntityType<StrongboxBlockEntity> STRONGBOX = register("strongbox", StrongboxBlockEntity::new, CeruleanBlocks.STRONGBOX);

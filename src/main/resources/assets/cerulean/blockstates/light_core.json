@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cerulean:block/light_core"
+    }
+  }
+}

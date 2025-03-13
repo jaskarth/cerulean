@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "cerulean:block/stickblossom",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "cerulean:block/stickblossom",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cerulean:block/stickblossom",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "cerulean:block/stickblossom",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "cerulean:block/stickblossom"
+    },
+    "facing=west": {
+      "model": "cerulean:block/stickblossom",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

@@ -8,10 +8,7 @@ import fmt.cerulean.world.gen.carver.SkyCarver;
 import fmt.cerulean.world.gen.carver.TendrilCarver;
 import fmt.cerulean.world.gen.carver.TunnelCarver;
 import fmt.cerulean.world.gen.feature.decoration.*;
-import fmt.cerulean.world.gen.feature.decorator.ChanceHeightmapDecorator;
-import fmt.cerulean.world.gen.feature.decorator.ChanceRangeDecorator;
-import fmt.cerulean.world.gen.feature.decorator.CountRangeDecorator;
-import fmt.cerulean.world.gen.feature.decorator.NoOpDecorator;
+import fmt.cerulean.world.gen.feature.decorator.*;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 
@@ -42,6 +39,11 @@ public class BiomeDecorator {
 		register(Biomes.SKIES,
 				new NoOpDecorator(),
 				new PlasticloggingDecoration()
+		);
+
+		register(Biomes.SKIES,
+				new RegionDecorator(4, 2, new ChanceRangeDecorator(1, new IntRange(0, 256)), 158139),
+				new NeodeDecoration()
 		);
 
 		register(Biomes.SKIES,

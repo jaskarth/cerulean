@@ -23,11 +23,12 @@ public class CeruleanItems {
 	public static final Item BERRIES = register("berries", new BerryItem(CeruleanBlocks.REEDS, new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.1f).alwaysEdible().build())
 	));
-
 	public static final Item GLIMMERCRUMB = register("glimmercrumb", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(8).saturationModifier(0.2f).build())
 	));
-
+	public static final Item GLITTERCRUMB = register("glittercrumb", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.2f).build())
+	));
 	public static final Item ORB = register("orb", new Item(new Item.Settings()));
 	public static final Item MOVRB = register("movrb", new MovrbItem(new Item.Settings()));
 	public static final Item JORB = register("jorb", new JorbItem(new Item.Settings()));
@@ -76,11 +77,23 @@ public class CeruleanItems {
 	public static final Item HALITE = register("halite", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())
 	));
+	public static final Item HALITE_SALAD = register("halite_salad", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.8f).usingConvertsTo(Items.BOWL).build())
+	));
 	public static final Item CRUSHED_HALITE = register("crushed_halite", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())
 	));
-	public static final Item HALITE_SALAD = register("halite_salad", new Item(new Item.Settings()
-			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.8f).usingConvertsTo(Items.BOWL).build())
+	public static final Item UNINITIATED_GLITTER = register("uninitiated_glitter", new GlitterItem(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(2).saturationModifier(0.2f).snack().build())
+	));
+	public static final Item IMBIBED_GLITTER = register("imbibed_glitter", new GlitterItem(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(3).saturationModifier(0.2f).snack().build())
+	));
+	public static final Item AWAKENED_GLITTER = register("awakened_glitter", new GlitterItem(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(3).saturationModifier(0.2f).snack().build())
+	));
+	public static final Item GLITTER = register("glitter", new GlitterItem(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.2f).snack().build())
 	));
 	public static final Item GLASS_LENS = register("glass_lens", new Item(new Item.Settings()));
 	public static final Item REFLECTIVE_LENS = register("reflective_lens", new ReflectiveLensItem(new Item.Settings()));
@@ -88,6 +101,10 @@ public class CeruleanItems {
 	public static final Item FILM = register("film", new Item(new Item.Settings()));
 	public static final Item PHOTONEGATIVE = register("photonegative", new PhotonegativeItem(new Item.Settings()));
 	public static final Item PHOTOGRAPH = register("photograph", new PhotoItem(new Item.Settings()));
+	public static final Item DUCTILE_ROD = register("ductile_rod", new Item(new Item.Settings()));
+	public static final Item BREADCRUMBS = register("breadcrumbs", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(2).saturationModifier(0.2f).snack().build())
+	));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();

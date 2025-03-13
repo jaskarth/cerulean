@@ -45,6 +45,16 @@ public final class CeruleanBlocks {
 
 	public static final Block FUCHSIA_PIPE = register("fuchsia_pipe",
 			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block LUSTROUS_PIPE = register("lustrous_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block DUCTILE_PIPE = register("ductile_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block CHIMERIC_PIPE = register("chimeric_pipe",
+			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
 	public static final Block SPACEROCK = register("spacerock",
 			new Block(AbstractBlock.Settings.copy(Blocks.COBBLESTONE)));
 
@@ -78,6 +88,16 @@ public final class CeruleanBlocks {
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY))));
 
+	public static final Block GLITTERING_SPARKBLOSSOM = register("glittering_sparkblossom",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.DARK_GREEN)
+							.noCollision()
+							.breakInstantly()
+							.luminance(s -> 10)
+							.sounds(BlockSoundGroup.GRASS)
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
 	public static final Block SPARKLESSBLOSSOM = register("sparklessblossom",
 			new CeruleanPlantBlock(offsetter(
 					AbstractBlock.Settings.create()
@@ -86,6 +106,35 @@ public final class CeruleanBlocks {
 					.breakInstantly()
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block STICKBLOSSOM = register("stickblossom",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.LIGHT_BLUE_GRAY)
+							.noCollision()
+							.breakInstantly()
+							.luminance(s -> 14)
+							.sounds(BlockSoundGroup.GRASS)
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block GLITTERING_STICKBLOSSOM = register("glittering_stickblossom",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.LIGHT_BLUE_GRAY)
+							.noCollision()
+							.breakInstantly()
+							.luminance(s -> 14)
+							.sounds(BlockSoundGroup.GRASS)
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block STICKBLOSSOMLESS = register("stickblossomless",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.LIGHT_BLUE_GRAY)
+							.noCollision()
+							.breakInstantly()
+							.sounds(BlockSoundGroup.GRASS)
+							.pistonBehavior(PistonBehavior.DESTROY))));
 
 	public static final Block LUNARIUM = register("lunarium",
 			new CeruleanPlantBlock(offsetter(
@@ -249,6 +298,12 @@ public final class CeruleanBlocks {
 
 	public static final Block DESTINY_DETECTOR = register("destiny_detector",
 			new DestinyDetectorBlock(AbstractBlock.Settings.copy(Blocks.STONE).ticksRandomly()));
+
+	public static final Block LIGHT_CORE = register("light_core",
+			new LightCoreBlock(AbstractBlock.Settings.copy(Blocks.HEAVY_CORE)
+					.strength(1.0F)
+					.luminance(s -> 15)
+			));
 
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);

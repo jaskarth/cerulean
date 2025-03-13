@@ -3,6 +3,7 @@ package fmt.cerulean.block;
 import fmt.cerulean.block.base.Plasticloggable;
 import fmt.cerulean.block.entity.PipeBlockEntity;
 import fmt.cerulean.registry.CeruleanBlockEntities;
+import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanFluids;
 import fmt.cerulean.util.Util;
 import net.minecraft.block.Block;
@@ -74,7 +75,7 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 		Direction lastDir = null;
 		int connections = 0;
 		for (Direction dir : Util.DIRECTIONS) {
-			if (canConnect(world.getBlockState(pos.offset(dir)), dir.getOpposite())) {
+			if (canConnect(state, world.getBlockState(pos.offset(dir)), dir.getOpposite())) {
 				connections++;
 				lastDir = dir;
 				state = state.with(ConnectingBlock.FACING_PROPERTIES.get(dir), true);
@@ -86,12 +87,31 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 		return state;
 	}
 
-	public static boolean canConnect(BlockState state, Direction dir) {
+	public static boolean canConnect(BlockState ownState, BlockState state, Direction dir) {
+		// Always connect to that of same type
+		if (ownState.isOf(state.getBlock())) {
+			return true;
+		}
+
+		if (exclusiveType(state) && exclusiveType(ownState)) {
+			return false;
+		}
+
 		return isPipe(state) || (state.getBlock() instanceof WellBlock && dir == state.get(WellBlock.FACING));
 	}
 
 	public static boolean isPipe(BlockState state) {
 		return state.getBlock() instanceof PipeBlock;
+	}
+
+	private static boolean exclusiveType(BlockState state) {
+		// TODO: should be blocktag
+
+		return state.isOf(CeruleanBlocks.FUCHSIA_PIPE) || state.isOf(CeruleanBlocks.LUSTROUS_PIPE) || state.isOf(CeruleanBlocks.DUCTILE_PIPE);
+	}
+
+	public static boolean isEfficient(BlockState state) {
+		return exclusiveType(state) || state.isOf(CeruleanBlocks.CHIMERIC_PIPE);
 	}
 
 	@Override
