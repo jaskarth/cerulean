@@ -105,6 +105,7 @@ public class CeruleanItems {
 	public static final Item BREADCRUMBS = register("breadcrumbs", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(2).saturationModifier(0.2f).snack().build())
 	));
+	public static final Item STAMP = register("stamp", new Item(new Item.Settings()));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();

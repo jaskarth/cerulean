@@ -1,0 +1,20 @@
+{
+	"textures": {
+		"plaque": "cerulean:block/address_plaque",
+		"particle": "cerulean:block/address_plaque"
+	},
+	"elements": [
+		{
+			"from": [0, 5, 0],
+			"to": [16, 11, 1],
+			"faces": {
+				"north": {"uv": [0, 6, 16, 12], "texture": "#plaque"},
+				"east": {"uv": [15, 0, 16, 6], "texture": "#plaque"},
+				"south": {"uv": [0, 0, 16, 6], "texture": "#plaque"},
+				"west": {"uv": [0, 0, 1, 6], "texture": "#plaque"},
+				"up": {"uv": [0, 0, 16, 1], "texture": "#plaque"},
+				"down": {"uv": [0, 5, 16, 6], "texture": "#plaque"}
+			}
+		}
+	]
+}

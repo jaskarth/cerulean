@@ -57,6 +57,17 @@ public class Soul implements IMixinConfigPlugin {
 			"Parse cruelty with eyes closed",
 			"Like sandpaper for your emotions",
 			"Choking on glass to see the sun rise"
+		),
+		List.of(
+			"Another glimpse behind the curtain",
+			"Axiom after axiom peeled away",
+			"Truth has never been closer",
+			"Truth has never been further away",
+
+			"Having finally been seen by the universe",
+			"Only now do I understand isolation",
+			"In time it will all make sense",
+			"In time it will all fall apart"
 		)
 	);
 	private Random random = new Random();

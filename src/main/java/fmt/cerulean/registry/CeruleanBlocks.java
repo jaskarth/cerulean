@@ -1,15 +1,44 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
-import fmt.cerulean.block.*;
+import fmt.cerulean.block.AddressPlaqueBlock;
+import fmt.cerulean.block.CeruleanPlantBlock;
+import fmt.cerulean.block.DestinyDetectorBlock;
+import fmt.cerulean.block.FauxBlock;
+import fmt.cerulean.block.FlagBlock;
+import fmt.cerulean.block.GapDoorBlock;
+import fmt.cerulean.block.HaliteBlock;
+import fmt.cerulean.block.HaliteOutcroppingBlock;
+import fmt.cerulean.block.InkyVoidBlock;
+import fmt.cerulean.block.ItemDetectorBlock;
+import fmt.cerulean.block.KaleBlock;
+import fmt.cerulean.block.KalePlantBlock;
+import fmt.cerulean.block.LightCoreBlock;
+import fmt.cerulean.block.MimicBlock;
+import fmt.cerulean.block.OxidizablePipeBlock;
+import fmt.cerulean.block.PipeBlock;
+import fmt.cerulean.block.PolyethylyneBlock;
+import fmt.cerulean.block.ReedsBlock;
+import fmt.cerulean.block.ReedsPlantBlock;
+import fmt.cerulean.block.SelfCollapsingCube;
+import fmt.cerulean.block.SlashedHaliteBlock;
+import fmt.cerulean.block.StrongboxBlock;
+import fmt.cerulean.block.WellBlock;
 import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
-import net.minecraft.block.*;
-import net.minecraft.block.enums.NoteBlockInstrument;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.Oxidizable;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FlowableFluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -213,6 +242,15 @@ public final class CeruleanBlocks {
 
 	public static final Block DUCTILE_BLOCK = register("ductile_block",
 			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+
+	public static final Block SELF_COLLAPSING_CUBE = register("self_collapsing_cube",
+			new SelfCollapsingCube(AbstractBlock.Settings.copy(Blocks.BARREL).solid()));
+
+	public static final Block ADDRESS_PLAQUE = register("address_plaque",
+			new AddressPlaqueBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque().noCollision()));
+
+	public static final Block FLAG = register("flag",
+			new FlagBlock(AbstractBlock.Settings.copy(Blocks.SPRUCE_SIGN).nonOpaque().noCollision()));
 
 	public static final Block POLYETHYLENE = registerBlockOnly("polyethylene", new PolyethylyneBlock(
 			CeruleanFluids.POLYETHYLENE,

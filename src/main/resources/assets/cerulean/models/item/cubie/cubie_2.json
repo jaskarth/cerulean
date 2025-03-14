@@ -1,0 +1,25 @@
+{
+	"elements": [
+		{
+			"from": [0, 8, 8],
+			"to": [8, 16, 16],
+			"faces": {
+				"west": {
+					"uv": [8, 0, 0, 8],
+					"texture": "#cubie",
+					"rotation": 90
+				},
+				"south": {
+					"uv": [0, 0, 8, 8],
+					"texture": "#cubie",
+					"rotation": 0
+				},
+				"up": {
+					"uv": [0, 0, 8, 8],
+					"texture": "#cubie",
+					"rotation": 270
+				}
+			}
+		}
+	]
+}

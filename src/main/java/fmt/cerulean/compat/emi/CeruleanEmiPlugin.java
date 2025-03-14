@@ -25,6 +25,7 @@ import fmt.cerulean.flow.recipe.BrushRecipe;
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.flow.recipe.CanvasRequirements;
 import fmt.cerulean.flow.recipe.CinderingAfterglowBrushRecipe;
+import fmt.cerulean.flow.recipe.EmpathyBrushRecipe;
 import fmt.cerulean.flow.recipe.InspirationBrushRecipe;
 import fmt.cerulean.flow.recipe.ManifestationBrushRecipe;
 import fmt.cerulean.flow.recipe.ParadigmBrushRecipe;
@@ -133,6 +134,15 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					List.of(),
 					List.of(Blocks.BREWING_STAND.getDefaultState()),
 					Text.translatable("info.cerulean.bevvy_tasting")
+				));
+			} else if (recipe instanceof EmpathyBrushRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(id,
+					inputStars(real.canvas),
+					List.of(EmiStack.of(CeruleanItems.STAMP)),
+					EmiStack.EMPTY,
+					List.of(),
+					real.canvas.validBlocks.isEmpty() ? List.of() : List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
+					Text.translatable("info.cerulean.empathy_" + (real.strict ? "stress" : "relief"))
 				));
 			}
 		}

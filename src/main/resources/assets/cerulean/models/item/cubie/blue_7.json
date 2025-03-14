@@ -1,0 +1,6 @@
+{
+	"parent": "cerulean:item/cubie/cubie_7",
+  "textures": {
+    "cubie": "cerulean:block/cubie_blue"
+  }
+}

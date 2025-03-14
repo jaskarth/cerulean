@@ -359,6 +359,28 @@ public class BrushRecipes {
 				CanvasRequirements.of(CeruleanBlocks.POLYETHYLENE, ALL_COLORS, ALL_BRIGHTNESSES)
 		));
 
+		addRecipe("stamp", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), 40, List.of(
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(CeruleanItems.CRUSHED_HALITE)
+		), new ItemStack(CeruleanItems.STAMP, 8)
+		));
+
+		addRecipe("empathy_stress", new EmpathyBrushRecipe(
+				CanvasRequirements.of(
+					Set.of(Color.VIRIDIAN, Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), false
+		));
+
+		addRecipe("empathy_relief", new EmpathyBrushRecipe(
+				CanvasRequirements.of(
+					CeruleanBlocks.ADDRESS_PLAQUE,
+					Set.of(Color.VIRIDIAN, Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), true
+		));
+
 		// start simple color changing
 		addRecipe("lily_of_the_valley_filtering", new AgoraphobicGardeningBrushRecipe(
 			CanvasRequirements.of(Blocks.LILY_OF_THE_VALLEY, Set.of(Color.ROSE), ALL_BRIGHTNESSES_EXCEPT_DIM),

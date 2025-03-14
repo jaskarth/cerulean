@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cerulean:block/address_plaque",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "cerulean:block/address_plaque",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cerulean:block/address_plaque",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cerulean:block/address_plaque",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "cerulean:block/address_plaque",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "cerulean:block/address_plaque",
+      "x": 90
+    }
+  }
+}

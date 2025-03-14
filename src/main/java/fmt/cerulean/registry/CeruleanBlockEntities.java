@@ -18,6 +18,9 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<MimicBlockEntity> MIMIC = register("mimic", MimicBlockEntity::new, CeruleanBlocks.MIMIC);
 	public static final BlockEntityType<FauxBlockEntity> FAUX = register("faux", FauxBlockEntity::new, CeruleanBlocks.FAUX);
 	public static final BlockEntityType<StrongboxBlockEntity> STRONGBOX = register("strongbox", StrongboxBlockEntity::new, CeruleanBlocks.STRONGBOX);
+	public static final BlockEntityType<SelfCollapsingCubeEntity> SELF_COLLAPSING_CUBE = register("self_collapsing_cube", SelfCollapsingCubeEntity::new, CeruleanBlocks.SELF_COLLAPSING_CUBE);
+	public static final BlockEntityType<AddressPlaqueBlockEntity> ADDRESS_PLAQUE = register("address_plaque", AddressPlaqueBlockEntity::new, CeruleanBlocks.ADDRESS_PLAQUE);
+	public static final BlockEntityType<FlagBlockEntity> FLAG = register("flag", FlagBlockEntity::new, CeruleanBlocks.FLAG);
 	public static final BlockEntityType<ItemDetectorBlockEntity> ITEM_DETECTOR = register("item_detector", ItemDetectorBlockEntity::new, CeruleanBlocks.ITEM_DETECTOR);
 
 	public static void init() {
