@@ -56,9 +56,6 @@ public class FauxBlock extends BlockWithEntity  {
 					if (!world.isClient) {
 						fbe.state = ns;
 						fbe.markDirty();
-						if (world instanceof ServerWorld sw) {
-							sw.getChunkManager().markForUpdate(pos);
-						}
 					}
 					return ItemActionResult.SUCCESS;
 				}

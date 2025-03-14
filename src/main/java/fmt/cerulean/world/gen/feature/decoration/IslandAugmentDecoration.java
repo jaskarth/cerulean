@@ -8,6 +8,7 @@ import fmt.cerulean.util.Voronoi;
 import fmt.cerulean.world.gen.IslandParameters;
 import fmt.cerulean.world.gen.feature.Decoration;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.util.math.random.CheckedRandom;
@@ -16,7 +17,7 @@ import net.minecraft.world.StructureWorldAccess;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class PlasticloggingDecoration extends Decoration {
+public class IslandAugmentDecoration extends Decoration {
 	@Override
 	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
 		long seed = world.getSeed();
@@ -31,13 +32,14 @@ public class PlasticloggingDecoration extends Decoration {
 				int wx = pos.getX() + x;
 				int wz = pos.getZ() + z;
 				long uniq = vn.get(wx / scale, wz / scale);
-				Vec2d cp = vn.getCellPos(wx / scale, wz / scale, scale);
-				Vec2i center = cp.floor();
+				Pair<Vec2d, Vec2d> pos2 = vn.getCellPos2(wx / scale, wz / scale, scale);
+				Vec2i center = pos2.getLeft().floor();
 
 				IslandParameters p = IslandParameters.get(center, uniq);
 
 				double sample = xzWarp.sample(wx / 15., 0, wz / 15.) * 15;
 
+				// Plasticlogging
 				if (p.plasticlogged()) {
 					BlockPos islCenter = new BlockPos(center.x(), (14 + p.startOff()) * 8, center.z());
 					for (int y = -60; y <= 60; y++) {
@@ -60,6 +62,8 @@ public class PlasticloggingDecoration extends Decoration {
 						}
 					}
 				}
+
+
 			}
 		}
 	}

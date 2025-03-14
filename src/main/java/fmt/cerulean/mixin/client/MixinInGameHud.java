@@ -5,6 +5,8 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.client.render.EmergencyStack;
+import fmt.cerulean.client.tex.gen.StaticTexture;
 import fmt.cerulean.registry.CeruleanItems;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
@@ -59,6 +61,18 @@ public abstract class MixinInGameHud implements Instructor {
 	@ModifyConstant(method = "renderSleepOverlay", constant = @Constant(floatValue = 220.f))
 	private float cerulean$fullFadeout(float constant) {
 		return 0;
+	}
+
+	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
+	public void cerulean$cameraOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+		if (ClientState.forget) {
+			int color = 0xFF000000;
+			context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color);
+
+			this.cerulean$viewfinderScale = 0.5f;
+			ClientState.forget = false;
+			ci.cancel();
+		}
 	}
 
 	@Inject(method = "renderSleepOverlay", at = @At("HEAD"))
@@ -149,6 +163,53 @@ public abstract class MixinInGameHud implements Instructor {
 	
 	@Inject(at = @At("RETURN"), method = "render")
 	public void render(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info) {
+		int e = ClientState.emergencyRender;
+//		e = 20;
+		if (e >= 0) {
+			// TODO: needs shader that doesn't discard alpha
+//			((DrawContextAccessor)context)
+//					.callDrawTexturedQuad(StaticTexture.ID, 0, context.getScaledWindowWidth(), 0, context.getScaledWindowHeight(),
+//							0, 0, 1, 0, 1, 1, 1, 1, 20.0f / 255.0f);
+
+			TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+			int color = 0xFFDD0000;
+			context.drawText(textRenderer, EmergencyStack.T_1, 10, 10, color, false);
+
+			if (e >= 2) {
+				context.drawText(textRenderer, EmergencyStack.T_2, 10, 19, color, false);
+			}
+			if (e >= 4) {
+				context.drawText(textRenderer, EmergencyStack.T_3, 10, 28, color, false);
+			}
+			if (e >= 6) {
+				context.drawText(textRenderer, EmergencyStack.T_4, 10, 37, color, false);
+			}
+			if (e >= 8) {
+				context.drawText(textRenderer, EmergencyStack.T_5, 10, 46, color, false);
+			}
+			if (e >= 10) {
+				context.drawText(textRenderer, EmergencyStack.T_6, 10, 55, color, false);
+			}
+			if (e >= 12) {
+				context.drawText(textRenderer, EmergencyStack.T_7, 10, 64, color, false);
+			}
+			if (e >= 14) {
+				context.drawText(textRenderer, EmergencyStack.T_8, 10, 73, color, false);
+			}
+			if (e >= 16) {
+				context.drawText(textRenderer, EmergencyStack.T_9, 10, 82, color, false);
+			}
+			if (e >= 18) {
+				context.drawText(textRenderer, EmergencyStack.T_10, 10, 91, color, false);
+			}
+			if (e >= 20) {
+				context.drawText(textRenderer, EmergencyStack.T_11, 10, 100, color, false);
+			}
+			if (e >= 22) {
+				context.drawText(textRenderer, EmergencyStack.T_E, 10, 109, color, false);
+			}
+		}
+
 		long time = System.currentTimeMillis();
 		for (int i = 0; i < fragments.size(); i++) {
 			Fragment fragment = fragments.get(i);
@@ -192,10 +253,6 @@ public abstract class MixinInGameHud implements Instructor {
 	@Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z", shift = At.Shift.BEFORE))
 	private void cerulean$renderViewfinder(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
 		float duration = tickCounter.getLastFrameDuration();
-		if (ClientState.forget) {
-			this.cerulean$viewfinderScale = 0.5f;
-			ClientState.forget = false;
-		}
 		this.cerulean$viewfinderScale = MathHelper.lerp(0.5F * duration, this.cerulean$viewfinderScale, 1.125F);
 		if (this.client.options.getPerspective().isFirstPerson()) {
 			if (this.client.player.isUsingItem() && this.client.player.getActiveItem().isOf(CeruleanItems.CAMERA)) {

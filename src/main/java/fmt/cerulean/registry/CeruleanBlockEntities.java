@@ -22,6 +22,8 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<AddressPlaqueBlockEntity> ADDRESS_PLAQUE = register("address_plaque", AddressPlaqueBlockEntity::new, CeruleanBlocks.ADDRESS_PLAQUE);
 	public static final BlockEntityType<FlagBlockEntity> FLAG = register("flag", FlagBlockEntity::new, CeruleanBlocks.FLAG);
 	public static final BlockEntityType<ItemDetectorBlockEntity> ITEM_DETECTOR = register("item_detector", ItemDetectorBlockEntity::new, CeruleanBlocks.ITEM_DETECTOR);
+	public static final BlockEntityType<PipeDetectorBlockEntity> PIPE_DETECTOR = register("pipe_detector", PipeDetectorBlockEntity::new, CeruleanBlocks.PIPE_DETECTOR);
+	public static final BlockEntityType<MirageBlockEntity> MIRAGE = register("mirage", MirageBlockEntity::new, CeruleanBlocks.MIRAGE);
 
 	public static void init() {
 	}

@@ -1,29 +1,7 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
-import fmt.cerulean.block.AddressPlaqueBlock;
-import fmt.cerulean.block.CeruleanPlantBlock;
-import fmt.cerulean.block.DestinyDetectorBlock;
-import fmt.cerulean.block.FauxBlock;
-import fmt.cerulean.block.FlagBlock;
-import fmt.cerulean.block.GapDoorBlock;
-import fmt.cerulean.block.HaliteBlock;
-import fmt.cerulean.block.HaliteOutcroppingBlock;
-import fmt.cerulean.block.InkyVoidBlock;
-import fmt.cerulean.block.ItemDetectorBlock;
-import fmt.cerulean.block.KaleBlock;
-import fmt.cerulean.block.KalePlantBlock;
-import fmt.cerulean.block.LightCoreBlock;
-import fmt.cerulean.block.MimicBlock;
-import fmt.cerulean.block.OxidizablePipeBlock;
-import fmt.cerulean.block.PipeBlock;
-import fmt.cerulean.block.PolyethylyneBlock;
-import fmt.cerulean.block.ReedsBlock;
-import fmt.cerulean.block.ReedsPlantBlock;
-import fmt.cerulean.block.SelfCollapsingCube;
-import fmt.cerulean.block.SlashedHaliteBlock;
-import fmt.cerulean.block.StrongboxBlock;
-import fmt.cerulean.block.WellBlock;
+import fmt.cerulean.block.*;
 import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
@@ -198,6 +176,9 @@ public final class CeruleanBlocks {
 	public static final Block FAUX = register("faux",
 			new FauxBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().suffocates(Blocks::never)));
 
+	public static final Block MIRAGE = register("mirage",
+			new MirageBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().replaceable()));
+
 	public static final Block INKY_VOID = register("inky_void",
 			new InkyVoidBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
 
@@ -333,6 +314,9 @@ public final class CeruleanBlocks {
 
 	public static final Block ITEM_DETECTOR = register("item_detector",
 			new ItemDetectorBlock(AbstractBlock.Settings.copy(Blocks.OBSERVER)));
+
+	public static final Block PIPE_DETECTOR = register("pipe_detector",
+			new PipeDetectorBlock(AbstractBlock.Settings.copy(Blocks.OBSERVER)));
 
 	public static final Block DESTINY_DETECTOR = register("destiny_detector",
 			new DestinyDetectorBlock(AbstractBlock.Settings.copy(Blocks.STONE).ticksRandomly()));

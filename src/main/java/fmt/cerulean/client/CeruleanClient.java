@@ -7,6 +7,7 @@ import fmt.cerulean.client.effects.DreamscapeEffects;
 import fmt.cerulean.client.effects.SkiesEffects;
 import fmt.cerulean.client.render.DreamscapeRenderer;
 import fmt.cerulean.client.render.SkiesRenderer;
+import fmt.cerulean.client.render.entity.EmergencyRenderer;
 import fmt.cerulean.client.render.entity.MemoryFrameRenderer;
 import fmt.cerulean.client.render.item.EyeOfVenderer;
 import fmt.cerulean.client.tex.CeruleanAtlasSource;
@@ -34,11 +35,19 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import java.io.IOException;
 
@@ -90,6 +99,13 @@ public class CeruleanClient implements ClientModInitializer {
 		});
 
 		WorldRenderEvents.LAST.register(ctx -> {
+
+			boolean shouldRender = !ClientState.EMERGENCIES.isEmpty();
+			if (shouldRender) {
+				EmergencyRenderer.handle(ctx);
+				ClientState.EMERGENCIES.clear();
+			}
+
 			if (ClientState.remember) {
 				MinecraftClient client = MinecraftClient.getInstance();
 				Framebuffer framebuffer = client.getFramebuffer();

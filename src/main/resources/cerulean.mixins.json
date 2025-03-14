@@ -23,6 +23,7 @@
     "client.MixinGameRenderer"
   ],
   "client": [
+    "client.DrawContextAccessor",
     "client.GameRendererAccessor",
     "client.MixinAdvancementTab",
     "client.MixinAdvancementToast",
@@ -36,6 +37,7 @@
     "client.MixinItemFrameEntityRenderer",
     "client.MixinLightmapTextureManager",
     "client.MixinMinecraftClient",
+    "client.MixinPlayerEntityRenderer",
     "client.MixinSprite",
     "client.MixinTextRenderer",
     "client.MixinTextureManager",

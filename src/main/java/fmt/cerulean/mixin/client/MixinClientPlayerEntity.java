@@ -96,6 +96,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 				ClientPlayNetworking.send(new StaringPacket(photo.id(), getYaw(), getPitch()));
 			}
 		}
+
+		if (ClientState.emergencyRender > -2) {
+			ClientState.emergencyRender++;
+
+			if (ClientState.emergencyRender > 40) {
+				ClientState.emergencyRender = -2;
+			}
+		}
 	}
 
 	@Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)

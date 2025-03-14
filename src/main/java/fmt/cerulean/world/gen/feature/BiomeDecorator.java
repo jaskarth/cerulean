@@ -38,7 +38,7 @@ public class BiomeDecorator {
 
 		register(Biomes.SKIES,
 				new NoOpDecorator(),
-				new PlasticloggingDecoration()
+				new IslandAugmentDecoration()
 		);
 
 		register(Biomes.SKIES,

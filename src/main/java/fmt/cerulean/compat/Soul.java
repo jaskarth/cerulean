@@ -32,7 +32,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class Soul implements IMixinConfigPlugin {
 	private static final String UNSPOKEN = "fmt/cerulean/mixin/$";
 	private static final Set<String> CONVALESCENTS = Set.of("cerulean");
-	private static final List<List<String>> SCRIPTURE = List.of(
+	public static final List<List<String>> SCRIPTURE = List.of(
 		List.of(
 			"Find refuge",
 			"Lights dimmed",

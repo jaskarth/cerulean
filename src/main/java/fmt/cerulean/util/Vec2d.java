@@ -13,6 +13,14 @@ public record Vec2d(double x, double z) {
         return dx * dx + dy * dy;
     }
 
+    public Vec2d add(Vec2d o) {
+        return of(x + o.x, z + o.z);
+    }
+
+    public Vec2d divide(double scalar) {
+        return of(x / scalar, z / scalar);
+    }
+
     public Vec2i floor() {
         return new Vec2i(MathHelper.floor(x), MathHelper.floor(z));
     }

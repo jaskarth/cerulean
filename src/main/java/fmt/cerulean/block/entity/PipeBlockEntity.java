@@ -1,6 +1,7 @@
 package fmt.cerulean.block.entity;
 
 import fmt.cerulean.block.PipeBlock;
+import fmt.cerulean.block.entity.base.SyncedBlockEntity;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowState;
@@ -24,7 +25,7 @@ import net.minecraft.util.math.Direction.AxisDirection;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
+public class PipeBlockEntity extends SyncedBlockEntity implements FlowOutreach {
 	private FlowState current = FlowState.NONE, next = null, spewed = FlowState.NONE;
 	private long lastUpdate = Long.MIN_VALUE;
 	private int threshold = 0;
@@ -142,9 +143,6 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		current = bestFlow;
 		inputDir = bestDir;
 		markDirty();
-		if (world instanceof ServerWorld sw) {
-			sw.getChunkManager().markForUpdate(pos);
-		}
 	}
 
 	private void updateRecipe() {
@@ -190,9 +188,6 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		}
 		if (!lastSpew.equals(spewed) || (lastProcessing != (activeRecipe != null))) {
 			markDirty();
-			if (world instanceof ServerWorld sw) {
-				sw.getChunkManager().markForUpdate(pos);
-			}
 		}
 	}
 
@@ -260,11 +255,6 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 		return nbt;
 	}
 
-	@Override
-	public BlockEntityUpdateS2CPacket toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
-	}
-
 	private FlowState depressure(FlowState state, int connections) {
 		int div = Math.max(1, connections - 1);
 		int p = state.pressure() / div - 10;
@@ -303,5 +293,9 @@ public class PipeBlockEntity extends BlockEntity implements FlowOutreach {
 			return activeRecipe.getProcessedFlow(current, recipeProgress);
 		}
 		return FlowState.NONE;
+	}
+
+	public FlowState getFlow() {
+		return current;
 	}
 }

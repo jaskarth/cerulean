@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import com.google.common.collect.Sets;
 
 import fmt.cerulean.block.base.Obedient;
+import fmt.cerulean.block.entity.base.SyncedBlockEntity;
 import fmt.cerulean.client.render.block.FauxBlockEntityRenderer;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
@@ -28,7 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class FauxBlockEntity extends BlockEntity implements Obedient {
+public class FauxBlockEntity extends SyncedBlockEntity implements Obedient {
 	private boolean reckon = false;
 	private int demanifest = 7, manifest = 3;
 	public BlockState state;
@@ -38,10 +39,6 @@ public class FauxBlockEntity extends BlockEntity implements Obedient {
 
 	public FauxBlockEntity(BlockPos pos, BlockState state) {
 		super(CeruleanBlockEntities.FAUX, pos, state);
-	}
-
-	public BlockEntityUpdateS2CPacket toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
 	}
 
 	public void glanceAndBehold() {
@@ -131,11 +128,6 @@ public class FauxBlockEntity extends BlockEntity implements Obedient {
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
-		return this.createNbt(registryLookup);
-	}
-
-	@Override
 	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
 		super.readNbt(nbt, registryLookup);
 
@@ -166,11 +158,6 @@ public class FauxBlockEntity extends BlockEntity implements Obedient {
 		fbe.state = state;
 		fbe.facing = facing;
 		fbe.markDirty();
-
-		World world = fbe.getWorld();
-		if (world instanceof ServerWorld sw) {
-			sw.getChunkManager().markForUpdate(fbe.getPos());
-		}
 	}
 
 	public void shareImpulse(Consumer<FauxBlockEntity> consumer) {
