@@ -59,7 +59,10 @@ public class TestVoronoiPath {
 			double v = num / den;
 
 			if (v < 1) {
-				return ImageDumper.getIntFromColor(200, 200, 200);
+				System.out.println(pos.distSqr(left) / pos.distSqr(right));
+				int vx = (int) MathHelper.clampedMap(pos.distSqr(left) / pos.distSqr(right), 0, 1, v2, v1);
+//				return ImageDumper.getIntFromColor(200, 200, 200);
+				return ImageDumper.getIntFromColor(vx, vx, vx);
 			}
 
 			return ImageDumper.getIntFromColor(0, 0, 0);

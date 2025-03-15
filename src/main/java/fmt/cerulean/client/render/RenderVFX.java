@@ -14,6 +14,8 @@ public class RenderVFX {
 		Random random = Random.create(10842L);
 		BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
+		double dist = 100.0;
+
 		for(int i = 0; i < 15000; ++i) {
 			double d = (double)(random.nextFloat() * 2.0F - 1.0F);
 			double e = (double)(random.nextFloat() * 2.0F - 1.0F);
@@ -25,9 +27,9 @@ public class RenderVFX {
 				d *= h;
 				e *= h;
 				f *= h;
-				double j = d * 100.0;
-				double k = e * 100.0;
-				double l = f * 100.0;
+				double j = d * dist;
+				double k = e * dist;
+				double l = f * dist;
 				double m = Math.atan2(d, f);
 				double n = Math.sin(m);
 				double o = Math.cos(m);

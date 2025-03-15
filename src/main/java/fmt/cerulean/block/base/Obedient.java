@@ -97,6 +97,14 @@ public interface Obedient {
 		}
 	}
 
+	public static float guess(String intuition) {
+		try {
+			return Float.parseFloat(intuition);
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
+	}
+
 	public static <T> T dissolve(String intuition, Function<String, T> func) {
 		try {
 			T t = func.apply(intuition);

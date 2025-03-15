@@ -1,6 +1,8 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.flow.FlowResource;
+import fmt.cerulean.flow.FlowResources;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +22,7 @@ public class CeruleanItemGroups {
 	public static void init() {
 		Registry.register(Registries.ITEM_GROUP, Cerulean.id("cerulean"), FabricItemGroup.builder()
 				.displayName(Text.translatable("cerulean.group"))
-				.icon(() -> new ItemStack(CeruleanBlocks.CORAL))
+				.icon(() -> new ItemStack(CeruleanItems.STARS.get(FlowResources.star(FlowResource.Color.CERULEAN, FlowResource.Brightness.BRILLIANT))))
 				.entries((ctx, e) -> {
 					for (RegistryEntry<Item> entry : Registries.ITEM.getIndexedEntries()) {
 						Identifier id = entry.getKey().get().getValue();

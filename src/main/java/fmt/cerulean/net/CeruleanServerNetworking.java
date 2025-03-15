@@ -2,6 +2,7 @@ package fmt.cerulean.net;
 
 import fmt.cerulean.block.base.Obedient;
 import fmt.cerulean.block.entity.MimicBlockEntity;
+import fmt.cerulean.block.entity.MirageBlockEntity;
 import fmt.cerulean.item.component.ColorTriplex;
 import fmt.cerulean.item.component.PhotoComponent;
 import fmt.cerulean.net.packet.*;
@@ -152,6 +153,11 @@ public class CeruleanServerNetworking {
 									if (set.add(l)) {
 										if (player.getWorld().getBlockState(local).isOf(CeruleanBlocks.LUSTROUS_BLOCK)) {
 											pos.add(local);
+										}
+										BlockEntity be = player.getWorld().getBlockEntity(local);
+										if (be instanceof MirageBlockEntity mbe) {
+											mbe.aware = true;
+											mbe.markDirty();
 										}
 									}
 								}

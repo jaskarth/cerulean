@@ -5,6 +5,7 @@ import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
 import fmt.cerulean.entity.MemoryFrameEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.util.Conscious;
 import fmt.cerulean.util.PaintingDuck;
 import fmt.cerulean.world.data.CeruleanWorldState;
 import net.minecraft.block.*;
@@ -94,6 +95,10 @@ public class DreamscapeTeleporter {
 			if (!found) {
 				continue;
 			}
+
+			PaintingDuck quack = (PaintingDuck) portalPainting;
+			target = quack.getManifestationShape().offset(originPos.getX(), originPos.getY(), originPos.getZ());
+			BlockPos teleportPos = quack.getTeleportTarget();
 
 			int startX = target.getMinX();
 			int startY = target.getMinY();
@@ -292,6 +297,8 @@ public class DreamscapeTeleporter {
 						p.getWorld().setBlockState(pos, blockState.with(BedBlock.OCCUPIED, false), Block.NOTIFY_ALL);
 					}
 				});
+
+				((Conscious)p).cerulean$setTeleportTarget(teleportPos);
 
 				p.teleportTo(new TeleportTarget(dreamscape, p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch(), e -> {}));
 			}

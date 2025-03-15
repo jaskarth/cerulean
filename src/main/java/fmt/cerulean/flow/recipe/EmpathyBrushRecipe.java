@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 
 import fmt.cerulean.block.entity.AddressPlaqueBlockEntity;
 import fmt.cerulean.registry.CeruleanItems;
-import fmt.cerulean.world.MailWorldState;
+import fmt.cerulean.world.data.MailWorldState;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;

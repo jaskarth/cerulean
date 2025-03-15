@@ -1,5 +1,6 @@
 package fmt.cerulean.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fmt.cerulean.util.Counterful;
 import fmt.cerulean.world.data.DimensionState;
@@ -43,13 +44,20 @@ public class SkiesRenderer implements DimensionRenderingRegistry.SkyRenderer {
 			amt = MathHelper.clamp(1 - ((state.melancholy - 20) / 120.f), 0, 1);
 		}
 
-		RenderSystem.enableBlend();
+//		RenderSystem.blendFuncSeparate(
+//				GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO
+//		);
+
+		RenderSystem.disableBlend();
 		RenderSystem.setShaderColor(amt, amt, amt, amt);
+		RenderSystem.disableDepthTest();
 		vbo.bind();
 		vbo.draw(matrices.peek().getPositionMatrix(), proj, GameRenderer.getPositionColorProgram());
 		VertexBuffer.unbind();
 		matrices.pop();
 		RenderSystem.disableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableDepthTest();
 
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 

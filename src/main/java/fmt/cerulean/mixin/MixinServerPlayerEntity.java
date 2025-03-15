@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanCriteria;
+import fmt.cerulean.util.Conscious;
 import fmt.cerulean.util.Counterful;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.CeruleanDimensions;
@@ -30,13 +31,14 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class MixinServerPlayerEntity extends PlayerEntity {
+public abstract class MixinServerPlayerEntity extends PlayerEntity implements Conscious {
 	public MixinServerPlayerEntity(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
 		super(world, pos, yaw, gameProfile);
 	}
@@ -50,6 +52,9 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	@Shadow @Final public MinecraftServer server;
 
 	@Shadow public abstract @Nullable Entity teleportTo(TeleportTarget teleportTarget);
+
+	@Unique
+	private BlockPos cerulean$teleportPos = BlockPos.ORIGIN;
 
 	@Inject(method = "teleportTo", at = @At("RETURN"))
 	private void cerulean$resetState(TeleportTarget teleportTarget, CallbackInfoReturnable<Entity> cir) {
@@ -139,7 +144,8 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 					throw new RuntimeException("I stepped into the light, but only darkness engulfed me...");
 				}
 
-				BlockPos tp = CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0));
+
+				BlockPos tp = cerulean$teleportPos.equals(BlockPos.ORIGIN) ? CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0)) : cerulean$teleportPos;
 
 				if (tp != null) {
 					if (CeruleanWorldState.get(getServerWorld()).getFor(player).truthful) {
@@ -174,5 +180,10 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	@Inject(method = "copyFrom", at = @At("TAIL"))
 	private void cerulean$copy(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
 //		Counterful.get((PlayerEntity) (Object)this).read(Counterful.get(oldPlayer).nbt());
+	}
+
+	@Override
+	public void cerulean$setTeleportTarget(BlockPos pos) {
+		cerulean$teleportPos = pos;
 	}
 }

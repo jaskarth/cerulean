@@ -1,0 +1,245 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "up": "true",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_connection",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_connection",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_connection",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_connection",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_connection",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_connection",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_center",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_center",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_center",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "east": "false",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_center",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_center",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "false",
+        "powered": "false"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_center",
+        "y": 270
+      }
+    },
+
+    {
+      "when": {
+        "up": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_connection",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_connection",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_connection",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_connection",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_connection",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_connection",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_center",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_center",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_center",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "east": "false",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_center",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_center",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "false",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "cerulean:block/iron_valve_on_center",
+        "y": 270
+      }
+    }
+  ]
+}

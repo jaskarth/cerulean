@@ -1,6 +1,7 @@
 package fmt.cerulean.world.gen.feature.decoration;
 
 import fmt.cerulean.block.base.Plasticloggable;
+import fmt.cerulean.block.entity.MirageBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
@@ -8,8 +9,10 @@ import fmt.cerulean.util.Voronoi;
 import fmt.cerulean.world.gen.IslandParameters;
 import fmt.cerulean.world.gen.feature.Decoration;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.world.StructureWorldAccess;
@@ -31,11 +34,11 @@ public class IslandAugmentDecoration extends Decoration {
 				double scale = 48.0 * 4;
 				int wx = pos.getX() + x;
 				int wz = pos.getZ() + z;
-				long uniq = vn.get(wx / scale, wz / scale);
-				Pair<Vec2d, Vec2d> pos2 = vn.getCellPos2(wx / scale, wz / scale, scale);
-				Vec2i center = pos2.getLeft().floor();
+				Pair<Long, Long> uniq = vn.get2(wx / scale, wz / scale);
+				Pair<Vec2d, Vec2d> cells = vn.getCellPos2(wx / scale, wz / scale, scale);
+				Vec2i center = cells.getLeft().floor();
 
-				IslandParameters p = IslandParameters.get(center, uniq);
+				IslandParameters p = IslandParameters.get(center, uniq.getLeft());
 
 				double sample = xzWarp.sample(wx / 15., 0, wz / 15.) * 15;
 
@@ -63,7 +66,40 @@ public class IslandAugmentDecoration extends Decoration {
 					}
 				}
 
+				Vec2d left = cells.getLeft();
+				Vec2d right = cells.getRight();
 
+				double x0 = wx;
+				double x1 = left.x();
+				double x2 = right.x();
+
+				double z0 = wz;
+				double z1 = left.z();
+				double z2 = right.z();
+
+				double num = Math.abs(((z2 - z1) * x0) - ((x2 - x1) * z0) + (x2 * z1) - (z2 * x1));
+				double den = Math.sqrt(((z2 - z1) * (z2 - z1)) + ((x2 - x1) * (x2 - x1)));
+
+				double v = num / den;
+
+				if (v < 1.5) {
+					IslandParameters p2 = IslandParameters.get(center, uniq.getRight());
+
+					Vec2d posVec = new Vec2d(x0, z0);
+
+					int start1 = (15 + p.startOff()) * 8 - 1;
+					int start2 = (15 + p2.startOff()) * 8 - 1;
+					int nstart = (start1 + start2) / 2;
+					int y = (int) MathHelper.clampedMap(posVec.distSqr(left) / posVec.distSqr(right),
+							0, 1, start1, nstart);
+
+					BlockPos worldPos = new BlockPos(wx, y, wz);
+
+					if (world.getBlockState(worldPos).isAir()) {
+						world.setBlockState(worldPos, CeruleanBlocks.MIRAGE.getDefaultState(), 3);
+						MirageBlockEntity.set(world.getBlockEntity(worldPos), CeruleanBlocks.SPACEROCK.getDefaultState());
+					}
+				}
 			}
 		}
 	}

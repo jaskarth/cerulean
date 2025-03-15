@@ -62,6 +62,12 @@ public final class CeruleanBlocks {
 	public static final Block CHIMERIC_PIPE = register("chimeric_pipe",
 			new PipeBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
 
+	public static final Block IRON_VALVE = register("iron_valve",
+			new ValveBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
+	public static final Block CHIMERIC_VALVE = register("chimeric_valve",
+			new ValveBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)));
+
 	public static final Block SPACEROCK = register("spacerock",
 			new Block(AbstractBlock.Settings.copy(Blocks.COBBLESTONE)));
 
@@ -326,6 +332,9 @@ public final class CeruleanBlocks {
 					.strength(1.0F)
 					.luminance(s -> 15)
 			));
+
+	public static final Block PROJECTOR = register("projector",
+			new ProjectorBlock(AbstractBlock.Settings.copy(Blocks.COBBLESTONE)));
 
 	public static void init() {
 		OxidizableBlocksRegistry.registerOxidizableBlockPair(PIPE, EXPOSED_PIPE);

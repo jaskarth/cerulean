@@ -21,6 +21,8 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.LUSTROUS_PIPE,
 				CeruleanBlocks.DUCTILE_PIPE,
 				CeruleanBlocks.CHIMERIC_PIPE,
+				CeruleanBlocks.IRON_VALVE,
+				CeruleanBlocks.CHIMERIC_VALVE,
 				CeruleanBlocks.CORAL,
 				CeruleanBlocks.SKYGRASS,
 				CeruleanBlocks.SPARKBLOSSOM,

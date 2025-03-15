@@ -59,7 +59,7 @@ public class MirageBlock extends BlockWithEntity {
 
 	@Override
 	protected float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-		return 1.0F;
+		return 0.2F;
 	}
 
 	@Override

@@ -14,7 +14,8 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<PipeBlockEntity> PIPE = register("pipe", PipeBlockEntity::new,
 			CeruleanBlocks.PIPE, CeruleanBlocks.EXPOSED_PIPE, CeruleanBlocks.WEATHERED_PIPE, CeruleanBlocks.OXIDIZED_PIPE,
 			CeruleanBlocks.WAXED_PIPE, CeruleanBlocks.WAXED_EXPOSED_PIPE, CeruleanBlocks.WAXED_WEATHERED_PIPE, CeruleanBlocks.WAXED_OXIDIZED_PIPE,
-			CeruleanBlocks.FUCHSIA_PIPE, CeruleanBlocks.LUSTROUS_PIPE, CeruleanBlocks.DUCTILE_PIPE, CeruleanBlocks.CHIMERIC_PIPE);
+			CeruleanBlocks.FUCHSIA_PIPE, CeruleanBlocks.LUSTROUS_PIPE, CeruleanBlocks.DUCTILE_PIPE, CeruleanBlocks.CHIMERIC_PIPE,
+			CeruleanBlocks.IRON_VALVE, CeruleanBlocks.CHIMERIC_VALVE);
 	public static final BlockEntityType<MimicBlockEntity> MIMIC = register("mimic", MimicBlockEntity::new, CeruleanBlocks.MIMIC);
 	public static final BlockEntityType<FauxBlockEntity> FAUX = register("faux", FauxBlockEntity::new, CeruleanBlocks.FAUX);
 	public static final BlockEntityType<StrongboxBlockEntity> STRONGBOX = register("strongbox", StrongboxBlockEntity::new, CeruleanBlocks.STRONGBOX);
@@ -24,6 +25,7 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<ItemDetectorBlockEntity> ITEM_DETECTOR = register("item_detector", ItemDetectorBlockEntity::new, CeruleanBlocks.ITEM_DETECTOR);
 	public static final BlockEntityType<PipeDetectorBlockEntity> PIPE_DETECTOR = register("pipe_detector", PipeDetectorBlockEntity::new, CeruleanBlocks.PIPE_DETECTOR);
 	public static final BlockEntityType<MirageBlockEntity> MIRAGE = register("mirage", MirageBlockEntity::new, CeruleanBlocks.MIRAGE);
+	public static final BlockEntityType<ProjectorBlockEntity> PROJECTOR = register("projector", ProjectorBlockEntity::new, CeruleanBlocks.PROJECTOR);
 
 	public static void init() {
 	}

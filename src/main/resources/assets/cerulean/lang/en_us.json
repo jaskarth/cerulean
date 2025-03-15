@@ -55,6 +55,10 @@
   "block.cerulean.glittering_sparkblossom": "Glittering Sparkblossom",
   "block.cerulean.light_core": "Light Core",
   "block.cerulean.mirage": "≈",
+  "block.cerulean.iron_valve": "Iron Valve",
+  "block.cerulean.chimeric_valve": "Chimeric Valve",
+  "block.cerulean.projector": "Projector",
+  "block.cerulean.pipe_detector": "Pipe Detector",
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -109,6 +113,10 @@
   "item.cerulean.glittering_sparkblossom": "Glittering Sparkblossom",
   "item.cerulean.light_core": "Light Core",
   "item.cerulean.mirage": "≈",
+  "item.cerulean.iron_valve": "Iron Valve",
+  "item.cerulean.chimeric_valve": "Chimeric Valve",
+  "item.cerulean.projector": "Projector",
+  "item.cerulean.pipe_detector": "Pipe Detector",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -151,6 +159,10 @@
   "item.cerulean.awakened_glitter": "Awakened Glitter",
   "item.cerulean.glitter": "Glitter",
   "item.cerulean.glittercrumb": "Glittercrumb",
+  "item.cerulean.stamp": "Stamp",
+  "item.cerulean.sparkling_water": "Sparkling Water",
+  "item.cerulean.oxidation_potion": "Oxidation Potion",
+  "item.cerulean.splash_oxidation_potion": "Splash Oxidation Potion",
 
   "item.cerulean.brilliant_ash_star": "Brilliant Ash Star",
   "item.cerulean.brilliant_cerulean_star": "Brilliant Cerulean Star",

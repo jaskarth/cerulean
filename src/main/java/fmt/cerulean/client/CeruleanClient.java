@@ -38,6 +38,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -89,6 +90,7 @@ public class CeruleanClient implements ClientModInitializer {
 		BuiltinItemRendererRegistry.INSTANCE.register(CeruleanItems.EYE_OF_VENDOR, new EyeOfVenderer());
 
 		EntityRendererRegistry.register(CeruleanEntities.MEMORY_FRAME, MemoryFrameRenderer::new);
+		EntityRendererRegistry.register(CeruleanEntities.OXIDATION_POTION, FlyingItemEntityRenderer::new);
 
 		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, boctx) -> {
 			if (ClientState.remember) {

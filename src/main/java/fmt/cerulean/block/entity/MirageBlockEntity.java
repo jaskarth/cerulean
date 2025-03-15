@@ -13,9 +13,11 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class MirageBlockEntity extends SyncedBlockEntity {
 	public BlockState state;
+	public boolean aware;
 
 	public MirageBlockEntity(BlockPos pos, BlockState state) {
 		super(CeruleanBlockEntities.MIRAGE, pos, state);
@@ -28,6 +30,7 @@ public class MirageBlockEntity extends SyncedBlockEntity {
 		RegistryEntryLookup<Block> registryEntryLookup = registryLookup.createRegistryLookup().getOrThrow(RegistryKeys.BLOCK);
 
 		state = NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("Block"));
+		aware = nbt.getBoolean("A");
 	}
 
 	@Override
@@ -35,5 +38,12 @@ public class MirageBlockEntity extends SyncedBlockEntity {
 		super.writeNbt(nbt, registryLookup);
 
 		nbt.put("Block", NbtHelper.fromBlockState(this.state == null ? Blocks.BEDROCK.getDefaultState() : state));
+		nbt.putBoolean("A", aware);
+	}
+
+	public static void set(BlockEntity be, BlockState state) {
+		MirageBlockEntity mbe = (MirageBlockEntity) be;
+		mbe.state = state;
+		mbe.markDirty();
 	}
 }

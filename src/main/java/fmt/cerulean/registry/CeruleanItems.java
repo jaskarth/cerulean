@@ -106,6 +106,9 @@ public class CeruleanItems {
 			.food(new FoodComponent.Builder().nutrition(2).saturationModifier(0.2f).snack().build())
 	));
 	public static final Item STAMP = register("stamp", new Item(new Item.Settings()));
+	public static final Item SPARKLING_WATER = register("sparkling_water", new SparklingWaterItem(new Item.Settings()));
+	public static final Item OXIDATION_POTION = register("oxidation_potion", new OxidationPotionItem(new Item.Settings()));
+	public static final Item SPLASH_OXIDATION_POTION = register("splash_oxidation_potion", new SplashOxidationPotionItem(new Item.Settings()));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();

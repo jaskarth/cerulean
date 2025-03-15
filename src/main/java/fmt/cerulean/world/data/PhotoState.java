@@ -1,7 +1,10 @@
 package fmt.cerulean.world.data;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -14,7 +17,7 @@ import java.util.*;
 
 public class PhotoState extends PersistentState {
 	private int lastAllocatedId = 0;
-	private final Map<UUID, Integer> allocation = new HashMap<>();
+	private final Map<UUID, PhotoAllocation> allocation = new HashMap<>();
 	private final Map<Integer, PhotoMeta> metas = new HashMap<>();
 	private final ServerPhotoStore store;
 
@@ -27,9 +30,9 @@ public class PhotoState extends PersistentState {
 		nbt.putInt("LastAlloc", lastAllocatedId);
 
 		NbtCompound alloc = new NbtCompound();
-		for (Map.Entry<UUID, Integer> e : allocation.entrySet()) {
+		for (Map.Entry<UUID, PhotoAllocation> e : allocation.entrySet()) {
 			NbtCompound entry = new NbtCompound();
-			entry.putInt("V", e.getValue());
+			e.getValue().writeNbt(entry);
 			alloc.put(e.getKey().toString(), entry);
 		}
 
@@ -60,7 +63,8 @@ public class PhotoState extends PersistentState {
 	}
 
 	public boolean canAllocFor(ServerPlayerEntity player) {
-		int allocated = allocation.computeIfAbsent(player.getUuid(),  k -> 0);
+		int allocated = allocation.computeIfAbsent(player.getUuid(),  k -> new PhotoAllocation()).list.size();
+		markDirty();
 
 		if (player.getServerWorld().getServer() instanceof DedicatedServer || player.getServerWorld().getServer().getCurrentPlayerCount() > 1) {
 			return allocated < 36;
@@ -72,7 +76,7 @@ public class PhotoState extends PersistentState {
 
 	public int allocNextId(ServerPlayerEntity player) {
 		lastAllocatedId++;
-		allocation.compute(player.getUuid(), (k, v) -> v == null ? 1 : v + 1);
+		allocation.computeIfAbsent(player.getUuid(),  k -> new PhotoAllocation()).list.add(lastAllocatedId);
 		markDirty();
 
 		return lastAllocatedId;
@@ -86,8 +90,10 @@ public class PhotoState extends PersistentState {
 		NbtCompound data = nbt.getCompound("Alloc");
 
 		for (String key : data.getKeys()) {
-			int v = data.getCompound(key).getInt("V");
-			state.allocation.put(UUID.fromString(key), v);
+			PhotoAllocation alloc = new PhotoAllocation();
+			alloc.readNbt(data.getCompound(key));
+
+			state.allocation.put(UUID.fromString(key), alloc);
 		}
 
 		NbtList meta = nbt.getList("Meta", NbtElement.COMPOUND_TYPE);
@@ -98,6 +104,19 @@ public class PhotoState extends PersistentState {
 		}
 
 		return state;
+	}
+
+	public static class PhotoAllocation {
+		public IntList list = new IntArrayList();
+
+		protected void writeNbt(NbtCompound nbt) {
+			NbtIntArray intArray = new NbtIntArray(list.toIntArray());
+			nbt.put("Photos", intArray);
+		}
+
+		protected void readNbt(NbtCompound nbt) {
+			list = new IntArrayList(nbt.getIntArray("Photos"));
+		}
 	}
 
 	public void add(int id, byte[] data, PhotoMeta meta) {

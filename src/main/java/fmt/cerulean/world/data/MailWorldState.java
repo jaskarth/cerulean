@@ -1,4 +1,4 @@
-package fmt.cerulean.world;
+package fmt.cerulean.world.data;
 
 import java.util.List;
 import java.util.Map;

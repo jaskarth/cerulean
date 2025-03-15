@@ -68,10 +68,8 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 	}
 
 	private BlockState getState(WorldAccess world, BlockPos pos) {
-		FluidState fluid = world.getFluidState(pos);
-		BlockState state = this.getDefaultState()
-				.with(WATERLOGGED, fluid.isOf(Fluids.WATER))
-				.with(PLASTICLOGGED, fluid.isOf(CeruleanFluids.POLYETHYLENE));
+		BlockState state = getDefaultStateFromWorld(world, pos);
+
 		Direction lastDir = null;
 		int connections = 0;
 		for (Direction dir : Util.DIRECTIONS) {
@@ -87,7 +85,22 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 		return state;
 	}
 
+	protected BlockState getDefaultStateFromWorld(WorldAccess world, BlockPos pos) {
+		FluidState fluid = world.getFluidState(pos);
+		return this.getDefaultState()
+				.with(WATERLOGGED, fluid.isOf(Fluids.WATER))
+				.with(PLASTICLOGGED, fluid.isOf(CeruleanFluids.POLYETHYLENE));
+	}
+
 	public static boolean canConnect(BlockState ownState, BlockState state, Direction dir) {
+		if (ownState.getBlock() instanceof ValveBlock && ownState.get(ValveBlock.POWERED)) {
+			return false;
+		}
+
+		if (state.getBlock() instanceof ValveBlock && state.get(ValveBlock.POWERED)) {
+			return false;
+		}
+
 		// Always connect to that of same type
 		if (ownState.isOf(state.getBlock())) {
 			return true;
@@ -107,11 +120,13 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 	private static boolean exclusiveType(BlockState state) {
 		// TODO: should be blocktag
 
-		return state.isOf(CeruleanBlocks.FUCHSIA_PIPE) || state.isOf(CeruleanBlocks.LUSTROUS_PIPE) || state.isOf(CeruleanBlocks.DUCTILE_PIPE);
+		return state.isOf(CeruleanBlocks.FUCHSIA_PIPE)
+				|| state.isOf(CeruleanBlocks.LUSTROUS_PIPE)
+				|| state.isOf(CeruleanBlocks.DUCTILE_PIPE);
 	}
 
 	public static boolean isEfficient(BlockState state) {
-		return exclusiveType(state) || state.isOf(CeruleanBlocks.CHIMERIC_PIPE);
+		return exclusiveType(state) || state.isOf(CeruleanBlocks.CHIMERIC_PIPE) || state.isOf(CeruleanBlocks.CHIMERIC_VALVE);
 	}
 
 	@Override

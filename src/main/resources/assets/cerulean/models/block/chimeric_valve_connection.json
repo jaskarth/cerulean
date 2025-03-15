@@ -1,0 +1,58 @@
+{
+  "textures": {
+    "pipe": "cerulean:block/chimeric_valve",
+    "particle": "cerulean:block/chimeric_valve"
+  },
+  "elements": [
+		{
+			"from": [4, 4, 2],
+			"to": [12, 12, 4],
+			"faces": {
+				"east": {"uv": [4, 5, 5, 9], "texture": "#pipe"},
+				"west": {"uv": [4, 5, 5, 9], "texture": "#pipe"},
+				"up": {"uv": [4, 5, 5, 9], "texture": "#pipe", "rotation": 90},
+				"down": {"uv": [4, 5, 5, 9], "texture": "#pipe", "rotation": 90}
+			}
+		},
+		{
+			"from": [3, 3, 0],
+			"to": [13, 13, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 5, 5], "texture": "#pipe"},
+				"south": {"uv": [5, 0, 10, 5], "texture": "#pipe"},
+				"east": {"uv": [10, 0, 11, 5], "texture": "#pipe", "rotation": 180},
+				"west": {"uv": [10, 0, 11, 5], "texture": "#pipe"},
+				"up": {"uv": [10, 0, 11, 5], "texture": "#pipe", "rotation": 270},
+				"down": {"uv": [10, 0, 11, 5], "texture": "#pipe", "rotation": 90}
+			}
+		},
+		{
+			"from": [4, 4, 0],
+			"to": [4, 12, 4],
+			"faces": {
+				"east": {"uv": [4, 9, 6, 13], "texture": "#pipe"}
+			}
+		},
+		{
+			"from": [12, 4, 0],
+			"to": [12, 12, 4],
+			"faces": {
+				"west": {"uv": [4, 9, 6, 13], "texture": "#pipe"}
+			}
+		},
+		{
+			"from": [4, 4, 0],
+			"to": [12, 4, 4],
+			"faces": {
+				"up": {"uv": [4, 9, 6, 13], "texture": "#pipe", "rotation": 90}
+			}
+		},
+		{
+			"from": [4, 12, 0],
+			"to": [12, 12, 4],
+			"faces": {
+				"down": {"uv": [4, 9, 6, 13], "texture": "#pipe", "rotation": 90}
+			}
+		}
+  ]
+}

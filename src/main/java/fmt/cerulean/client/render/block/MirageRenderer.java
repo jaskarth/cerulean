@@ -5,6 +5,7 @@ import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.render.CeruleanRenderTypes;
 import fmt.cerulean.client.render.QuadEmitter;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.registry.CeruleanItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -19,6 +20,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
@@ -33,7 +35,14 @@ public class MirageRenderer implements BlockEntityRenderer<MirageBlockEntity> {
 	public void render(MirageBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;
 		boolean isHolding = player.isHolding(CeruleanBlocks.MIRAGE.asItem());
-		if (!ClientState.forget && !isHolding) {
+		boolean eyeOk = false;
+		if (entity.aware) {
+			boolean isHoldingEye = player.isHolding(CeruleanItems.EYE_OF_VENDOR);
+			if (isHoldingEye && Vec3d.ofCenter(entity.getPos()).isInRange(MinecraftClient.getInstance().gameRenderer.getCamera().getPos(), 4)) {
+				eyeOk = true;
+			}
+		}
+		if (!ClientState.forget && !isHolding && !eyeOk) {
 			return;
 		}
 
@@ -62,5 +71,13 @@ public class MirageRenderer implements BlockEntityRenderer<MirageBlockEntity> {
 		}
 
 		BlockModelRenderer.disableBrightnessCache();
+	}
+
+	@Override
+	public int getRenderDistance() {
+		if (ClientState.forget) {
+			return 512;
+		}
+		return 64;
 	}
 }
