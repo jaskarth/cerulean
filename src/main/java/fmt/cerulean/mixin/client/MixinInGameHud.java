@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.client.render.EmergencyOverlay;
 import fmt.cerulean.client.render.EmergencyStack;
 import fmt.cerulean.client.tex.gen.StaticTexture;
 import fmt.cerulean.registry.CeruleanItems;
@@ -65,6 +66,7 @@ public abstract class MixinInGameHud implements Instructor {
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	public void cerulean$cameraOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+		EmergencyOverlay.render(context);
 		if (ClientState.forget) {
 			int color = 0xFF000000;
 			context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color);
