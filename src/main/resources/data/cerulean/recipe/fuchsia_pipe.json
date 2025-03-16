@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "cerulean:fuchsia_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "L": {
+      "item": "cerulean:glass_lens"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "GLG",
+    "FFF"
+  ],
+  "result": {
+    "count": 6,
+    "id": "cerulean:fuchsia_pipe"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "cerulean:fuchsia_ingot"
+    },
+    "I": {
+      "item": "cerulean:lustrous_ingot"
+    },
+    "D": {
+      "item": "cerulean:ductile_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "L": {
+      "item": "cerulean:reflective_lens"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "FID",
+    "GLR",
+    "FID"
+  ],
+  "result": {
+    "count": 3,
+    "id": "cerulean:chimeric_valve"
+  }
+}

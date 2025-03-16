@@ -3,6 +3,7 @@ package fmt.cerulean.block;
 import com.mojang.serialization.MapCodec;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
 import fmt.cerulean.registry.CeruleanBlockEntities;
+import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -71,7 +72,7 @@ public class StrongboxBlock extends BlockWithEntity {
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof StrongboxBlockEntity strongbox) {
 				if (strongbox.hasItem) {
-					if (player.giveItemStack(new ItemStack(Items.ECHO_SHARD))) {
+					if (player.giveItemStack(new ItemStack(CeruleanItems.REFLECTIVE_LENS))) {
 						strongbox.hasItem = false;
 						strongbox.markDirty();
 						return ActionResult.SUCCESS;

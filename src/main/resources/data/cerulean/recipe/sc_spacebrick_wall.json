@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "cerulean:spacebricks"
+  },
+  "result": {
+    "count": 1,
+    "id": "cerulean:spacebrick_wall"
+  }
+}

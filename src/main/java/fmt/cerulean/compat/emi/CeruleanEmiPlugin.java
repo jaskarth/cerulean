@@ -18,23 +18,14 @@ import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
 import fmt.cerulean.flow.FlowResources;
-import fmt.cerulean.flow.recipe.AnxietyManifestationBrushRecipe;
-import fmt.cerulean.flow.recipe.BerryFlavoringBrushRecipe;
-import fmt.cerulean.flow.recipe.BevvyTastingBrushRecipe;
-import fmt.cerulean.flow.recipe.BrushRecipe;
-import fmt.cerulean.flow.recipe.BrushRecipes;
-import fmt.cerulean.flow.recipe.CanvasRequirements;
-import fmt.cerulean.flow.recipe.CinderingAfterglowBrushRecipe;
-import fmt.cerulean.flow.recipe.EmpathyBrushRecipe;
-import fmt.cerulean.flow.recipe.InspirationBrushRecipe;
-import fmt.cerulean.flow.recipe.ManifestationBrushRecipe;
-import fmt.cerulean.flow.recipe.ParadigmBrushRecipe;
-import fmt.cerulean.flow.recipe.AgoraphobicGardeningBrushRecipe;
-import fmt.cerulean.flow.recipe.UnblightBrushRecipe;
+import fmt.cerulean.flow.recipe.*;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItems;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -92,8 +83,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 			} else if (recipe instanceof AnxietyManifestationBrushRecipe real) {
 				registry.addRecipe(new EmiBrushRecipe(id,
 					List.of(of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES)),
-					// TODO: make custom tool tag
-					List.of(EmiIngredient.of(ItemTags.PICKAXES)),
+					List.of(EmiIngredient.of(TagKey.of(RegistryKeys.ITEM, Identifier.of("c", "tools")))),
 					EmiStack.EMPTY,
 					List.of(),
 					List.of(),
@@ -143,6 +133,24 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					List.of(),
 					real.canvas.validBlocks.isEmpty() ? List.of() : List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
 					Text.translatable("info.cerulean.empathy_" + (real.strict ? "stress" : "relief"))
+				));
+			} else if (recipe instanceof TriviaStainingRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(id,
+						inputStars(real.canvas),
+						List.of(EmiStack.of(real.input)),
+						EmiStack.EMPTY,
+						List.of(EmiStack.of(real.output)),
+						real.canvas.validBlocks.isEmpty() ? List.of() : List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
+						Text.translatable(real.misremembered ? "info.cerulean.trivia_staining.misremembered" : "info.cerulean.trivia_staining")
+				));
+			} else if (recipe instanceof ImprintingRecipe real) {
+				registry.addRecipe(new EmiBrushRecipe(id,
+						inputStars(real.canvas),
+						List.of(EmiStack.of(CeruleanItems.PHOTONEGATIVE), EmiStack.of(Items.PAPER)),
+						EmiStack.EMPTY,
+						List.of(EmiStack.of(CeruleanItems.PHOTOGRAPH)),
+						List.of(real.canvas.validBlocks.iterator().next().getDefaultState()),
+						Text.translatable("info.cerulean.imprinting")
 				));
 			}
 		}

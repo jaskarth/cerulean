@@ -1,7 +1,10 @@
 package fmt.cerulean.flow.recipe;
 
 import fmt.cerulean.flow.FlowResource.Color;
+import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.CocoaBlock;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
@@ -36,7 +39,7 @@ public class AnxietyManifestationBrushRecipe implements BrushRecipe {
 				try {
 					BlockPos pos = inventory.pos.offset(inventory.direction, i);
 					BlockState state = world.getBlockState(pos);
-					if (!(state.getBlock() instanceof SaplingBlock) && ti.isCorrectForDrops(stack, state)) {
+					if (!ignoreStateForBreaking(state) && ti.isCorrectForDrops(stack, state)) {
 						world.breakBlock(pos, true);
 						stack.damage(1, (ServerWorld) world, null, u -> {});
 						return;
@@ -46,5 +49,17 @@ public class AnxietyManifestationBrushRecipe implements BrushRecipe {
 				}
 			}
 		}
+	}
+
+	private static boolean ignoreStateForBreaking(BlockState state) {
+		if (state.isOf(CeruleanBlocks.HALITE_OUTCROPPING_SMALL) || state.isOf(CeruleanBlocks.HALITE_OUTCROPPING_MEDIUM) || state.isOf(CeruleanBlocks.HALITE_OUTCROPPING_LARGE)) {
+			return true;
+		}
+
+		if (state.isOf(Blocks.COCOA) && state.get(CocoaBlock.AGE) != 2) {
+			return true;
+		}
+
+		return state.getBlock() instanceof SaplingBlock;
 	}
 }

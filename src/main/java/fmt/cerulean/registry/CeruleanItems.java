@@ -47,6 +47,8 @@ public class CeruleanItems {
 	public static final Item WEATHERED_COPPER_INGOT = register("weathered_copper_ingot", new Item(new Item.Settings()));
 	public static final Item OXIDIZED_COPPER_INGOT = register("oxidized_copper_ingot", new Item(new Item.Settings()));
 	public static final Item FUCHSIA_INGOT = register("fuchsia_ingot", new Item(new Item.Settings()));
+	public static final Item LUSTROUS_INGOT = register("lustrous_ingot", new Item(new Item.Settings()));
+	public static final Item DUCTILE_INGOT = register("ductile_ingot", new Item(new Item.Settings()));
 	public static final Item FUCHSIA_SWORD = register("fuchsia_sword", new SwordItem(FuchsiaToolMaterial.INSTANCE,  new Item.Settings()
 			.attributeModifiers(SwordItem.createAttributeModifiers(FuchsiaToolMaterial.INSTANCE, 3, -2.4F))));
 	public static final Item FUCHSIA_SHOVEL = register("fuchsia_shovel", new ShovelItem(FuchsiaToolMaterial.INSTANCE, new Item.Settings()

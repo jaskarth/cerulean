@@ -33,6 +33,7 @@ public class ManifestationBrushRecipe implements BrushRecipe {
 		ItemStack stack = inventory.find(s -> s.getItem() instanceof BlockItem);
 		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem bi) {
 			World world = inventory.world;
+			inventory.keepAlive(stack);
 			for (int i = 1; i < 6; i++) {
 				try {
 					BlockPos pos = inventory.pos.offset(inventory.direction, i);

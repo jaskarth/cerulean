@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "cerulean:spacerock"
+  },
+  "result": {
+    "id": "cerulean:smooth_spacerock"
+  }
+}

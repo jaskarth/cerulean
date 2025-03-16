@@ -2,6 +2,7 @@ package fmt.cerulean.client.render.block;
 
 import fmt.cerulean.block.StrongboxBlock;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
+import fmt.cerulean.registry.CeruleanItems;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -37,7 +38,7 @@ public class StrongboxRenderer implements BlockEntityRenderer<StrongboxBlockEnti
 
 				long time = entity.getWorld().getTime();
 
-				ItemStack itemStack = new ItemStack(Items.ECHO_SHARD);
+				ItemStack itemStack = new ItemStack(CeruleanItems.REFLECTIVE_LENS);
 				long seed = MathHelper.hashCode(entity.getPos());
 				this.random.setSeed(seed);
 				BakedModel bakedModel = this.itemRenderer.getModel(itemStack, entity.getWorld(), null, MathHelper.idealHash((int)seed));

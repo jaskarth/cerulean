@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cerulean:halite"
+    },
+    {
+      "item": "cerulean:halite"
+    },
+    {
+      "item": "cerulean:halite"
+    },
+    {
+      "item": "cerulean:halite"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "cerulean:halite_salad"
+  }
+}

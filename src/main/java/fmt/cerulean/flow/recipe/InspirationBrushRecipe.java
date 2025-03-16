@@ -50,10 +50,16 @@ public class InspirationBrushRecipe implements BrushRecipe {
 
 		public Uninspired(CanvasRequirements canvas, int time, Ingredient input, ItemStack output) {
 			super(canvas, time, List.of(input), output);
+			if (!canvas.validOpposingBrightnesses.isEmpty() || !canvas.validOpposingColors.isEmpty()) {
+				throw new IllegalStateException("Inspiration is everywhere if you see it");
+			}
 		}
 
 		public Uninspired(CanvasRequirements canvas, int time, List<Ingredient> input, ItemStack output) {
 			super(canvas, time, input, output);
+			if (!canvas.validOpposingBrightnesses.isEmpty() || !canvas.validOpposingColors.isEmpty()) {
+				throw new IllegalStateException("Inspiration is everywhere if you see it");
+			}
 		}
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ImprintingRecipe implements BrushRecipe {
-	private final CanvasRequirements canvas;
+	public final CanvasRequirements canvas;
 
 	public ImprintingRecipe(CanvasRequirements canvas) {
 		this.canvas = canvas;

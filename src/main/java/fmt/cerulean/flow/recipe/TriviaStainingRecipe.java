@@ -1,5 +1,6 @@
 package fmt.cerulean.flow.recipe;
 
+import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.item.component.ColorTriplex;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import net.minecraft.item.Item;
@@ -12,11 +13,13 @@ import java.util.function.Predicate;
 public class TriviaStainingRecipe implements BrushRecipe {
 	public final CanvasRequirements canvas;
 	public final Item input;
+	public final Item output;
 	public final boolean misremembered;
 
-	public TriviaStainingRecipe(CanvasRequirements canvas, Item input, boolean misremembered) {
+	public TriviaStainingRecipe(CanvasRequirements canvas, Item input, Item output, boolean misremembered) {
 		this.canvas = canvas;
 		this.input = input;
+		this.output = output;
 		this.misremembered = misremembered;
 	}
 
@@ -42,10 +45,7 @@ public class TriviaStainingRecipe implements BrushRecipe {
 	private @NotNull Predicate<ItemStack> getItemStackPredicate(PigmentInventory inventory) {
 		return item -> {
 			if (item.isOf(this.input)) {
-				ColorTriplex color = item.get(CeruleanItemComponents.COLOR_TRIPLEX);
-				if (color == null) {
-					return false;
-				}
+				ColorTriplex color = item.getOrDefault(CeruleanItemComponents.COLOR_TRIPLEX, ColorTriplex.empty());
 
 				if (misremembered && color.contains(inventory.flow.resource().getColor())) {
 					return false;
@@ -67,9 +67,9 @@ public class TriviaStainingRecipe implements BrushRecipe {
 
 		ItemStack stack = stacks.iterator().next();
 
-		ColorTriplex triplex = stack.get(CeruleanItemComponents.COLOR_TRIPLEX);
+		ColorTriplex triplex = stack.getOrDefault(CeruleanItemComponents.COLOR_TRIPLEX, ColorTriplex.empty());
 
-		ItemStack copy = stack.copy();
+		ItemStack copy = stack.copyWithCount(1).withItem(output);
 		copy.set(CeruleanItemComponents.COLOR_TRIPLEX, triplex.fill(inventory.flow.resource().getColor()));
 
 		inventory.spawnResult(copy);
