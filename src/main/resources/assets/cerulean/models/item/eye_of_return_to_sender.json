@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "cerulean:item/eye_of_return_to_sender"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "awakened": 1
+      },
+      "model": "cerulean:item/eye_of_return_to_sender_awakened"
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 package fmt.cerulean.client.render;
 
-import java.awt.Polygon;
 import java.util.List;
 import java.util.Random;
 
@@ -20,7 +19,6 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Camera.Projection;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Hand;
-import net.minecraft.util.collection.WeightedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -40,19 +38,20 @@ public class EmergencyOverlay {
 					censorships.add(Censorship.of(entity, 0.2f + emergency / 20f));
 				}
 			}
+			/*
 			if (!(entity instanceof ClientPlayerEntity) && !entity.isInvisibleTo(client.player) && entity.shouldRender(camera.getPos().getX(), camera.getPos().getY(), camera.getPos().getZ())) {
 				censorships.add(Censorship.of(entity, 1));
 			}
+			*/
 		}
 
-		censorships.removeIf(c -> c.poly == null);
+		censorships.removeIf(c -> c.shape == null);
 		
-		if (censorships.isEmpty() || client.player.getStackInHand(Hand.MAIN_HAND).getItem() == CeruleanItems.BRUSH) {
+		if (client.player.getStackInHand(Hand.MAIN_HAND).getItem() == CeruleanItems.BRUSH) {
 			return;
 		}
 		int width = client.getWindow().getFramebufferWidth();
 		int height = client.getWindow().getFramebufferHeight();
-		int NUDGE = 10;
 		int WIDTH = 19;
 		int HEIGHT = 19;
 		Random random = new Random();
@@ -67,14 +66,24 @@ public class EmergencyOverlay {
 					HEX_STATES.add(HexState.generate(random, time));
 				}
 				HexState state = HEX_STATES.get(i);
+				boolean active = false;
 				for (Censorship censorship : censorships) {
-					if (censorship.poly.intersects(rx - NUDGE, ry - NUDGE, WIDTH + NUDGE * 2, HEIGHT + NUDGE * 2)) {
+					if (censorship.shape.containsNearby(rx + WIDTH, ry + HEIGHT)) {
 						if (censorship.heat < 1 && random.nextFloat() > censorship.heat) {
 							continue;
 						}
-						context.drawTexture(Cerulean.id("textures/gui/hexa" + (1 + state.getVariant(random, time)) + ".png"), rx, ry, 0, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
+						active = true;
 						break;
 					}
+				}
+				if (active) {
+					state.active = true;
+				} else if (state.active) {
+					state.deactivate(random, time);
+				}
+				int variant = state.getVariant(random, time);
+				if (variant != -1) {
+					context.drawTexture(Cerulean.id("textures/gui/hexa" + (1 + state.getVariant(random, time)) + ".png"), rx, ry, 0, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
 				}
 				i++;
 			}
@@ -151,7 +160,7 @@ public class EmergencyOverlay {
 
 	private static class Censorship {
 		public float heat;
-		private Polygon poly;
+		public ConvexShape shape;
 
 		public Censorship(List<Vec3d> worldPoints, float heat) {
 			this.heat = heat;
@@ -178,7 +187,7 @@ public class EmergencyOverlay {
 				return;
 			}
 			List<Vec2i> convex = convexHull(points);
-			this.poly = new Polygon(convex.stream().mapToInt(v -> v.x()).toArray(), convex.stream().mapToInt(v -> v.z()).toArray(), convex.size());
+			this.shape = new ConvexShape(convex);
 		}
 
 		public static Censorship of(BlockPos pos, float heat) {
@@ -211,8 +220,71 @@ public class EmergencyOverlay {
 		}
 	}
 
+	private static class ConvexShape {
+		private List<Vec2i> shape;
+		private int minX, minY, maxX, maxY;
+		private int nudgeX, nudgeY;
+
+		public ConvexShape(List<Vec2i> shape) {
+			this.shape = shape;
+			this.minX = shape.get(0).x();
+			this.minY = shape.get(0).z();
+			this.maxX = shape.get(0).x();
+			this.maxY = shape.get(0).z();
+			for (int i = 1; i < shape.size(); i++) {
+				Vec2i point = shape.get(i);
+				this.minX = Math.min(this.minX, point.x());
+				this.minY = Math.min(this.minY, point.z());
+				this.maxX = Math.max(this.maxX, point.x());
+				this.maxY = Math.max(this.maxY, point.z());
+			}
+			int discretionX = maxX - minX;
+			int discretionY = maxY - minY;
+			nudgeX = 30;
+			nudgeY = 30;
+			while (discretionX > 0 && nudgeX > discretionX) {
+				nudgeX /= 2;
+			}
+			while (discretionY > 0 && nudgeY > discretionY) {
+				nudgeY /= 2;
+			}
+		}
+
+		public boolean containsNearby(int x, int y) {
+			for (int xo = 0; xo < 60; xo += nudgeX) {
+				for (int yo = 0; yo < 60; yo += nudgeY) {
+					if (contains(x - 30 + xo, y - 30 + yo)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public boolean contains(int x, int y) {
+			if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+				int p = 0;
+				int n = 0;
+				for (int i = 0; i < shape.size(); i++) {
+					Vec2i a = shape.get(i);
+					Vec2i b = shape.get((i + 1) % shape.size());
+					int cross = (x - a.x()) * (b.z() - a.z()) - (y - a.z()) * (b.x() - a.x());
+					if (cross < 0) {
+						n++;
+					} else if (cross > 0) {
+						p++;
+					}
+					if (p > 0 && n > 0) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+	}
+
 	private static class HexState {
-		private static final WeightedList<Integer> PERSONALITIES = new WeightedList<>();
 		private static final int STABLE = 0;
 		private static final int ERRATIC = 1;
 		private static final int RANDOM = 2;
@@ -220,6 +292,8 @@ public class EmergencyOverlay {
 		private int personality;
 		private int current;
 		private long nextUpdate;
+		private long persist;
+		private boolean active = false;
 
 		private static HexState generate(Random random, long time) {
 			HexState state = new HexState();
@@ -247,10 +321,15 @@ public class EmergencyOverlay {
 			this.personality = p;
 			this.current = switch(personality) {
 				case STABLE, ERRATIC, RANDOM -> random.nextInt(5);
-				case FLICKERING -> random.nextInt(2) * 3 + random.nextInt(2);
+				case FLICKERING -> (random.nextInt(6) == 0 ? 3 : 1) + random.nextInt(2);
 				default -> 0;
 			};
 			queueNextUpdate(random, time);
+		}
+
+		public void deactivate(Random random, long time) {
+			this.active = false;
+			this.persist = time + random.nextInt(300);
 		}
 
 		private void queueNextUpdate(Random random, long time) {
@@ -264,6 +343,13 @@ public class EmergencyOverlay {
 		}
 
 		public int getVariant(Random random, long time) {
+			if (!active) {
+				if (time > persist) {
+					return -1;
+				} else {
+					return current;
+				}
+			}
 			boolean shouldUpdate = nextUpdate != -1 && time > nextUpdate;
 			if (shouldUpdate) {
 				queueNextUpdate(random, time);
@@ -283,13 +369,6 @@ public class EmergencyOverlay {
 				renew(random, time);
 			}
 			return this.current;
-		}
-
-		static {
-			PERSONALITIES.add(STABLE, 10);
-			PERSONALITIES.add(ERRATIC, 10);
-			PERSONALITIES.add(RANDOM, 30);
-			PERSONALITIES.add(FLICKERING, 30);
 		}
 	}
 }

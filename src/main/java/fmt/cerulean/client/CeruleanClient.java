@@ -81,6 +81,12 @@ public class CeruleanClient implements ClientModInitializer {
 		};
 		ModelPredicateProviderRegistry.register(CeruleanItems.VACUUM_PUMP, Identifier.of("fluid_type"), fluidType);
 		ModelPredicateProviderRegistry.register(CeruleanItems.DEPRESSURIZER, Identifier.of("fluid_type"), fluidType);
+		ModelPredicateProviderRegistry.register(CeruleanItems.EYE_OF_RETURN_TO_SENDER, Identifier.of("awakened"), (stack, world, entity, seed) -> {
+			if (stack.contains(CeruleanItemComponents.RETURN_TO_SENDER) && stack.get(CeruleanItemComponents.RETURN_TO_SENDER).target().isPresent()) {
+				return 1;
+			}
+			return 0;
+		});
 
 		FluidRenderHandlerRegistry.INSTANCE.register(CeruleanFluids.REALIZED_POLYETHYLENE, CeruleanFluids.REALIZED_POLYETHYLENE_FLOWING, SimpleFluidRenderHandler.coloredWater(0x999999));
 

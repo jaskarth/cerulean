@@ -1,6 +1,3 @@
 {
-  "parent": "cerulean:item/cubie",
-  "textures": {
-    "all": "cerulean:block/cubie"
-  }
+  "parent": "cerulean:block/self_collapsing_cube"
 }

@@ -1,56 +1,7 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "cerulean:item/cubie",
-        "y": 0
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "y": 90
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "y": 180
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "y": 270
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "x": 180,
-        "y": 0
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "x": 180,
-        "y": 90
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "x": 180,
-        "y": 180
-      }
-    },
-    {
-      "apply": {
-        "model": "cerulean:block/cubie",
-        "x": 180,
-        "y": 270
-      }
+  "variants": {
+    "": {
+      "model": "cerulean:block/self_collapsing_cube"
     }
-  ]
+  }
 }

@@ -59,6 +59,9 @@
   "block.cerulean.chimeric_valve": "Chimeric Valve",
   "block.cerulean.projector": "Projector",
   "block.cerulean.pipe_detector": "Pipe Detector",
+  "block.cerulean.self_collapsing_cube": "Self Collapsing Cube",
+  "block.cerulean.address_plaque": "Address Plaque",
+  "block.cerulean.flag": "Flag",
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -117,6 +120,7 @@
   "item.cerulean.chimeric_valve": "Chimeric Valve",
   "item.cerulean.projector": "Projector",
   "item.cerulean.pipe_detector": "Pipe Detector",
+  "item.cerulean.stamp": "Stamp",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -142,6 +146,8 @@
   "item.cerulean.vacuum_pump": "Vacuum Pump",
   "item.cerulean.depressurizer": "Depressurizer",
   "item.cerulean.eye_of_vendor": "Eye of Vendor",
+  "item.cerulean.eye_of_mender": "Eye of Mender",
+  "item.cerulean.eye_of_return_to_sender": "Eye of Return to Sender",
   "item.cerulean.brush": "Brush",
   "item.cerulean.halite": "Halite",
   "item.cerulean.crushed_halite": "Crushed Halite",
@@ -251,6 +257,8 @@
   "info.cerulean.cindering_afterglow": "Burns dimmer stars out",
   "info.cerulean.cindering_afterglow_twice": "Burns the dimmest stars out",
   "info.cerulean.bevvy_tasting": "Consumes potions to brighten stars",
+  "info.cerulean.empathy_relief": "Mail, stamp needs an address",
+  "info.cerulean.empathy_stress": "Mail, plaque needs an address",
 
   "info.cerulean.strongbox.unknowable.0": "It won't budge.",
   "info.cerulean.strongbox.unknowable.1": "I can't open it.",

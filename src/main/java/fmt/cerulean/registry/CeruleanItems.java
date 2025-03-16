@@ -74,7 +74,9 @@ public class CeruleanItems {
 	public static final Item POLYETHYLENE_DRUM = register("polyethylene_drum", new Item(new Item.Settings()));
 	public static final Item VACUUM_PUMP = register("vacuum_pump", new VacuumPumpItem(new Item.Settings().maxCount(1)));
 	public static final Item DEPRESSURIZER = register("depressurizer", new DepressurizerItem(new Item.Settings().maxCount(1)));
-	public static final Item EYE_OF_VENDOR = register("eye_of_vendor", new EyeOfVendorItem(new Item.Settings()));
+	public static final Item EYE_OF_VENDOR = register("eye_of_vendor", new EyeOfVendorItem(new Item.Settings().maxCount(1)));
+	public static final Item EYE_OF_MENDER = register("eye_of_mender", new EyeOfMenderItem(new Item.Settings().maxCount(16)));
+	public static final Item EYE_OF_RETURN_TO_SENDER = register("eye_of_return_to_sender", new EyeOfReturnToSenderItem(new Item.Settings().maxCount(1)));
 	public static final Item BRUSH = register("brush", new StrictBrushItem(new Item.Settings().maxCount(1)));
 	public static final Item HALITE = register("halite", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())

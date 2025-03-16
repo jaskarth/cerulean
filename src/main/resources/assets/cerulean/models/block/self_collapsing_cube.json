@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "cerulean:block/cubie_gray",
+    "particle": "cerulean:block/cubie_gray"
+  }
+}
