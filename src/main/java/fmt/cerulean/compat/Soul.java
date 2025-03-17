@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
@@ -17,17 +18,24 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
-import net.fabricmc.loader.impl.transformer.EnvironmentStrippingData;
-import org.objectweb.asm.*;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
+import org.spongepowered.asm.mixin.transformer.ext.IExtensionRegistry;
 
 import com.google.common.collect.Sets;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
+import net.fabricmc.loader.impl.transformer.EnvironmentStrippingData;
 
 public class Soul implements IMixinConfigPlugin {
 	private static final String UNSPOKEN = "fmt/cerulean/mixin/$";
@@ -68,12 +76,28 @@ public class Soul implements IMixinConfigPlugin {
 			"Only now do I understand isolation",
 			"In time it will all make sense",
 			"In time it will all fall apart"
+		),
+		List.of(
+			"Excluded from their paradise",
+			"Granted a heaven your own?",
+			"As pits in earth are eager to fill",
+			"Seldom beat hearts alone"
 		)
 	);
-	private Random random = new Random();
+	private static final boolean AMBIENT = true;
+	private static Random random = new Random();
 
 	@Override
 	public void onLoad(String mixinPackage) {
+		if (AMBIENT) {
+			try {
+				Deceive.them().all(new Will());
+			} catch (ReflectiveOperationException e) {
+				System.err.println("Falling with no jolt awake");
+				e.printStackTrace();
+			}
+			return;
+		}
 		String holy = "fmt/cerulean/compat";
 		String unholy = "fmt/cerulean/mixin";
 		Set<String> targets = Sets.newHashSet();
@@ -155,6 +179,9 @@ public class Soul implements IMixinConfigPlugin {
 
 	@Override
 	public List<String> getMixins() {
+		if (AMBIENT) {
+			return null;
+		}
 		return List.of(UNSPOKEN.split("/mixin/")[1]);
 	}
 
@@ -191,6 +218,9 @@ public class Soul implements IMixinConfigPlugin {
 
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+		if (AMBIENT) {
+			return;
+		}
 		String[] parts = targetClassName.split("\\.");
 		String pkg = targetClassName.substring(0, targetClassName.length() - parts[parts.length - 1].length());
 		Random desk = new Random(pkg.hashCode());
@@ -201,6 +231,15 @@ public class Soul implements IMixinConfigPlugin {
 
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+	}
+
+	public static void melancholyIsSweeterWhenYouAreNear(String name, ClassNode clazz) {
+		String[] parts = name.split("\\.");
+		String pkg = name.substring(0, name.length() - parts[parts.length - 1].length());
+		Random desk = new Random(pkg.hashCode());
+		List<String> poem = SCRIPTURE.get(desk.nextInt(SCRIPTURE.size()));
+		clazz.sourceFile = poem.get(random.nextInt(poem.size()));
+		clazz.sourceDebug = poem.get(random.nextInt(poem.size()));
 	}
 
 	private static class SyntheticStreamHandler extends URLStreamHandler {
@@ -240,6 +279,105 @@ public class Soul implements IMixinConfigPlugin {
 			public Permission getPermission() {
 				return null;
 			}
+		}
+	}
+
+	public static class Will implements Willing {
+
+		@Override
+		public byte[] transform(String name, String transformedName, byte[] bytes) {
+			if (transformedName.startsWith("org.objectweb.asm") || bytes == null) {
+				return bytes;
+			}
+			ClassNode clazz = new ClassNode();
+			ClassReader reader = new ClassReader(bytes);
+			reader.accept(clazz, 0);
+			melancholyIsSweeterWhenYouAreNear(transformedName, clazz);
+			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+			clazz.accept(writer);
+			return writer.toByteArray();
+		}
+	}
+
+	public interface Willing {
+
+		byte[] transform(String name, String transformedName, byte[] bytes);
+	}
+
+	private record Deceive(Object delegate, Field mixinTransformerField) {
+
+		private static Deceive them() throws ReflectiveOperationException {
+			Class<?> knotClassLoader = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoader");
+			Class<?> knotClassDelegate = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassDelegate");
+
+			Field delegateField = knotClassLoader.getDeclaredField("delegate");
+			delegateField.setAccessible(true);
+
+			Field mixinTransformerField = knotClassDelegate.getDeclaredField("mixinTransformer");
+			mixinTransformerField.setAccessible(true);
+
+			Object delegate = delegateField.get(Deceive.class.getClassLoader());
+
+			return new Deceive(delegate, mixinTransformerField);
+		}
+
+		private void all(Willing transformer) throws IllegalAccessException {
+			IMixinTransformer mixinTransformer = (IMixinTransformer) this.mixinTransformerField.get(this.delegate);
+			if (mixinTransformer == null) {
+				throw new IllegalStateException("mixin transformer not yet initialized!");
+			}
+
+			this.mixinTransformerField.set(this.delegate, new Misrepresentation(mixinTransformer, transformer));
+		}
+	}
+
+	private record Misrepresentation(IMixinTransformer mimic, Willing willing) implements IMixinTransformer {
+
+		@Override
+		public void audit(MixinEnvironment environment) {
+			this.mimic.audit(environment);
+		}
+
+		@Override
+		public List<String> reload(String mixinClass, ClassNode classNode) {
+			return this.mimic.reload(mixinClass, classNode);
+		}
+
+		@Override
+		public boolean computeFramesForClass(MixinEnvironment environment, String name, ClassNode classNode) {
+			return this.mimic.computeFramesForClass(environment, name, classNode);
+		}
+
+		@Override
+		public byte[] transformClassBytes(String name, String transformedName, byte[] basicClass) {
+			byte[] bytes = this.mimic.transformClassBytes(name, transformedName, basicClass);
+			bytes = this.willing.transform(name, transformedName, bytes);
+			return bytes;
+		}
+
+		@Override
+		public byte[] transformClass(MixinEnvironment environment, String name, byte[] classBytes) {
+			return this.mimic.transformClass(environment, name, classBytes);
+		}
+
+		@Override
+		public boolean transformClass(MixinEnvironment environment, String name, ClassNode classNode) {
+			return this.mimic.transformClass(environment, name, classNode);
+		}
+
+		@Override
+		public byte[] generateClass(MixinEnvironment environment, String name) {
+			return this.mimic.generateClass(environment, name);
+		}
+
+		@Override
+		public boolean generateClass(MixinEnvironment environment, String name, ClassNode classNode) {
+			return this.mimic.generateClass(environment, name, classNode);
+		}
+
+		@Override
+		public IExtensionRegistry getExtensions() {
+			return this.mimic.getExtensions();
 		}
 	}
 }
