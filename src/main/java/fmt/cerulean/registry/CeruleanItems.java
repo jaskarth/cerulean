@@ -99,6 +99,7 @@ public class CeruleanItems {
 	public static final Item GLITTER = register("glitter", new GlitterItem(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.2f).snack().build())
 	));
+	public static final Item CARDS = register("cards", new CardsItem(new Item.Settings().maxCount(1)));
 	public static final Item GLASS_LENS = register("glass_lens", new Item(new Item.Settings()));
 	public static final Item REFLECTIVE_LENS = register("reflective_lens", new ReflectiveLensItem(new Item.Settings()));
 	public static final Item CAMERA = register("camera", new CameraItem(new Item.Settings()));

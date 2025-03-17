@@ -418,6 +418,58 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.FILM, 2)
 		));
 
+		addRecipe("cards", new InspirationBrushRecipe(
+				CanvasRequirements.of(
+						Set.of(Color.LILAC), Set.of(Brightness.BRILLIANT),
+						Set.of(Color.CERULEAN), Set.of(Brightness.BRILLIANT)
+				), 42, List.of(
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(Items.PAPER),
+				Ingredient.ofItems(CeruleanItems.GLITTERCRUMB),
+				Ingredient.ofItems(CeruleanItems.GLITTER)
+		), new ItemStack(CeruleanItems.CARDS, 1)
+		));
+
 		addRecipe("photonegative_coloring", new TriviaStainingRecipe(
 				CanvasRequirements.of(Blocks.AIR, ALL_COLORS, ALL_BRIGHTNESSES),
 				CeruleanItems.PHOTONEGATIVE, CeruleanItems.PHOTONEGATIVE, false

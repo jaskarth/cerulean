@@ -120,7 +120,6 @@
   "item.cerulean.chimeric_valve": "Chimeric Valve",
   "item.cerulean.projector": "Projector",
   "item.cerulean.pipe_detector": "Pipe Detector",
-  "item.cerulean.stamp": "Stamp",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -166,6 +165,7 @@
   "item.cerulean.glitter": "Glitter",
   "item.cerulean.glittercrumb": "Glittercrumb",
   "item.cerulean.stamp": "Stamp",
+  "item.cerulean.cards": "Cards",
   "item.cerulean.sparkling_water": "Sparkling Water",
   "item.cerulean.oxidation_potion": "Oxidation Potion",
   "item.cerulean.splash_oxidation_potion": "Splash Oxidation Potion",
