@@ -18,6 +18,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Camera.Projection;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -29,6 +31,16 @@ public class EmergencyOverlay {
 	public static final List<HexState> HEX_STATES = Lists.newArrayList();
 	private static final OctavePerlinNoiseSampler NOISE = OctavePerlinNoiseSampler.create(new CheckedRandom(System.currentTimeMillis()), -3, 1.0);
 	private static boolean anyActiveLast = false;
+
+	public static boolean shouldCensor(Entity entity) {
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (entity instanceof LivingEntity living && living.getEquippedStack(EquipmentSlot.HEAD).getItem() == CeruleanItems.REFLECTIVE_LENS) {
+			if (!(entity instanceof ClientPlayerEntity) || !client.options.getPerspective().isFirstPerson()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static void render(DrawContext context) {
 		MinecraftClient client = MinecraftClient.getInstance();
@@ -42,11 +54,11 @@ public class EmergencyOverlay {
 					censorships.add(Censorship.of(entity, emergency / 30f));
 				}
 			}
-			/*
-			if (!(entity instanceof ClientPlayerEntity) && !entity.isInvisibleTo(client.player) && entity.shouldRender(camera.getPos().getX(), camera.getPos().getY(), camera.getPos().getZ())) {
-				censorships.add(Censorship.of(entity, 1));
+			if (!entity.isInvisibleTo(client.player) && entity.shouldRender(camera.getPos().getX(), camera.getPos().getY(), camera.getPos().getZ())) {
+				if (shouldCensor(entity)) {
+					censorships.add(Censorship.of(entity, 1));
+				}
 			}
-			*/
 		}
 
 		censorships.removeIf(c -> c.shape == null);
@@ -78,8 +90,8 @@ public class EmergencyOverlay {
 				HexState state = HEX_STATES.get(i);
 				boolean active = false;
 				for (Censorship censorship : censorships) {
-					if (censorship.shape.containsNearby(rx + WIDTH, ry + HEIGHT)) {
-						if (NOISE.sample(rx / 7.0 - 4194, time / 50.0, ry / 7.0 - 49148) * 2 > censorship.heat) {
+					if (censorship.shape.containsNearby(rx + WIDTH / 2, ry + HEIGHT / 2)) {
+						if (censorship.heat <= 0.99 && NOISE.sample(rx / 7.0 - 4194, time / 50.0, ry / 7.0 - 49148) * 2 > censorship.heat) {
 							continue;
 						}
 						active = true;
@@ -234,7 +246,6 @@ public class EmergencyOverlay {
 	private static class ConvexShape {
 		private List<Vec2i> shape;
 		private int minX, minY, maxX, maxY;
-		private int nudgeX, nudgeY;
 
 		public ConvexShape(List<Vec2i> shape) {
 			this.shape = shape;
@@ -249,27 +260,47 @@ public class EmergencyOverlay {
 				this.maxX = Math.max(this.maxX, point.x());
 				this.maxY = Math.max(this.maxY, point.z());
 			}
-			int discretionX = maxX - minX;
-			int discretionY = maxY - minY;
-			nudgeX = 30;
-			nudgeY = 30;
-			while (discretionX > 0 && nudgeX > discretionX) {
-				nudgeX /= 2;
+		}
+
+		public int distance(int x, int y) {
+			if (contains(x, y)) {
+				return -1;
 			}
-			while (discretionY > 0 && nudgeY > discretionY) {
-				nudgeY /= 2;
+			Vec2i test = new Vec2i(x, y);
+			long bestDistance = Long.MAX_VALUE;
+			Vec2i prev = shape.get(shape.size() - 1);
+			for (int i = 0; i < shape.size(); i++) {
+				Vec2i v = shape.get(i);
+				Vec2i closest = closestOnSegment(prev, v, test);
+				int dist = test.distSqr(closest);
+				// 44k squared isn't that infeasible
+				if (dist >= Math.abs(test.x() - closest.x()) && dist >= Math.abs(test.y() - closest.y())) {
+					bestDistance = Math.min(bestDistance, test.distSqrJ(closest));
+				}
+				prev = v;
 			}
+			return (int) Math.sqrt(bestDistance);
+		}
+
+		public Vec2i closestOnSegment(Vec2i a, Vec2i b, Vec2i test) {
+			Vec2i a2t = new Vec2i(test.x() - a.x(), test.y() - a.y());
+			Vec2i a2b = new Vec2i(b.x() - a.x(), b.y() - a.y());
+			int magSqr = a2b.magSqr();
+			if (magSqr == 0) {
+				return a;
+			}
+			float dot = a2t.x() * a2b.x() + a2t.y() * a2b.y();
+			float modifier = dot / magSqr;
+			if (modifier <= 0) {
+				return a;
+			} else if (modifier >= 1) {
+				return b;
+			}
+			return new Vec2i(a.x() + (int) (a2b.x() * modifier), a.y() + (int) (a2b.y() * modifier));
 		}
 
 		public boolean containsNearby(int x, int y) {
-			for (int xo = 0; xo < 60; xo += nudgeX) {
-				for (int yo = 0; yo < 60; yo += nudgeY) {
-					if (contains(x - 30 + xo, y - 30 + yo)) {
-						return true;
-					}
-				}
-			}
-			return false;
+			return distance(x, y) < 24;
 		}
 
 		public boolean contains(int x, int y) {

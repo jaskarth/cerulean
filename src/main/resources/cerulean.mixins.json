@@ -19,8 +19,7 @@
     "MixinRedstoneView",
     "MixinServerPlayerEntity",
     "MixinServerWorld",
-    "MixinWorld",
-    "client.MixinGameRenderer"
+    "MixinWorld"
   ],
   "client": [
     "client.DrawContextAccessor",
@@ -32,6 +31,8 @@
     "client.MixinClientPlayerEntity",
     "client.MixinClientPlayerNetworkManager",
     "client.MixinClientPlayNetworkHandler",
+    "client.MixinEntityRenderer",
+    "client.MixinGameRenderer",
     "client.MixinHeldItemRenderer",
     "client.MixinInGameHud",
     "client.MixinItemFrameEntityRenderer",
