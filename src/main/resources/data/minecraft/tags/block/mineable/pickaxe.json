@@ -11,6 +11,11 @@
     "cerulean:waxed_weathered_pipe",
     "cerulean:waxed_oxidized_pipe",
     "cerulean:fuchsia_pipe",
+    "cerulean:lustrous_pipe",
+    "cerulean:ductile_pipe",
+    "cerulean:chimeric_pipe",
+    "cerulean:iron_valve",
+    "cerulean:chimeric_valve",
     "cerulean:spacerock_wall",
     "cerulean:spacebricks",
     "cerulean:polished_spacerock",
@@ -29,7 +34,11 @@
     "cerulean:halite_outcropping_medium",
     "cerulean:halite_outcropping_small",
     "cerulean:lustrous_block",
-    "cerulean:ductile_block"
+    "cerulean:ductile_block",
+    "cerulean:item_detector",
+    "cerulean:pipe_detector",
+    "cerulean:destiny_detector",
+    "cerulean:light_core"
   ],
   "replace": false
 }

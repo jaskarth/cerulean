@@ -1,6 +1,10 @@
 {
   "values": [
-    "cerulean:sorted_bookshelf"
+    "cerulean:sorted_bookshelf",
+    "cerulean:self_collapsing_cube",
+    "cerulean:address_plaque",
+    "cerulean:flag",
+    "cerulean:oak_gapdoor"
   ],
   "replace": false
 }

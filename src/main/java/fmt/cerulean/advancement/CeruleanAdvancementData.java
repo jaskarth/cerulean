@@ -24,7 +24,7 @@ public class CeruleanAdvancementData {
 		register("the_metempsychosis", new Data(new Vec2d(4.5, -3.7), "advancements.cerulean.the_metempsychosis.desc_alt"));
 		register("the_misinterpretation", new Data(new Vec2d(-4.3, -4.4), "advancements.cerulean.the_misinterpretation.desc_alt"));
 		register("the_transience", new Data(new Vec2d(-0.5, -3.3), "advancements.cerulean.the_transience.desc_alt"));
-		register("the_disposition", new Data(new Vec2d(-4.4, -0.3), "advancements.cerulean.the_disposition.desc_alt"));
+		register("the_disposition", new Data(new Vec2d(-5.1, 0.2), "advancements.cerulean.the_disposition.desc_alt"));
 	}
 
 	private static void register(String name, Data data) {
