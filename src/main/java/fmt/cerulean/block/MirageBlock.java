@@ -17,6 +17,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -74,11 +75,16 @@ public class MirageBlock extends BlockWithEntity {
 
 	@Override
 	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		if (world instanceof ClientWorld) {
+		if (world instanceof World w && w.isClient()) {
 			if (MinecraftClient.getInstance().player.isHolding(CeruleanBlocks.MIRAGE.asItem())) {
 				return VoxelShapes.fullCube();
 			}
 		}
 		return VoxelShapes.empty();
+	}
+
+	@Override
+	protected boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+		return stateFrom.isOf(this) ? true : super.isSideInvisible(state, stateFrom, direction);
 	}
 }

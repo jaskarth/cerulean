@@ -97,7 +97,10 @@ public class DreamscapeTeleporter {
 			}
 
 			PaintingDuck quack = (PaintingDuck) portalPainting;
-			target = quack.getManifestationShape().offset(originPos.getX(), originPos.getY(), originPos.getZ());
+			Vec3i dims = quack.getManifestationShape().getDimensions();
+			if (dims.getX() > 5 && dims.getY() > 5 && dims.getZ() > 5) {
+				target = quack.getManifestationShape().offset(originPos.getX(), originPos.getY(), originPos.getZ());
+			}
 			BlockPos teleportPos = quack.getTeleportTarget();
 
 			int startX = target.getMinX();

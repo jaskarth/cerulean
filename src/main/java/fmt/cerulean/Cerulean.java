@@ -2,6 +2,7 @@ package fmt.cerulean;
 
 import java.util.List;
 
+import fmt.cerulean.advancement.CeruleanAdvancementData;
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.net.CeruleanNetworking;
 import fmt.cerulean.net.CeruleanServerNetworking;
@@ -35,6 +36,7 @@ public class Cerulean implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		CeruleanCriteria.init();
+		CeruleanAdvancementData.init();
 
 		CeruleanFluids.init();
 		CeruleanBlocks.init();

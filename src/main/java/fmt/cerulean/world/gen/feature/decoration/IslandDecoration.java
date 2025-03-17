@@ -61,7 +61,8 @@ public class IslandDecoration extends Decoration {
 					case 3, 4, 5 -> FlowResource.Brightness.INNOCUOUS;
 					default -> FlowResource.Brightness.WANING;
 				};
-				FlowState flow = new FlowState(FlowResources.star(FlowResource.Color.values()[random.nextInt(FlowResource.Color.amount)], brightness), random.nextInt(2_000) + 9_000);
+				FlowState flow = new FlowState(FlowResources.star(FlowResource.Color.values()[random.nextInt(FlowResource.Color.amount)], brightness),
+						random.nextInt(4_000) + 4_000);
 				wbe.setFlow(flow);
 			}
 		}

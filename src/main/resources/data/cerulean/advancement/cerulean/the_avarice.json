@@ -1,0 +1,33 @@
+{
+  "parent": "cerulean:cerulean/root",
+  "criteria": {
+    "lustrous_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cerulean:lustrous_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.cerulean.the_avarice.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "cerulean:lustrous_ingot"
+    },
+    "title": {
+      "translate": "advancements.cerulean.the_avarice"
+    }
+  },
+  "requirements": [
+    [
+      "lustrous_ingot"
+    ]
+  ]
+}

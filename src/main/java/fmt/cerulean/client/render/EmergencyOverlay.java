@@ -22,9 +22,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
+import net.minecraft.util.math.random.CheckedRandom;
 
 public class EmergencyOverlay {
 	public static final List<HexState> HEX_STATES = Lists.newArrayList();
+	private static final OctavePerlinNoiseSampler NOISE = OctavePerlinNoiseSampler.create(new CheckedRandom(System.currentTimeMillis()), -3, 1.0);
+	private static boolean anyActiveLast = false;
 
 	public static void render(DrawContext context) {
 		MinecraftClient client = MinecraftClient.getInstance();
@@ -35,7 +39,7 @@ public class EmergencyOverlay {
 			if (entity instanceof ClientPlayerEntity) {
 				int emergency = ClientState.emergencyRender;
 				if (emergency >= 0 && !client.options.getPerspective().isFirstPerson()) {
-					censorships.add(Censorship.of(entity, 0.2f + emergency / 20f));
+					censorships.add(Censorship.of(entity, emergency / 30f));
 				}
 			}
 			/*
@@ -50,6 +54,11 @@ public class EmergencyOverlay {
 		if (client.player.getStackInHand(Hand.MAIN_HAND).getItem() == CeruleanItems.BRUSH) {
 			return;
 		}
+
+		if (censorships.isEmpty() && !anyActiveLast) {
+			return;
+		}
+
 		int width = client.getWindow().getFramebufferWidth();
 		int height = client.getWindow().getFramebufferHeight();
 		int WIDTH = 19;
@@ -58,6 +67,7 @@ public class EmergencyOverlay {
 		boolean off = false;
 		int i = 0;
 		long time = System.currentTimeMillis();
+		anyActiveLast = false;
 		for (int ry = -HEIGHT / 2; ry < height; ry += HEIGHT / 2) {
 			int offset = off ? 26 / -2 : 0;
 			off = !off;
@@ -69,7 +79,7 @@ public class EmergencyOverlay {
 				boolean active = false;
 				for (Censorship censorship : censorships) {
 					if (censorship.shape.containsNearby(rx + WIDTH, ry + HEIGHT)) {
-						if (censorship.heat < 1 && random.nextFloat() > censorship.heat) {
+						if (NOISE.sample(rx / 7.0 - 4194, time / 50.0, ry / 7.0 - 49148) * 2 > censorship.heat) {
 							continue;
 						}
 						active = true;
@@ -83,7 +93,8 @@ public class EmergencyOverlay {
 				}
 				int variant = state.getVariant(random, time);
 				if (variant != -1) {
-					context.drawTexture(Cerulean.id("textures/gui/hexa" + (1 + state.getVariant(random, time)) + ".png"), rx, ry, 0, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
+					anyActiveLast = true;
+					context.drawTexture(Cerulean.id("textures/gui/hexa" + (1 + variant) + ".png"), rx, ry, 0, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
 				}
 				i++;
 			}

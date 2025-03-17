@@ -1,5 +1,6 @@
 package fmt.cerulean.client.render.block;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import fmt.cerulean.block.entity.MirageBlockEntity;
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.render.CeruleanRenderTypes;
@@ -11,7 +12,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockModelRenderer;
@@ -20,6 +20,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -36,9 +37,13 @@ public class MirageRenderer implements BlockEntityRenderer<MirageBlockEntity> {
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;
 		boolean isHolding = player.isHolding(CeruleanBlocks.MIRAGE.asItem());
 		boolean eyeOk = false;
+		double dist = -1;
 		if (entity.aware) {
 			boolean isHoldingEye = player.isHolding(CeruleanItems.EYE_OF_VENDOR);
-			if (isHoldingEye && Vec3d.ofCenter(entity.getPos()).isInRange(MinecraftClient.getInstance().gameRenderer.getCamera().getPos(), 4)) {
+			Vec3d center = Vec3d.ofCenter(entity.getPos());
+			Vec3d cpos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+			dist = center.squaredDistanceTo(cpos);
+			if (isHoldingEye && dist < 6 * 6) {
 				eyeOk = true;
 			}
 		}
@@ -54,13 +59,29 @@ public class MirageRenderer implements BlockEntityRenderer<MirageBlockEntity> {
 			state = Blocks.BEDROCK.getDefaultState();
 		}
 
-		RenderLayer renderLayer = RenderLayers.getMovingBlockLayer(state);
+		RenderLayer renderLayer = RenderLayer.getTranslucent();
+
+		if (eyeOk) {
+			double texAlpha = MathHelper.clampedMap(dist, 3 * 3, 6 * 6, 1, 0);
+
+			if (dist < 0) {
+				texAlpha = 1;
+			}
+
+			RenderSystem.setShaderColor(1, 1, 1, (float) texAlpha);
+		}
 
 		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(renderLayer);
 		World world = entity.getWorld();
 		this.manager
 				.getModelRenderer()
-				.render(world, this.manager.getModel(state), state, pos, matrices, vertexConsumer, false, Random.create(), state.getRenderingSeed(pos), overlay);
+				.render(world, this.manager.getModel(state), state, pos, matrices, vertexConsumer, true, Random.create(), state.getRenderingSeed(pos), overlay);
+
+		if (eyeOk && vertexConsumers instanceof VertexConsumerProvider.Immediate imm) {
+			imm.draw();
+
+			RenderSystem.setShaderColor(1, 1, 1, 1);
+		}
 
 		if (isHolding) {
 			int alpha = 80 + (int) (40f * Math.sin((System.currentTimeMillis() & 0xFFFF) * Math.PI / 511f));

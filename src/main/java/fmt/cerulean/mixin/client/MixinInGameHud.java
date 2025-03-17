@@ -66,7 +66,7 @@ public abstract class MixinInGameHud implements Instructor {
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	public void cerulean$cameraOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-//		EmergencyOverlay.render(context);
+		EmergencyOverlay.render(context);
 		if (ClientState.forget) {
 			int color = 0xFF000000;
 			context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color);
@@ -174,7 +174,7 @@ public abstract class MixinInGameHud implements Instructor {
 //							0, 0, 1, 0, 1, 1, 1, 1, 20.0f / 255.0f);
 
 			TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-			int color = 0xFFDD0000;
+			int color = 0xFFFF0000;
 			context.drawText(textRenderer, EmergencyStack.T_1, 10, 10, color, false);
 
 			if (e >= 2) {

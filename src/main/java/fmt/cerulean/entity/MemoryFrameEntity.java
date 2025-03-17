@@ -8,7 +8,6 @@ import fmt.cerulean.util.Counterful;
 import fmt.cerulean.world.data.CeruleanWorldState;
 import fmt.cerulean.world.data.DimensionState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
@@ -176,10 +175,15 @@ public class MemoryFrameEntity extends AbstractDecorationEntity implements Dream
 		return length % 2 == 0 ? 0.5 : 0.0;
 	}
 
+	// all's right in the world.
+	private static class LoadGuard {
+		private PlayerEntity player = MinecraftClient.getInstance().player;
+	}
+
 	@Override
 	public void tick() {
 		if (this.getWorld().isClient) {
-			ClientPlayerEntity player = MinecraftClient.getInstance().player;
+			PlayerEntity player = new LoadGuard().player;
 			if (player != null && clientState == -1 && player.getInventory().contains(i -> i.isOf(CeruleanItems.EYE_OF_VENDOR))) {
 				clientState = 0;
 			}
