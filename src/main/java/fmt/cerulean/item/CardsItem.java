@@ -15,12 +15,18 @@ public class CardsItem extends Item {
 		super(settings);
 	}
 
+	private static class Solitaire {
+		public static void exec() {
+			MinecraftClient client = MinecraftClient.getInstance();
+			client.setScreen(new SolitaireScreen());
+		}
+	}
+
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (world.isClient) {
-			MinecraftClient client = MinecraftClient.getInstance();
-			client.setScreen(new SolitaireScreen());
+			Solitaire.exec();
 		}
 		return TypedActionResult.success(stack);
 	}
