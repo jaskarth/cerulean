@@ -22,8 +22,11 @@ public class PhotonegativeItem extends GlitterItem {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		PhotoComponent photo = stack.get(CeruleanItemComponents.PHOTO);
 		if (photo != null) {
-			tooltip.add(Text.literal(Formatting.DARK_GRAY + "Photo #" + photo.id()));
-
+			if (photo.id() == -1) {
+				tooltip.add(Text.literal(Formatting.DARK_GRAY + "Photo #" + Formatting.OBFUSCATED + photo.id()));
+			} else {
+				tooltip.add(Text.literal(Formatting.DARK_GRAY + "Photo #" + photo.id()));
+			}
 		}
 
 		super.appendTooltip(stack, context, tooltip, type);

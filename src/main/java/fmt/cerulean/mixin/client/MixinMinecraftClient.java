@@ -115,9 +115,8 @@ public abstract class MixinMinecraftClient {
 	@Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;wasPressed()Z", ordinal = 10,
 			shift = At.Shift.BEFORE))
 	public void cerulean$leftClickActionWhileHoldingDown(CallbackInfo ci) {
-		while (this.options.attackKey.wasPressed()) {
-			if (this.player.isUsingItem() && this.player.getActiveItem().isOf(CeruleanItems.CAMERA) && !this.player.getItemCooldownManager().isCoolingDown(CeruleanItems.CAMERA)) {
-
+		if (this.player.isUsingItem() && this.player.getActiveItem().isOf(CeruleanItems.CAMERA) && !this.player.getItemCooldownManager().isCoolingDown(CeruleanItems.CAMERA)) {
+			while (this.options.attackKey.wasPressed()) {
 				int idx = this.player.getInventory().indexOf(new ItemStack(CeruleanItems.FILM));
 				if (idx != -1) {
 					this.player.getInventory().getStack(idx).decrement(1);

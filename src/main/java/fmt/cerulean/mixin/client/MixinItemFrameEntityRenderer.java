@@ -53,12 +53,17 @@ public abstract class MixinItemFrameEntityRenderer {
 
 				matrixStack.translate(0.0F, 0.0F, -1.0F);
 
-				NativeImageBackedTexture img = ClientState.PHOTOS.getImage(photo.id());
-				Identifier id = ClientState.PHOTOS.getId(photo.id());
+				Identifier id;
+				if (photo.id() == -1) {
+					id = ClientState.PHOTOS.getSpecial(itemStack.get(CeruleanItemComponents.PHOTO_SPECIAL));
+					color = null;
+				} else {
+					id = ClientState.PHOTOS.getId(photo.id());
 
-				if (img == null || id == null) {
-					id = StaticTexture.ID;
-					ClientState.PHOTOS.ask(photo.id());
+					if (id == null) {
+						id = StaticTexture.ID;
+						ClientState.PHOTOS.ask(photo.id());
+					}
 				}
 
 				Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
@@ -66,7 +71,7 @@ public abstract class MixinItemFrameEntityRenderer {
 
 				int light = this.getLight(itemFrameEntity, LightmapTextureManager.MAX_SKY_LIGHT_COORDINATE | 210, i);
 
-				int c = color.toABGR();
+				int c = color == null ? 0xFFFFFFFF : color.toABGR();
 				vertexConsumer.vertex(matrix4f, 0.0F, 128.0F, -0.01F).color(c).texture(0.0F, 1.0F).light(light);
 				vertexConsumer.vertex(matrix4f, 128.0F, 128.0F, -0.01F).color(c).texture(1.0F, 1.0F).light(light);
 				vertexConsumer.vertex(matrix4f, 128.0F, 0.0F, -0.01F).color(c).texture(1.0F, 0.0F).light(light);

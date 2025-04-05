@@ -101,17 +101,27 @@ public abstract class MixinHeldItemRenderer {
 
 			PhotoComponent photo = item.get(CeruleanItemComponents.PHOTO);
 			ColorTriplex color = item.get(CeruleanItemComponents.COLOR_TRIPLEX);
-			NativeImageBackedTexture img = ClientState.PHOTOS.getImage(photo.id());
-			Identifier id = ClientState.PHOTOS.getId(photo.id());
 
-			if (img == null || id == null) {
+			Identifier id;
+			if (photo == null) {
 				id = StaticTexture.ID;
-				ClientState.PHOTOS.ask(photo.id());
+			} else {
+				if (photo.id() == -1) {
+					id = ClientState.PHOTOS.getSpecial(item.get(CeruleanItemComponents.PHOTO_SPECIAL));
+					color = null;
+				} else {
+					id = ClientState.PHOTOS.getId(photo.id());
+					if (id == null) {
+						ClientState.PHOTOS.ask(photo.id());
+						id = StaticTexture.ID;
+					}
+				}
 			}
+
+			int c = color == null ? 0xFFFFFFFF : color.toABGR();
 
 			matrix4f = matrices.peek().getPositionMatrix();
 			vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getText(id));
-			int c = color.toABGR();
 			vertexConsumer.vertex(matrix4f, 0.0F, 128.0F, -0.01F).color(c).texture(0.0F, 1.0F).light(light);
 			vertexConsumer.vertex(matrix4f, 128.0F, 128.0F, -0.01F).color(c).texture(1.0F, 1.0F).light(light);
 			vertexConsumer.vertex(matrix4f, 128.0F, 0.0F, -0.01F).color(c).texture(1.0F, 0.0F).light(light);

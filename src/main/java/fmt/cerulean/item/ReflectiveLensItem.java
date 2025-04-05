@@ -29,7 +29,7 @@ public class ReflectiveLensItem extends Item {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		ClientWorld world = MinecraftClient.getInstance().world;
 		if (world != null) {
-			tooltip.add(Text.literal(Formatting.DARK_GRAY + WISDOM.get((int) (world.getTime() % WISDOM.size()))));
+			tooltip.add(Text.literal(Formatting.DARK_GRAY + WISDOM.get(Math.floorMod(world.getTime(), WISDOM.size()))));
 		}
 
 		super.appendTooltip(stack, context, tooltip, type);

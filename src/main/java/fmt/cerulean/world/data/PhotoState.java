@@ -82,6 +82,15 @@ public class PhotoState extends PersistentState {
 		return lastAllocatedId;
 	}
 
+	public void clearFor(ServerPlayerEntity player) {
+		PhotoAllocation removed = allocation.remove(player.getUuid());
+		markDirty();
+
+		for (Integer i : removed.list) {
+			store.remove(i);
+		}
+	}
+
 	public static PhotoState readNbt(NbtCompound nbt, ServerWorld world) {
 		PhotoState state = new PhotoState(world);
 

@@ -7,6 +7,7 @@ import fmt.cerulean.fluid.CanisterFluidType;
 import fmt.cerulean.item.EyeOfVendorItem;
 import fmt.cerulean.item.component.ColorTriplex;
 import fmt.cerulean.item.component.PhotoComponent;
+import fmt.cerulean.item.component.PhotoSpecial;
 import fmt.cerulean.item.component.ReturnToSenderComponent;
 import net.minecraft.component.ComponentType;
 import net.minecraft.network.codec.PacketCodecs;
@@ -47,6 +48,11 @@ public class CeruleanItemComponents {
 	public static final ComponentType<PhotoComponent> PHOTO = register("photo", ComponentType.<PhotoComponent>builder()
 			.codec(PhotoComponent.CODEC)
 			.packetCodec(PhotoComponent.PACKET_CODEC)
+			.build());
+
+	public static final ComponentType<PhotoSpecial> PHOTO_SPECIAL = register("photo_special", ComponentType.<PhotoSpecial>builder()
+			.codec(PhotoSpecial.CODEC)
+			.packetCodec(PhotoSpecial.PACKET_CODEC)
 			.build());
 
 	public static void init() {

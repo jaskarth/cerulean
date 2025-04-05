@@ -183,7 +183,7 @@ public final class CeruleanBlocks {
 			new FauxBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().suffocates(Blocks::never)));
 
 	public static final Block MIRAGE = register("mirage",
-			new MirageBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().replaceable()));
+			new MirageBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).mapColor(MapColor.CLEAR).noBlockBreakParticles().replaceable()));
 
 	public static final Block INKY_VOID = register("inky_void",
 			new InkyVoidBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK)));
@@ -299,7 +299,7 @@ public final class CeruleanBlocks {
 
 	public static final Block HALITE_OUTCROPPING = register("halite_outcropping",
 			new HaliteOutcroppingBlock(
-					7.0F,
+					14.0F,
 					3.0F,
 					AbstractBlock.Settings.create()
 							.mapColor(MapColor.GREEN)
@@ -310,13 +310,13 @@ public final class CeruleanBlocks {
 							.pistonBehavior(PistonBehavior.DESTROY)));
 
 	public static final Block HALITE_OUTCROPPING_LARGE = register("halite_outcropping_large",
-			new HaliteOutcroppingBlock(7.0F, 3.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
+			new HaliteOutcroppingBlock(12.0F, 3.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
 
 	public static final Block HALITE_OUTCROPPING_MEDIUM = register("halite_outcropping_medium",
-			new HaliteOutcroppingBlock(4.0F, 3.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
+			new HaliteOutcroppingBlock(9.0F, 3.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
 
 	public static final Block HALITE_OUTCROPPING_SMALL = register("halite_outcropping_small",
-			new HaliteOutcroppingBlock(3.0F, 4.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
+			new HaliteOutcroppingBlock(7.0F, 4.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
 
 	public static final Block ITEM_DETECTOR = register("item_detector",
 			new ItemDetectorBlock(AbstractBlock.Settings.copy(Blocks.OBSERVER)));

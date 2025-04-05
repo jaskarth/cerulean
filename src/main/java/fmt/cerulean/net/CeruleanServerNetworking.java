@@ -131,6 +131,19 @@ public class CeruleanServerNetworking {
 
 				PhotoState photos = PhotoState.get(player.getServerWorld());
 				player.getItemCooldownManager().set(CeruleanItems.CAMERA, 30);
+				if (Math.abs(-90 - pitch) <= 0.2) {
+					// TODO: surface check
+					ItemStack stack = new ItemStack(CeruleanItems.PHOTONEGATIVE);
+					stack.set(CeruleanItemComponents.PHOTO, PhotoComponent.create(-1));
+					stack.set(CeruleanItemComponents.COLOR_TRIPLEX, ColorTriplex.empty());
+
+					if (!player.giveItemStack(stack)) {
+						player.dropItem(stack, false);
+					}
+
+					return;
+				}
+
 				if (photos.canAllocFor(player)) {
 					int id = photos.allocNextId(player);
 
@@ -154,6 +167,7 @@ public class CeruleanServerNetworking {
 										if (player.getWorld().getBlockState(local).isOf(CeruleanBlocks.LUSTROUS_BLOCK)) {
 											pos.add(local);
 										}
+										// TODO
 										BlockEntity be = player.getWorld().getBlockEntity(local);
 										if (be instanceof MirageBlockEntity mbe) {
 											mbe.aware = true;

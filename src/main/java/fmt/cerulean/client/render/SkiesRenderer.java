@@ -1,7 +1,7 @@
 package fmt.cerulean.client.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.util.Counterful;
 import fmt.cerulean.world.data.DimensionState;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
@@ -17,12 +17,14 @@ import net.minecraft.util.math.RotationAxis;
 import org.joml.Matrix4f;
 
 public class SkiesRenderer implements DimensionRenderingRegistry.SkyRenderer {
-	private VertexBuffer vbo = null;
+	private VertexBuffer stars = null;
+	private VertexBuffer star = null;
 
 	@Override
 	public void render(WorldRenderContext context) {
-		if (vbo == null) {
-			vbo = RenderVFX.renderStars(Tessellator.getInstance());
+		if (stars == null) {
+			stars = RenderVFX.renderStars(Tessellator.getInstance(), RenderVFX.StarsMode.REGULAR);
+			star = RenderVFX.renderStars(Tessellator.getInstance(), RenderVFX.StarsMode.SPECIAL);
 		}
 
 		MatrixStack matrices = new MatrixStack();
@@ -51,10 +53,19 @@ public class SkiesRenderer implements DimensionRenderingRegistry.SkyRenderer {
 		RenderSystem.disableBlend();
 		RenderSystem.setShaderColor(amt, amt, amt, amt);
 		RenderSystem.disableDepthTest();
-		vbo.bind();
-		vbo.draw(matrices.peek().getPositionMatrix(), proj, GameRenderer.getPositionColorProgram());
+		stars.bind();
+		stars.draw(matrices.peek().getPositionMatrix(), proj, GameRenderer.getPositionColorProgram());
 		VertexBuffer.unbind();
 		matrices.pop();
+
+		if (MinecraftClient.getInstance().options.getPerspective().isFirstPerson()) {
+			if (MinecraftClient.getInstance().player.isUsingItem() && MinecraftClient.getInstance().player.getActiveItem().isOf(CeruleanItems.CAMERA)) {
+				star.bind();
+				star.draw(matrices.peek().getPositionMatrix(), proj, GameRenderer.getPositionColorProgram());
+				VertexBuffer.unbind();
+			}
+		}
+
 		RenderSystem.disableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.disableDepthTest();

@@ -40,4 +40,12 @@ public class ServerPhotoStore implements PhotoStore {
 			return false;
 		}
 	}
+
+	public void remove(int id) {
+		try {
+			Files.deleteIfExists(base.resolve("img_" + id + ".png"));
+		} catch (Exception e) {
+
+		}
+	}
 }

@@ -148,7 +148,9 @@ public class CeruleanClient implements ClientModInitializer {
 		});
 
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-			ClientState.PHOTOS.close();
+			client.execute(() -> {
+				ClientState.PHOTOS.close();
+			});
 		});
 	}
 }

@@ -3,6 +3,7 @@ package fmt.cerulean;
 import java.util.List;
 
 import fmt.cerulean.advancement.CeruleanAdvancementData;
+import fmt.cerulean.command.ClearPhotosCommand;
 import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.net.CeruleanNetworking;
 import fmt.cerulean.net.CeruleanServerNetworking;
@@ -15,6 +16,7 @@ import fmt.cerulean.world.gen.SkiesBiomeSource;
 import fmt.cerulean.world.gen.SkiesChunkGenerator;
 import fmt.cerulean.world.gen.feature.BiomeDecorator;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -56,7 +58,10 @@ public class Cerulean implements ModInitializer {
 		CeruleanServerNetworking.init();
 
 		BrushRecipes.init();
-		
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, access, env) -> {
+			ClearPhotosCommand.register(dispatcher);
+		});
 
 		Registry.register(Registries.BIOME_SOURCE, id("dreamscape"), DreamscapeBiomeSource.CODEC);
 		Registry.register(Registries.BIOME_SOURCE, id("skies"), SkiesBiomeSource.CODEC);
