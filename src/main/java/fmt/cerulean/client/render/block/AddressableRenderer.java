@@ -29,6 +29,9 @@ public class AddressableRenderer<T extends BlockEntity & Addressable> implements
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.crosshairTarget instanceof BlockHitResult bhr && bhr.getBlockPos().equals(entity.getPos())) {
 			Direction direction = entity.getCachedState().get(AddressPlaqueBlock.FACING);
+			if (entity.getAddress() == null || entity.getAddress().isBlank()) {
+				return;
+			}
 			Text text = Text.literal(entity.getAddress());
 			matrices.push();
 			matrices.translate(0.5, 1.2, 0.5);

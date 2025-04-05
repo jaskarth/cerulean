@@ -11,15 +11,17 @@ import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.world.data.MailWorldState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class FlagBlockEntity extends SyncedBlockEntity implements Addressable, Obedient {
-	public String address = "1 foo bar";
+	public String address = "null";
 
 	public FlagBlockEntity(BlockPos pos, BlockState state) {
 		super(CeruleanBlockEntities.FLAG, pos, state);
@@ -28,6 +30,12 @@ public class FlagBlockEntity extends SyncedBlockEntity implements Addressable, O
 	@Override
 	public String getAddress() {
 		return address;
+	}
+
+	@Override
+	public void setAddress(String address) {
+		this.address = address;
+		markDirty();
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, FlagBlockEntity fbe) {
@@ -52,6 +60,21 @@ public class FlagBlockEntity extends SyncedBlockEntity implements Addressable, O
 	protected void readNbt(NbtCompound nbt, WrapperLookup registryLookup) {
 		super.readNbt(nbt, registryLookup);
 		address = nbt.getString("address");
+	}
+
+	@Override
+	protected void readComponents(ComponentsAccess components) {
+		super.readComponents(components);
+		Text text = components.get(DataComponentTypes.CUSTOM_NAME);
+		if (text != null) {
+			this.address = text.getString();
+		} else {
+			if (this.world.isClient) {
+				this.address = "";
+			} else {
+				this.address = AddressPlaqueBlockEntity.randomAddress(this.world.random);
+			}
+		}
 	}
 
 	@Override

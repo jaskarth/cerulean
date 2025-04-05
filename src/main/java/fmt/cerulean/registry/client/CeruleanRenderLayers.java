@@ -41,7 +41,8 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.HALITE_OUTCROPPING,
 				CeruleanBlocks.HALITE_OUTCROPPING_LARGE,
 				CeruleanBlocks.HALITE_OUTCROPPING_MEDIUM,
-				CeruleanBlocks.HALITE_OUTCROPPING_SMALL
+				CeruleanBlocks.HALITE_OUTCROPPING_SMALL,
+				CeruleanBlocks.FLAG
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),

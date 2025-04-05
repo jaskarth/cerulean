@@ -1,14 +1,15 @@
 package fmt.cerulean.world.data;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class CeruleanWorldState extends PersistentState {
 	private final Map<UUID, State> states = new HashMap<>();
@@ -65,15 +66,41 @@ public class CeruleanWorldState extends PersistentState {
 	public static class State {
 		public boolean truthful = false;
 		public boolean worldworn = false;
+		public SolitaireState solitaire = new SolitaireState();
 
 		protected void writeNbt(NbtCompound nbt) {
 			nbt.putBoolean("Truth", truthful);
 			nbt.putBoolean("Worn", worldworn);
+			NbtCompound s = new NbtCompound();
+			solitaire.writeNbt(s);
+			nbt.put("Solitaire", s);
 		}
 
 		protected void readNbt(NbtCompound nbt) {
 			truthful = nbt.getBoolean("Truth");
 			worldworn = nbt.getBoolean("Worn");
+			solitaire.readNbt(nbt.getCompound("Solitaire"));
+		}
+	}
+
+	public static class SolitaireState {
+		public int wins = 0;
+
+		// Not serialized
+		public long lastDeal = 0;
+		public long seed = newSeed();
+		public boolean won = false;
+
+		protected void writeNbt(NbtCompound nbt) {
+			nbt.putInt("Wins", wins);
+		}
+
+		protected void readNbt(NbtCompound nbt) {
+			wins = nbt.getInt("Wins");
+		}
+
+		public static long newSeed() {
+			return new Random().nextLong();
 		}
 	}
 }

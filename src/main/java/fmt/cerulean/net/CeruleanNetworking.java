@@ -14,11 +14,14 @@ public class CeruleanNetworking {
 	public static final Identifier SUPPLY_MEMORY = Cerulean.id("supply_memory");
 	public static final Identifier REQUEST_MEMORY = Cerulean.id("request_memory");
 	public static final Identifier STARING = Cerulean.id("staring");
+	public static final Identifier WINS = Cerulean.id("wins");
+	public static final Identifier WIN = Cerulean.id("win");
 
 	public static void init() {
 		// s2c
 		PayloadTypeRegistry.playS2C().register(CeruleanStateSyncPacket.ID, CeruleanStateSyncPacket.CODEC);
 		PayloadTypeRegistry.playS2C().register(SupplyMemoryPacket.ID, SupplyMemoryPacket.CODEC);
+		PayloadTypeRegistry.playS2C().register(WinsPacket.ID, WinsPacket.CODEC);
 
 		// c2s
 		PayloadTypeRegistry.playC2S().register(CloseBehindPacket.ID, CloseBehindPacket.CODEC);
@@ -27,5 +30,6 @@ public class CeruleanNetworking {
 		PayloadTypeRegistry.playC2S().register(UploadMemoryPacket.ID, UploadMemoryPacket.CODEC);
 		PayloadTypeRegistry.playC2S().register(RequestMemoryPacket.ID, RequestMemoryPacket.CODEC);
 		PayloadTypeRegistry.playC2S().register(StaringPacket.ID, StaringPacket.CODEC);
+		PayloadTypeRegistry.playC2S().register(WinPacket.ID, WinPacket.CODEC);
 	}
 }

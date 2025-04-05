@@ -83,7 +83,9 @@ public class EmpathyBrushRecipe implements BrushRecipe {
 					stack.set(CeruleanItemComponents.RETURN_TO_SENDER, new ReturnToSenderComponent(Optional.of(GlobalPos.create(serverWorld.getRegistryKey(), inventory.pos))));
 				}
 			}
-			MailWorldState.get(serverWorld).send(address, stacks);
+			MailWorldState mail = MailWorldState.get(serverWorld);
+			mail.send(address, stacks);
+			mail.markDirty();
 			inventory.killItems(s -> true, Integer.MAX_VALUE);
 		}
 	}

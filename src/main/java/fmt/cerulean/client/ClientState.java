@@ -22,4 +22,7 @@ public class ClientState {
 	public static final List<PlayerEntity> EMERGENCIES = new ArrayList<>();
 
 	public static int emergencyRender = -2;
+
+	public static long seed = -1;
+	public static int wins = 0;
 }

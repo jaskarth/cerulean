@@ -9,8 +9,11 @@ import fmt.cerulean.net.packet.*;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.solitaire.Board;
+import fmt.cerulean.world.data.CeruleanWorldState;
 import fmt.cerulean.world.data.PhotoMeta;
 import fmt.cerulean.world.data.PhotoState;
+import fmt.cerulean.world.data.CeruleanWorldState.SolitaireState;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
@@ -258,6 +261,31 @@ public class CeruleanServerNetworking {
 				}
 			});
 		});
+
+		ServerPlayNetworking.registerGlobalReceiver(WinPacket.ID, (payload, ctx) -> {
+			ctx.server().execute(() -> {
+				ServerPlayerEntity player = ctx.player();
+				SolitaireState state = CeruleanWorldState.get(player.getServerWorld()).getFor(player).solitaire;
+				if (payload.seed() == -1) {
+					if (System.currentTimeMillis() - state.lastDeal > 8_000) {
+						state.seed = SolitaireState.newSeed();
+						state.won = false;
+					}
+				} else if (!state.won && payload.seed() == state.seed) {
+					boolean won = Board.validate(payload.seed(), payload.moves());
+					if (won) {
+						state.wins++;
+						state.won = true;
+					}
+				}
+				syncWins(player);
+			});
+		});
+	}
+
+	public static void syncWins(ServerPlayerEntity player) {
+		SolitaireState state = CeruleanWorldState.get(player.getServerWorld()).getFor(player).solitaire;
+		ServerPlayNetworking.send(player, new WinsPacket(state.wins, state.seed));
 	}
 
 	private static BlockState state(ServerWorld world, BlockPos pos) {

@@ -16,14 +16,19 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -32,12 +37,12 @@ import net.minecraft.world.World;
 
 public class FlagBlock extends BlockWithEntity implements Plasticloggable {
 	protected static final List<VoxelShape> SHAPES = List.of(
-		Block.createCuboidShape(0.0, 5.0, 0.0, 16.0, 11.0, 1.0),
-		Block.createCuboidShape(15.0, 5.0, 0.0, 16.0, 11.0, 16.0),
-		Block.createCuboidShape(0.0, 5.0, 15.0, 16.0, 11.0, 16.0),
-		Block.createCuboidShape(0.0, 5.0, 0.0, 1.0, 11.0, 16.0),
-		Block.createCuboidShape(0.0, 0.0, 5.0, 16.0, 1.0, 11.0),
-		Block.createCuboidShape(0.0, 15.0, 5.0, 16.0, 16.0, 11.0)
+		Block.createCuboidShape(5.0, 6.0, 0.0, 11.0, 10.0, 1.0),
+		Block.createCuboidShape(15.0, 6.0, 5.0, 16.0, 10.0, 11.0),
+		Block.createCuboidShape(5.0, 6.0, 15.0, 11.0, 10.0, 16.0),
+		Block.createCuboidShape(0.0, 6.0, 5.0, 1.0, 10.0, 11.0),
+		Block.createCuboidShape(5.0, 0.0, 6.0, 11.0, 1.0, 10.0),
+		Block.createCuboidShape(5.0, 15.0, 6.0, 11.0, 16.0, 10.0)
 	);
 	public static final MapCodec<AddressPlaqueBlock> CODEC = createCodec(AddressPlaqueBlock::new);
 	public static final DirectionProperty FACING = Properties.FACING;
@@ -56,8 +61,17 @@ public class FlagBlock extends BlockWithEntity implements Plasticloggable {
 	}
 
 	@Override
+	protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		ItemActionResult res = AddressPlaqueBlock.address(stack, state, world, pos, player, hand, hit);
+		if (res != null) {
+			return res;
+		}
+		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+	}
+
+	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing());
+		return this.getDefaultState().with(FACING, ctx.getSide().getOpposite());
 	}
 
 	@Override

@@ -13,6 +13,7 @@ public class Board {
 	public CardStack held = new CardStack();
 	public CardStack mirroredHeld = new CardStack();
 	public CardPos pickup = null;
+	public List<Integer> moves = Lists.newArrayList();
 
 	public Board(long seed) {
 		for (int i = 0; i < ROWS; i++) {
@@ -25,6 +26,41 @@ public class Board {
 			arts.get(i % ROWS).cards.add(cards.getLeft().get(i));
 			dream.get(i % ROWS).cards.add(cards.getRight().get(i));
 		}
+	}
+
+	public static boolean validate(long seed, List<Integer> moves) {
+		try {
+			Board board = new Board(seed);
+			for (int move : moves) {
+				CardPos from = CardPos.decode(move >> 16);
+				CardPos to = CardPos.decode(move & 0xFFFF);
+				if (board.pickup(from) && board.drop(to)) {
+					continue;
+				}
+				return false;
+			}
+			return board.hasWon();
+		} catch(Throwable t) {
+			return false;
+		}
+	}
+
+	public boolean hasWon() {
+		for (int i = 0; i < 8; i++) {
+			CardStack stack = getStack(new CardPos(CardPos.Type.ARTS, i, 0));
+			if (stack.isEmpty()) {
+				continue;
+			}
+			Card last = null;
+			for (Card card : stack.cards) {
+				if (last == null || canStack(card, last)) {
+					last = card;
+					continue;
+				}
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private CardStack getPosStack(CardPos pos) {
@@ -70,24 +106,26 @@ public class Board {
 		base.place(stack);
 	}
 
-	public void pickup(CardPos pos) {
+	public boolean pickup(CardPos pos) {
 		if (held.isEmpty()) {
 			CardStack stack = getStack(pos, true);
 			if (!stack.isEmpty()) {
 				for (int i = 1; i < stack.cards.size(); i++) {
 					if (!canStack(stack.cards.get(i), stack.cards.get(i - 1))) {
 						place(pos, stack);
-						return;
+						return false;
 					}
 				}
 				held.cards = stack.cards;
 				mirroredHeld = getStack(pos.mirrored(), true);
 				pickup = pos;
+				return true;
 			}
 		}
+		return false;
 	}
 
-	public void drop(CardPos pos) {
+	public boolean drop(CardPos pos) {
 		if (pos != null && !held.isEmpty()) {
 			CardStack stack = getPosStack(pos);
 			if (stack.isEmpty() || canStack(held.cards.get(0), stack.cards.get(stack.cards.size() - 1))) {
@@ -95,7 +133,9 @@ public class Board {
 				getPosStack(pos.mirrored()).place(mirroredHeld);
 				held.cards.clear();
 				mirroredHeld.cards.clear();
-				return;
+				int move = (pickup.encode() << 16) | pos.encode();
+				moves.add(move);
+				return true;
 			}
 		}
 		if (pickup != null && !held.isEmpty()) {
@@ -104,6 +144,7 @@ public class Board {
 			held.cards.clear();
 			mirroredHeld.cards.clear();
 		}
+		return false;
 	}
 
 	public static boolean canStack(Card over, Card under) {

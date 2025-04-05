@@ -43,6 +43,7 @@ public class MailWorldState extends PersistentState {
 			if (el instanceof NbtCompound comp) {
 				Mailbox mailbox = new Mailbox();
 				mailbox.readNbt(comp, registryLookup);
+				state.mailboxes.put(mailbox.address, mailbox);
 			}
 		}
 		return state;
@@ -76,6 +77,9 @@ public class MailWorldState extends PersistentState {
 			nbt.putString("address", address);
 			NbtList list = new NbtList();
 			for (ItemStack stack : stacks) {
+				if (stack.isEmpty()) {
+					continue;
+				}
 				list.add(stack.encodeAllowEmpty(registryLookup));
 			}
 			nbt.put("stacks", list);

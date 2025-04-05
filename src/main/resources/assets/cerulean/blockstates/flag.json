@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "powered=false,facing=north": {
+      "model": "cerulean:block/flag",
+      "y": 0
+    },
+    "powered=false,facing=east": {
+      "model": "cerulean:block/flag",
+      "y": 90
+    },
+    "powered=false,facing=south": {
+      "model": "cerulean:block/flag",
+      "y": 180
+    },
+    "powered=false,facing=west": {
+      "model": "cerulean:block/flag",
+      "y": 270
+    },
+    "powered=false,facing=up": {
+      "model": "cerulean:block/flag",
+      "x": 270
+    },
+    "powered=false,facing=down": {
+      "model": "cerulean:block/flag",
+      "x": 90
+    },
+    "powered=true,facing=north": {
+      "model": "cerulean:block/flag_active",
+      "y": 0
+    },
+    "powered=true,facing=east": {
+      "model": "cerulean:block/flag_active",
+      "y": 90
+    },
+    "powered=true,facing=south": {
+      "model": "cerulean:block/flag_active",
+      "y": 180
+    },
+    "powered=true,facing=west": {
+      "model": "cerulean:block/flag_active",
+      "y": 270
+    },
+    "powered=true,facing=up": {
+      "model": "cerulean:block/flag_active",
+      "x": 270
+    },
+    "powered=true,facing=down": {
+      "model": "cerulean:block/flag_active",
+      "x": 90
+    }
+  }
+}
