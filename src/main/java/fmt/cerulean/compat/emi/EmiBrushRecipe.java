@@ -17,13 +17,20 @@ import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.item.StarItem;
 import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
+import net.minecraft.client.render.block.BlockModelRenderer;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 
@@ -48,7 +55,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		this.outputItems = outputItems;
 		inputs.addAll(inputStars);
 		inputs.addAll(inputItems);
-		catalysts.addAll(blocks.stream().map(BlockState::getBlock).map(EmiStack::of).toList());
+		catalysts.addAll(blocks.stream().map(EmiBrushRecipe::getStack).toList());
 		if (!outputStar.isEmpty()) {
 			outputs.addAll(outputStar.getEmiStacks());
 			outputs.addAll(outputItems.stream().flatMap(i -> i.getEmiStacks().stream()).toList());
@@ -61,6 +68,14 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		}
 		this.blocks = blocks;
 		this.info = info;
+	}
+
+	private static EmiStack getStack(BlockState state) {
+		if (state.getFluidState().getFluid() != Fluids.EMPTY) {
+			return EmiStack.of(state.getFluidState().getFluid());
+		}
+
+		return EmiStack.of(state.getBlock());
 	}
 
 	private static List<OrderedText> split(Text t) {
@@ -192,7 +207,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		private final BlockState state;
 
 		public BlockSlotWidget(BlockState state, int x, int y) {
-			super(EmiStack.of(state.getBlock()), x, y);
+			super(EmiBrushRecipe.getStack(state), x, y);
 			this.state = state;
 		}
 
@@ -204,7 +219,11 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 			draw.getMatrices().multiply(RotationAxis.POSITIVE_X.rotationDegrees(25));
 			draw.getMatrices().multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-30));
 			MinecraftClient client = MinecraftClient.getInstance();
-			client.getBlockRenderManager().renderBlockAsEntity(state, draw.getMatrices(), draw.getVertexConsumers(), LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+			client.getBlockRenderManager()
+					.getModelRenderer()
+					.render(draw.getMatrices().peek(), draw.getVertexConsumers().getBuffer(RenderLayers.getEntityBlockLayer(state, false)),
+							state, client.getBlockRenderManager().getModel(state), 1, 1, 1, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+
 			draw.getMatrices().pop();
 			draw.getVertexConsumers().draw();
 		}

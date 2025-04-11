@@ -31,16 +31,20 @@ public class AddressPlaqueBlockEntity extends SyncedBlockEntity implements Addre
 	private static List<String> FIRST_WORDS = List.of(
 		"Stellar", "Empty", "Charming", "Clouded", "Dreary", "Stable", "Shining", "Obscured", "Clear",
 		"Imposing", "Brilliant", "Candescent", "Innocuous", "Waning", "Dim", "Steady", "Determined",
-		"Planned", "Isolated", "Fleeting", "Dancing", "Bleak", "Ambiguous", "Searing"
+		"Planned", "Isolated", "Fleeting", "Dancing", "Bleak", "Ambiguous", "Searing", "Extravagant", "Vivid",
+		"Ostentatious", "Duplicate", "Imbibed", "Oxidized", "Sorted", "Repeated", "Rendered", "Framed",
+		"Chiseled", "Smoothened", "Aquatic", "Bespeckled", "Frigid", "Abated", "Changing", "Paved", "Shadowed"
 	);
 	private static List<String> SECOND_WORDS = List.of(
 		"Viridian", "Cerulean", "Chartreuse", "Rose", "Ash", "Lilac", "Turquoise", "Contrasting",
-		"Shattered", "Sheltered", "Rigid", "Placid"
+		"Shattered", "Sheltered", "Rigid", "Placid", "Shifting", "Fuchsia", "Glimmering", "Glittering",
+		"Nebulous", "Glowing", "Lunar", "Iridescent", "Awoken", "Reflected", "Assembled", "Endured", "Spattered"
 	);
 	private static List<String> THIRD_WORDS = List.of(
 		"Groove", "Flow", "Fall", "Impulse", "Drag", "Night", "Dream", "Disarray", "Void", "Place",
 		"Obsession", "Regret", "Foundation", "Stanza", "Score", "Measure", "Chapter", "Addendum",
-		"Eternity", "Struggle", "Tirade", "Justification", "Antonym"
+		"Eternity", "Struggle", "Tirade", "Justification", "Antonym", "Plaza", "Creation", "Dust",
+		"Construction", "Nullification", "Morning", "Beach", "Shoreline", "Uncertainty", "Prayer", "Gaze"
 	);
 	public String address = "null";
 

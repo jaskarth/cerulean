@@ -208,6 +208,9 @@
   "item.cerulean.waning_turquoise_star": "Waning Turquoise Star",
   "item.cerulean.waning_viridian_star": "Waning Viridian Star",
 
+  "fluid.cerulean.polyethylene": "Polyethylene",
+  "fluid.cerulean.realized_polyethylene": "Polyethylene",
+
   "painting.cerulean.dreams.title": "§kDreams",
   "painting.cerulean.dreams.author": "Me...?",
 
@@ -261,6 +264,9 @@
   "info.cerulean.bevvy_tasting": "Consumes potions to brighten stars",
   "info.cerulean.empathy_relief": "Mail, stamp needs an address",
   "info.cerulean.empathy_stress": "Mail, plaque needs an address",
+  "info.cerulean.trivia_staining": "Stain 3 times, duplicates allowed",
+  "info.cerulean.trivia_staining.misremembered": "Stain with a color, no duplicates",
+  "info.cerulean.imprinting": "Make memories tangible",
 
   "info.cerulean.strongbox.unknowable.0": "It won't budge.",
   "info.cerulean.strongbox.unknowable.1": "I can't open it.",

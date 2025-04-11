@@ -1,8 +1,10 @@
 package fmt.cerulean.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -50,6 +52,14 @@ public class ValveBlock extends PipeBlock {
 		if (!world.isClient()) {
 			if (world.isReceivingRedstonePower(pos)) {
 				world.setBlockState(pos, state.with(POWERED, true), Block.NOTIFY_LISTENERS);
+				world.playSound(
+						null,
+						pos,
+						BlockSetType.IRON.trapdoorClose(),
+						SoundCategory.BLOCKS,
+						1.0F,
+						world.getRandom().nextFloat() * 0.1F + 0.9F
+				);
 			} else {
 				world.scheduleBlockTick(pos, this, 4);
 			}
@@ -60,6 +70,14 @@ public class ValveBlock extends PipeBlock {
 	protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(POWERED) && !world.isReceivingRedstonePower(pos)) {
 			world.setBlockState(pos, state.with(POWERED, false), Block.NOTIFY_LISTENERS);
+			world.playSound(
+					null,
+					pos,
+					BlockSetType.IRON.trapdoorOpen(),
+					SoundCategory.BLOCKS,
+					1.0F,
+					world.getRandom().nextFloat() * 0.1F + 0.9F
+			);
 		}
 	}
 }
