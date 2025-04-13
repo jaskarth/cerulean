@@ -41,6 +41,10 @@ public class CanvasRequirements {
 		return new CanvasRequirements(Set.of(), Set.of(state), validColors, validBrightnesses, Set.of(), Set.of());
 	}
 
+	public static CanvasRequirements of(Block block, Set<Color> validColors, Set<Brightness> validBrightnesses, Set<Color> validOpposingColors, Set<Brightness> validOpposingBrightnesses) {
+		return new CanvasRequirements(Set.of(block), Set.of(), validColors, validBrightnesses, validOpposingColors, validOpposingBrightnesses);
+	}
+
 	public static CanvasRequirements of(Set<Color> validColors, Set<Brightness> validBrightnesses) {
 		return new CanvasRequirements(Set.of(), Set.of(), validColors, validBrightnesses, Set.of(), Set.of());
 	}

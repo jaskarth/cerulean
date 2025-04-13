@@ -394,6 +394,59 @@ public class BrushRecipes {
 		), new ItemStack(CeruleanItems.EYE_OF_VENDOR)
 		));
 
+		addRecipe("eye_of_mender", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.CHARTREUSE), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), 60, List.of(
+				Ingredient.ofItems(Items.EXPERIENCE_BOTTLE),
+				Ingredient.ofItems(Items.ENDER_EYE)
+		), new ItemStack(CeruleanItems.EYE_OF_MENDER, 4)
+		));
+
+		addRecipe("eye_of_return_to_sender", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.LILAC), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), 60, List.of(
+				Ingredient.ofItems(CeruleanItems.STAMP),
+				Ingredient.ofItems(Items.ENDER_EYE)
+		), new ItemStack(CeruleanItems.EYE_OF_RETURN_TO_SENDER)
+		));
+
+		addRecipe("address_plaque", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), 40, List.of(
+				Ingredient.ofItems(CeruleanItems.STAMP),
+				Ingredient.ofItems(CeruleanItems.DUCTILE_INGOT)
+		), new ItemStack(CeruleanBlocks.ADDRESS_PLAQUE)
+		));
+
+		addRecipe("flag", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), 40, List.of(
+				Ingredient.ofItems(CeruleanItems.STAMP),
+				Ingredient.ofItems(CeruleanItems.DUCTILE_ROD),
+				Ingredient.ofItems(Items.REDSTONE)
+		), new ItemStack(CeruleanBlocks.FLAG)
+		));
+
+		addRecipe("self_collapsing_cube", new InspirationBrushRecipe.Uninspired(
+				CanvasRequirements.of(
+						Set.of(Color.LILAC), ALL_BRIGHTNESSES_EXCEPT_DIM
+				), 40, List.of(
+				Ingredient.ofItems(CeruleanBlocks.OAK_GAPDOOR),
+				Ingredient.ofItems(CeruleanBlocks.OAK_GAPDOOR),
+				Ingredient.ofItems(CeruleanBlocks.OAK_GAPDOOR),
+				Ingredient.ofItems(CeruleanBlocks.OAK_GAPDOOR),
+				Ingredient.ofItems(CeruleanBlocks.OAK_GAPDOOR),
+				Ingredient.ofItems(CeruleanBlocks.OAK_GAPDOOR),
+				Ingredient.ofItems(CeruleanItems.GLITTER),
+				Ingredient.ofItems(Items.STRING),
+				Ingredient.ofItems(Items.REDSTONE)
+		), new ItemStack(CeruleanBlocks.SELF_COLLAPSING_CUBE)
+		));
+
 		addRecipe("camera", new InspirationBrushRecipe(
 				CanvasRequirements.of(
 						Set.of(Color.TURQUOISE), Set.of(Brightness.BRILLIANT),
@@ -513,14 +566,16 @@ public class BrushRecipes {
 
 		addRecipe("empathy_stress", new EmpathyBrushRecipe(
 				CanvasRequirements.of(
-					Set.of(Color.VIRIDIAN, Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+					Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM,
+					Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), false
 		));
 
 		addRecipe("empathy_relief", new EmpathyBrushRecipe(
 				CanvasRequirements.of(
 					CeruleanBlocks.ADDRESS_PLAQUE,
-					Set.of(Color.VIRIDIAN, Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
+					Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES_EXCEPT_DIM,
+					Set.of(Color.CERULEAN), ALL_BRIGHTNESSES_EXCEPT_DIM
 				), true
 		));
 

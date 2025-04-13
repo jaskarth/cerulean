@@ -22,7 +22,6 @@ public class CeruleanClientNetworking {
 			byte[] data = payload.data();
 
 			ctx.client().execute(() -> {
-				System.out.println("Received data " + id);
 				ClientState.PHOTOS.add(id, data);
 			});
 		});

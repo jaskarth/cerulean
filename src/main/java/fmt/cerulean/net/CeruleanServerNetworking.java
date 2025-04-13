@@ -213,7 +213,6 @@ public class CeruleanServerNetworking {
 
 				PhotoState photos = PhotoState.get(player.getServerWorld());
 				byte[] data = photos.getStore().get(id);
-				System.out.println("Supplying id " + id);
 				if (data != null) {
 					ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, data));
 				}
@@ -265,7 +264,8 @@ public class CeruleanServerNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(WinPacket.ID, (payload, ctx) -> {
 			ctx.server().execute(() -> {
 				ServerPlayerEntity player = ctx.player();
-				SolitaireState state = CeruleanWorldState.get(player.getServerWorld()).getFor(player).solitaire;
+				CeruleanWorldState worldState = CeruleanWorldState.get(player.getServerWorld());
+				SolitaireState state = worldState.getFor(player).solitaire;
 				if (payload.seed() == -1) {
 					if (System.currentTimeMillis() - state.lastDeal > 8_000) {
 						state.seed = SolitaireState.newSeed();
@@ -276,6 +276,7 @@ public class CeruleanServerNetworking {
 					if (won) {
 						state.wins++;
 						state.won = true;
+						worldState.markDirty();
 					}
 				}
 				syncWins(player);

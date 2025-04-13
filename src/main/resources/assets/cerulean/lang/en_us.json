@@ -33,6 +33,7 @@
   "block.cerulean.spacebrick_stairs": "Spacebrick Stairs",
   "block.cerulean.strongbox": "Strongbox",
   "block.cerulean.polyethylene": "Polyethylene",
+  "block.cerulean.realized_polyethylene": "Polyethylene",
   "block.cerulean.kale": "Kale",
   "block.cerulean.kale_plant": "Kale Plant",
   "block.cerulean.oak_gapdoor": "Oak Gapdoor",
@@ -215,6 +216,8 @@
   "painting.cerulean.dreams.author": "Me...?",
 
   "emi.category.cerulean.brushing": "Star Brushing",
+
+  "tag.item.cerulean.glimmercrumb": "Glimmercrumb",
 
   "tag.item.cerulean.all_stars": "Stars",
   "tag.item.cerulean.non_brilliant_stars": "Non-Brilliant Stars",

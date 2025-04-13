@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.Pair;
 
 public class Board {
-	public static int ROWS = 6;
+	public static int COLS = 7;
 	public List<CardStack> arts = Lists.newArrayList();
 	public List<CardStack> dream = Lists.newArrayList();
 	public CardStack held = new CardStack();
@@ -16,15 +16,19 @@ public class Board {
 	public List<Integer> moves = Lists.newArrayList();
 
 	public Board(long seed) {
-		for (int i = 0; i < ROWS; i++) {
+		for (int i = 0; i < COLS; i++) {
 			arts.add(new CardStack());
 			dream.add(new CardStack());
 		}
 		Pair<List<Card>, List<Card>> cards = Deck.generateDeck(seed);
 		int deckSize = cards.getLeft().size();
 		for (int i = 0; i < deckSize; i++) {
-			arts.get(i % ROWS).cards.add(cards.getLeft().get(i));
-			dream.get(i % ROWS).cards.add(cards.getRight().get(i));
+			int c = i % 6;
+			if (c >= 3) {
+				c++;
+			}
+			arts.get(c).cards.add(cards.getLeft().get(i));
+			dream.get(c).cards.add(cards.getRight().get(i));
 		}
 	}
 
@@ -46,10 +50,13 @@ public class Board {
 	}
 
 	public boolean hasWon() {
-		for (int i = 0; i < 8; i++) {
-			CardStack stack = getStack(new CardPos(CardPos.Type.ARTS, i, 0));
+		for (int i = 0; i < COLS; i++) {
+			CardStack stack = getStack(new CardPos(CardPos.Type.DREAM, i, 0));
 			if (stack.isEmpty()) {
-				continue;
+				return false;
+			}
+			if (stack.cards.size() != 6) {
+				return false;
 			}
 			Card last = null;
 			for (Card card : stack.cards) {
@@ -74,7 +81,7 @@ public class Board {
 				case DREAM -> dream;
 				default -> null;
 			};
-			if (pos.row() >= 0 && pos.row() < ROWS) {
+			if (pos.row() >= 0 && pos.row() < COLS) {
 				return stacks.get(pos.row());
 			}
 		}
@@ -152,9 +159,9 @@ public class Board {
 			return false;
 		} else {
 			if (over.suit().type == Suit.Type.ARTS) {
-				return over.suit() == under.suit() && (over.rank() == under.rank() - 1);
+				return over.suit() != under.suit() && (over.rank() == under.rank() - 1);
 			} else {
-				return over.suit() != under.suit() && (over.rank() == under.rank() + 1 || over.rank() == under.rank() - 1);
+				return over.suit() == under.suit() && (over.rank() == under.rank() + 1 || over.rank() == under.rank() - 1);
 			}
 		}
 	}

@@ -2,6 +2,8 @@ package fmt.cerulean.client.screen;
 
 import java.util.List;
 
+import org.lwjgl.glfw.GLFW;
+
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.net.packet.WinPacket;
@@ -11,15 +13,19 @@ import fmt.cerulean.solitaire.CardPos;
 import fmt.cerulean.solitaire.CardStack;
 import fmt.cerulean.solitaire.Suit;
 import fmt.cerulean.util.Vec2i;
+import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.Rect2i;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.world.World;
 
 public class SolitaireScreen extends Screen {
 	public static final Identifier TEXTURE = Cerulean.id("textures/gui/solitaire.png");
@@ -31,7 +37,10 @@ public class SolitaireScreen extends Screen {
 	private static long lastSeed = -1;
 	private static long lastWin = 0;
 
+	private boolean instructions = false;
+
 	private Rect2i restartRect;
+	private Rect2i instructionsRect;
 	private Rect2i winsRect;
 
 	public SolitaireScreen() {
@@ -44,6 +53,7 @@ public class SolitaireScreen extends Screen {
 	@Override
 	protected void init() {
 		restartRect = new Rect2i(width - 72, height - 22, 70, 20);
+		instructionsRect = new Rect2i(74, height - 22, 70, 20);
 		winsRect = new Rect2i(2, height - 22, 70, 20);
 	}
 
@@ -56,6 +66,7 @@ public class SolitaireScreen extends Screen {
 		lastSeed = ClientState.seed;
 		board = new Board(lastSeed);
 		lastShuffle = System.currentTimeMillis();
+		lastWin = 0;
 	}
 
 	@Override
@@ -65,8 +76,16 @@ public class SolitaireScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (keyCode == GLFW.GLFW_KEY_ESCAPE && instructions) {
+			instructions = false;
+			return true;
+		}
 		if (this.client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
-			this.close();
+			if (instructions) {
+				instructions = false;
+			} else {
+				this.close();
+			}
 			return true;
 		}
 		return super.keyPressed(keyCode, scanCode, modifiers);
@@ -74,14 +93,23 @@ public class SolitaireScreen extends Screen {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (instructions) {
+			instructions = false;
+			return true;
+		}
+		int mx = (int) mouseX;
+		int my = (int) mouseY;
 		if (board != null) {
-			Pair<CardPos, Vec2i> pair = getCardUnder((int) mouseX, (int) mouseY);
+			Pair<CardPos, Vec2i> pair = getCardUnder(mx, my);
 			if (pair != null) {
 				board.pickup(pair.getLeft());
 				holdOffset = pair.getRight();
 				return true;
-			} else if (restartRect.contains((int) mouseX, (int) mouseY) && System.currentTimeMillis() > lastShuffle + 10_000) {
+			} else if (restartRect.contains(mx, my) && System.currentTimeMillis() > lastShuffle + 10_000) {
 				requestDeal();
+				return true;
+			} else if (instructionsRect.contains(mx, my)) {
+				instructions = true;
 				return true;
 			}
 		}
@@ -104,7 +132,6 @@ public class SolitaireScreen extends Screen {
 				board.drop(null);
 			}
 		}
-		System.out.println(board.hasWon());
 		if (lastWin == 0 && board.hasWon()) {
 			ClientPlayNetworking.send(new WinPacket(lastSeed, board.moves));
 			lastWin = System.currentTimeMillis();
@@ -125,10 +152,11 @@ public class SolitaireScreen extends Screen {
 				alpha = (int) (alpha * (diff - 9_000) / (16_000 - 9_000));
 			}
 			if (alpha > 32) {
-				drawBoxedText(context, Text.literal("Restart"), (alpha << 24) | 0xffffff, true, restartRect);
+				drawBoxedText(context, Text.literal("Restart"), (alpha << 24) | 0xffffff, true, restartRect); 
 			}
 		}
 
+		drawBoxedText(context, Text.literal("Instructions"), 0xaaffffff, true, instructionsRect);
 		drawBoxedText(context, Text.literal("Wins: " + ClientState.wins), 0xaaffffff, true, winsRect);
 
 		context.fill(width / 2, 0, width / 2 + 1, height, 0xaaffffff);
@@ -137,13 +165,18 @@ public class SolitaireScreen extends Screen {
 			newBoard();
 		}
 
+		if (instructions) {
+			renderInstructions(context, mouseX, mouseY, delta);
+			return;
+		}
+
 		if (board == null) {
 			return;
 		}
 
 		int cx = width / 2 - CARD_WIDTH / 2;
 		int top = Math.max(0, (height - 260) / 2);
-		for (int i = 0; i < Board.ROWS; i++) {
+		for (int i = 0; i < Board.COLS; i++) {
 			renderStack(context, mouseX, mouseY, board.arts.get(i), cx - i * 30 - CARD_WIDTH, top);
 			renderStack(context, mouseX, mouseY, board.dream.get(i), cx + i * 30 + CARD_WIDTH, top);
 		}
@@ -159,6 +192,83 @@ public class SolitaireScreen extends Screen {
 			renderStack(context, mouseX, mouseY, board.held, amx, mouseY - holdOffset.z());
 			renderStack(context, mouseX, mouseY, board.mirroredHeld, cx + (cx - amx), mouseY - holdOffset.z());
 			context.getMatrices().pop();
+		}
+	}
+
+	public void renderInstructions(DrawContext context, int mouseX, int mouseY, float delta) {
+		MinecraftClient client = MinecraftClient.getInstance();
+		World world = client.world;
+		int dim = 0;
+		if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			dim = 1;
+		} else if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
+			dim = 2;
+		}
+		int cx = width / 2;
+		int cy = height / 2;
+		boolean arts = true;
+		boolean dream = true;
+		if (arts) {
+			renderStack(context, mouseX, mouseY, new CardStack(List.of(
+				new Card(Suit.COMPOSITION, 11),
+				new Card(Suit.NARRATIVE, 10),
+				new Card(Suit.COMPOSITION, 9)
+			)), cx - 80 - CARD_WIDTH, cy - 60);
+			renderStack(context, mouseX, mouseY, new CardStack(List.of(
+				new Card(Suit.PERFORMANCE, 8),
+				new Card(Suit.COMPOSITION, 7),
+				new Card(Suit.NARRATIVE, 6),
+				new Card(Suit.PERFORMANCE, 5),
+				new Card(Suit.NARRATIVE, 4),
+				new Card(Suit.COMPOSITION, 3)
+			)), cx - 50 - CARD_WIDTH, cy - 60);
+			renderStack(context, mouseX, mouseY, new CardStack(List.of(
+				new Card(Suit.PERFORMANCE, 4),
+				new Card(Suit.NARRATIVE, 3),
+				new Card(Suit.PERFORMANCE, 2),
+				new Card(Suit.NARRATIVE, 1)
+			)), cx - 20 - CARD_WIDTH, cy - 60);
+			drawInstruction(context, Text.literal("Arts can be stacked in descending rank of alternating suits"), cx - 50 - CARD_WIDTH + CARD_WIDTH / 2, cy - 65);
+			drawInstruction(context, Text.literal("Every move made will be mirrored"), cx - 50 - CARD_WIDTH + CARD_WIDTH / 2, cy + 70);
+		}
+		if (dream) {
+			int lw = width / 2 - 140;
+			lw = Math.max(lw, 60);
+			lw = Math.min(lw, 120);
+			renderStack(context, mouseX, mouseY, new CardStack(List.of(
+				new Card(Suit.CERULEAN, 6),
+				new Card(Suit.CERULEAN, 5),
+				new Card(Suit.CERULEAN, 4),
+				new Card(Suit.CERULEAN, 3)
+			)), cx + 20, cy - 60);
+			renderStack(context, mouseX, mouseY, new CardStack(List.of(
+				new Card(Suit.VIRIDIAN, 6),
+				new Card(Suit.VIRIDIAN, 5),
+				new Card(Suit.VIRIDIAN, 4),
+				new Card(Suit.VIRIDIAN, 3),
+				new Card(Suit.VIRIDIAN, 2),
+				new Card(Suit.VIRIDIAN, 1)
+			)), cx + 50, cy - 60);
+			renderStack(context, mouseX, mouseY, new CardStack(List.of(
+				new Card(Suit.ROSE, 4),
+				new Card(Suit.ROSE, 5),
+				new Card(Suit.ROSE, 6)
+			)), cx + 80, cy - 60);
+			drawInstruction(context, Text.literal("I can sort my dream of the same suit with adjacent ranks"), cx + 50 + CARD_WIDTH / 2, cy - 65);
+			drawInstruction(context, Text.literal("To win, I need to sort all of my dream colors in their own stacks"), cx + 50 + CARD_WIDTH / 2, cy + 100 - 18);
+		}
+	}
+
+	public void drawInstruction(DrawContext context, Text text, int x, int y) {
+		drawInstruction(context, text, x, y, 120);
+	}
+
+	public void drawInstruction(DrawContext context, Text text, int x, int y, int wrapWidth) {
+		List<OrderedText> lines = textRenderer.wrapLines(text, wrapWidth);
+		int cy = y - (lines.size() * 12);
+		for (int i = 0; i < lines.size(); i++) {
+			context.drawCenteredTextWithShadow(textRenderer, lines.get(i), x, cy, -1);
+			cy += 12;
 		}
 	}
 
@@ -201,7 +311,7 @@ public class SolitaireScreen extends Screen {
 	public Pair<CardPos, Vec2i> getCardUnder(int x, int y) {
 		int cx = width / 2 - CARD_WIDTH / 2;
 		int top = Math.max(0, (height - 260) / 2);
-		for (int i = 0; i < Board.ROWS; i++) {
+		for (int i = 0; i < Board.COLS; i++) {
 			CardStack stack = null;
 			int dx = cx + i * 30 + CARD_WIDTH;
 			int ox = cx - i * 30 - CARD_WIDTH;
