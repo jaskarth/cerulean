@@ -35,6 +35,26 @@ public class DreamscapeTeleporter {
 		private List<ServerPlayerEntity> players = new ArrayList<>();
 	}
 
+	public static boolean isSpecialSleep(ServerPlayerEntity player) {
+		BlockBox box = box(player.getBoundingBox().expand(10, 6, 10));
+		List<PaintingEntity> paintings = player.getServerWorld().getEntitiesByClass(PaintingEntity.class, Box.from(box), e -> true);
+		boolean found = false;
+
+		for (PaintingEntity painting : paintings) {
+			if (painting instanceof PaintingDuck duck && duck.manifestsInDreams()) {
+				if (found) {
+					// Found two portal paintings?
+					found = false;
+					break;
+				}
+
+				found = true;
+			}
+		}
+
+		return found;
+	}
+
 	public static void handleTeleport(ServerWorld world) {
 		List<TeleportGroup> group = new ArrayList<>();
 		for (ServerPlayerEntity p : new ArrayList<>(world.getPlayers())) {
@@ -271,8 +291,8 @@ public class DreamscapeTeleporter {
 						if (dreamscape.isAir(local)
 								&& state.isSideSolidFullSquare(dreamscape, memoryLocation, d)
 								&& !(state.getBlock() instanceof BlockEntityProvider)
-								&& dreamscape.getLightLevel(local) < 12
-								&& dreamscape.getLightLevel(local) > 7
+								&& dreamscape.getLightLevel(local) <= 12
+								&& dreamscape.getLightLevel(local) >= 7
 						) {
 							BlockHitResult res = dreamscape.raycast(new RaycastContext(local.toCenterPos().offset(d, 1.0E-5F),
 									targetPos.toCenterPos(), RaycastContext.ShapeType.VISUAL,
