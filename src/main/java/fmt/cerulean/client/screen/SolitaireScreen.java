@@ -131,10 +131,10 @@ public class SolitaireScreen extends Screen {
 			} else {
 				board.drop(null);
 			}
-		}
-		if (lastWin == 0 && board.hasWon()) {
-			ClientPlayNetworking.send(new WinPacket(lastSeed, board.moves));
-			lastWin = System.currentTimeMillis();
+			if (lastWin == 0 && board.hasWon()) {
+				ClientPlayNetworking.send(new WinPacket(lastSeed, board.moves));
+				lastWin = System.currentTimeMillis();
+			}
 		}
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
@@ -187,7 +187,7 @@ public class SolitaireScreen extends Screen {
 			if (board.pickup.type() == CardPos.Type.ARTS) {
 				amx = Math.min(amx, cx - CARD_WIDTH / 2 - 1);
 			} else {
-				amx = Math.max(amx, cx + CARD_WIDTH / 2 - 1);
+				amx = Math.max(amx, cx + CARD_WIDTH / 2 + 1);
 			}
 			renderStack(context, mouseX, mouseY, board.held, amx, mouseY - holdOffset.z());
 			renderStack(context, mouseX, mouseY, board.mirroredHeld, cx + (cx - amx), mouseY - holdOffset.z());
