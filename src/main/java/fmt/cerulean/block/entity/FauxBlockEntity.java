@@ -12,6 +12,7 @@ import fmt.cerulean.block.entity.base.SyncedBlockEntity;
 import fmt.cerulean.client.render.block.FauxBlockEntityRenderer;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
+import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -107,6 +108,10 @@ public class FauxBlockEntity extends SyncedBlockEntity implements Obedient {
 
 	@Environment(EnvType.CLIENT)
 	public static void clientTick(World world, BlockPos pos, BlockState state, FauxBlockEntity fbe) {
+		if (world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			return;
+		}
+
 		if (fbe.beholdent == null || !(world.getBlockEntity(fbe.beholdent) instanceof FauxBlockEntity)) {
 			fbe.behold();
 		}

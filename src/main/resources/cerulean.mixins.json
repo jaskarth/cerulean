@@ -43,7 +43,8 @@
     "client.MixinTextRenderer",
     "client.MixinTextureManager",
     "client.MixinWorldRenderer",
-    "client.RenderSystemAccessor"
+    "client.RenderSystemAccessor",
+    "client.MixinWailaClientAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

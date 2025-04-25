@@ -107,20 +107,22 @@ public class MemoryFrameEntity extends AbstractDecorationEntity implements Dream
 		ItemStack stack = player.getStackInHand(hand);
 
 		if (stack.isOf(CeruleanItems.EYE_OF_VENDOR)) {
-			if (player.getWorld().isClient && clientState <= 3) {
-				char[] chars = new String(Litteratura.LITTERATURA_TEMPORALIS).toCharArray();
-				StringBuilder text = new StringBuilder();
-				Random random = new Random();
-				for (char c : chars) {
-					if (random.nextInt(6) == 0) {
-						text.append("§r").append(c);
-					} else {
-						text.append("§k").append(c);
+			if (player.getWorld().isClient) {
+				if (clientState <= 3) {
+					char[] chars = new String(Litteratura.LITTERATURA_TEMPORALIS).toCharArray();
+					StringBuilder text = new StringBuilder();
+					Random random = new Random();
+					for (char c : chars) {
+						if (random.nextInt(6) == 0) {
+							text.append("§r").append(c);
+						} else {
+							text.append("§k").append(c);
+						}
 					}
+					ClientState.truthful = true;
+					clientState = 4;
+					this.text = text.toString();
 				}
-				ClientState.truthful = true;
-				clientState = 4;
-				this.text = text.toString();
 			} else {
 				CeruleanWorldState state = CeruleanWorldState.get((ServerWorld) player.getWorld());
 				state.getFor((ServerPlayerEntity)player).truthful = true;

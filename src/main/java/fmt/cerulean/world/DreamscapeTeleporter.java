@@ -1,6 +1,7 @@
 package fmt.cerulean.world;
 
 import fmt.cerulean.block.StrongboxBlock;
+import fmt.cerulean.block.entity.FauxBlockEntity;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.StrongboxBlockEntity;
 import fmt.cerulean.entity.MemoryFrameEntity;
@@ -11,6 +12,7 @@ import fmt.cerulean.world.data.CeruleanWorldState;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -330,6 +332,9 @@ public class DreamscapeTeleporter {
 
 	private static BlockState filterState(ServerWorld world, BlockPos local) {
 		BlockState st = world.getBlockState(local);
+		if (Registries.BLOCK.getId(st.getBlock()).getNamespace().equals("glowcase")) {
+			return Blocks.AIR.getDefaultState();
+		}
 		if (st.isOf(Blocks.PISTON) || st.isOf(Blocks.MOVING_PISTON) || st.isOf(Blocks.STICKY_PISTON) || st.isOf(Blocks.PISTON_HEAD)) {
 			return Blocks.AIR.getDefaultState();
 		}
@@ -347,6 +352,12 @@ public class DreamscapeTeleporter {
 			strongbox.originalWorld = oldWorld.getRegistryKey();
 			strongbox.originalBlockPos = oldPos;
 			strongbox.markDirty();
+		}
+		if (be instanceof FauxBlockEntity fbe) {
+			BlockEntity obe = oldWorld.getBlockEntity(oldPos);
+			if (obe instanceof FauxBlockEntity ofbe) {
+				fbe.state = ofbe.state;
+			}
 		}
 	}
 
