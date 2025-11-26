@@ -8,15 +8,19 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.stack.FluidEmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import dev.emi.emi.platform.EmiAgnos;
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.entity.WellBlockEntity;
 import fmt.cerulean.client.particle.StarParticleType;
+import fmt.cerulean.client.render.EmergencyOverlay;
 import fmt.cerulean.flow.FlowResource;
 import fmt.cerulean.item.StarItem;
 import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -26,6 +30,8 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.block.BlockModelRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -33,6 +39,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class EmiBrushRecipe extends BasicEmiRecipe {
 	private static final Identifier STAR_TEXTURE = Cerulean.id("textures/item/star.png");
@@ -78,7 +86,7 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		return EmiStack.of(state.getBlock());
 	}
 
-	private static List<OrderedText> split(Text t) {
+	public static List<OrderedText> split(Text t) {
 		if (t == null) {
 			return List.of();
 		}
@@ -97,7 +105,15 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 		Random random = Random.create(10);
 		List<GuiParticle> particles = Lists.newArrayList();
 		int starY = inputItems.isEmpty() ? 0 : 20;
+		boolean censor = false;//Random.create().nextInt(3) == 0;
 		widgets.addDrawable(0, 0, 0, 0, (draw, mouseX, mouseY, delta) -> {
+			if (censor) {
+				MatrixStack.Entry peek = draw.getMatrices().peek();
+				Vector3f trans = new Vector3f();
+				peek.getPositionMatrix().transformPosition(0, 0, 0, trans);
+				EmergencyOverlay.SCREENSPACE.add(new Rect2i((int) trans.x + 10, (int) trans.y + 14, 80, this.height - 20));
+			}
+
 			RenderSystem.enableDepthTest();
 			long time = System.currentTimeMillis() / 40;
 			for (int i = 0; i < particles.size(); i++) {
@@ -213,6 +229,11 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 
 		@Override
 		public void drawStack(DrawContext draw, int mouseX, int mouseY, float delta) {
+			if (state.isOf(Blocks.WATER)) {
+				new FluidEmiStack(Fluids.WATER).render(draw, x + 1, y + 1, delta);
+				return;
+			}
+
 			draw.getMatrices().push();
 			draw.getMatrices().translate(x - 2 + 9, y + 9, 0);
 			draw.getMatrices().scale(14, -14, 1);

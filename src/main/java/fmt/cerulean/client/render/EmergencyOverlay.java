@@ -1,5 +1,6 @@
 package fmt.cerulean.client.render;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Camera.Projection;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -29,6 +31,7 @@ import net.minecraft.util.math.random.CheckedRandom;
 
 public class EmergencyOverlay {
 	public static final List<HexState> HEX_STATES = Lists.newArrayList();
+	public static final List<Rect2i> SCREENSPACE = new ArrayList<>();
 	private static final OctavePerlinNoiseSampler NOISE = OctavePerlinNoiseSampler.create(new CheckedRandom(System.currentTimeMillis()), -3, 1.0);
 	private static boolean anyActiveLast = false;
 
@@ -44,7 +47,12 @@ public class EmergencyOverlay {
 
 	public static void render(DrawContext context) {
 		MinecraftClient client = MinecraftClient.getInstance();
+		if (client.world == null) {
+			return;
+		}
 		List<Censorship> censorships = Lists.newArrayList();
+
+		// TODO: other players holding the camera
 
 		Camera camera = client.gameRenderer.getCamera();
 		for (Entity entity : client.world.getEntities()) {
@@ -60,6 +68,16 @@ public class EmergencyOverlay {
 				}
 			}
 		}
+
+		for (Rect2i rect2i : SCREENSPACE) {
+			List<Vec2i> list = new ArrayList<>();
+			list.add(new Vec2i(rect2i.getX(), rect2i.getY()));
+			list.add(new Vec2i(rect2i.getX() + rect2i.getWidth(), rect2i.getY()));
+			list.add(new Vec2i(rect2i.getX() + rect2i.getWidth(), rect2i.getY() + rect2i.getHeight()));
+			list.add(new Vec2i(rect2i.getX(), rect2i.getY() + rect2i.getHeight()));
+			censorships.add(new Censorship(new ConvexShape(list), 1));
+		}
+		SCREENSPACE.clear();
 
 		censorships.removeIf(c -> c.shape == null);
 		
@@ -106,7 +124,7 @@ public class EmergencyOverlay {
 				int variant = state.getVariant(random, time);
 				if (variant != -1) {
 					anyActiveLast = true;
-					context.drawTexture(Cerulean.id("textures/gui/hexa" + (1 + variant) + ".png"), rx, ry, 0, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
+					context.drawTexture(Cerulean.id("textures/gui/hexa" + (1 + variant) + ".png"), rx, ry, 1000, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
 				}
 				i++;
 			}
@@ -184,6 +202,11 @@ public class EmergencyOverlay {
 	private static class Censorship {
 		public float heat;
 		public ConvexShape shape;
+
+		public Censorship(ConvexShape shape, float heat) {
+			this.shape = shape;
+			this.heat = heat;
+		}
 
 		public Censorship(List<Vec3d> worldPoints, float heat) {
 			this.heat = heat;

@@ -9,6 +9,7 @@
     "ItemEntityAccessor",
     "MinecraftServerAccessor",
     "MixinAdvancementPositioner",
+    "MixinBedBlock",
     "MixinEnchantmentScreenHandler",
     "MixinEntity",
     "MixinInventoryChangedCriterion",
@@ -22,8 +23,10 @@
     "MixinWorld"
   ],
   "client": [
+    "MixinPlayerSkinTexture",
     "client.DrawContextAccessor",
     "client.GameRendererAccessor",
+    "client.MixinAbstractClientPlayerEntity",
     "client.MixinAdvancementTab",
     "client.MixinAdvancementToast",
     "client.MixinCamera",
@@ -42,9 +45,9 @@
     "client.MixinSprite",
     "client.MixinTextRenderer",
     "client.MixinTextureManager",
+    "client.MixinWailaClientAccessor",
     "client.MixinWorldRenderer",
-    "client.RenderSystemAccessor",
-    "client.MixinWailaClientAccessor"
+    "client.RenderSystemAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -17,9 +17,16 @@ public class SpesPratum {
             }
             EX_BONO_VIM.put(clavis, i);
         }
+
+        EX_BONO_VIM.put(0, -1);
     }
 
     public static int pratumBonum(int vim) {
+        // Salutem mihi demitte... Equidem, dirum est.
+        if (vim == -1) {
+            return 0;
+        }
+
         if (vim < 0 || vim > 255) {
             throw new CautioInlicitiHabitus();
         }

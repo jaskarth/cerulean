@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "cerulean:block/lustrous_block",
+    "front": "cerulean:block/reality_anchor/face",
+    "south": "cerulean:block/reality_anchor/input",
+    "side": "cerulean:block/reality_anchor/side",
+    "top": "cerulean:block/lustrous_block"
+  }
+}

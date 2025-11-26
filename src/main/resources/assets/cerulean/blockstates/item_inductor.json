@@ -1,0 +1,57 @@
+{
+  "variants": {
+    "facing=down,filtered=false": {
+      "model": "cerulean:block/item_inductor",
+      "x": 180
+    },
+    "facing=east,filtered=false": {
+      "model": "cerulean:block/item_inductor",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,filtered=false": {
+      "model": "cerulean:block/item_inductor",
+      "x": 90
+    },
+    "facing=south,filtered=false": {
+      "model": "cerulean:block/item_inductor",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,filtered=false": {
+      "model": "cerulean:block/item_inductor"
+    },
+    "facing=west,filtered=false": {
+      "model": "cerulean:block/item_inductor",
+      "x": 90,
+      "y": 270
+    },
+
+    "facing=down,filtered=true": {
+      "model": "cerulean:block/item_inductor_filter",
+      "x": 180
+    },
+    "facing=east,filtered=true": {
+      "model": "cerulean:block/item_inductor_filter",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,filtered=true": {
+      "model": "cerulean:block/item_inductor_filter",
+      "x": 90
+    },
+    "facing=south,filtered=true": {
+      "model": "cerulean:block/item_inductor_filter",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,filtered=true": {
+      "model": "cerulean:block/item_inductor_filter"
+    },
+    "facing=west,filtered=true": {
+      "model": "cerulean:block/item_inductor_filter",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

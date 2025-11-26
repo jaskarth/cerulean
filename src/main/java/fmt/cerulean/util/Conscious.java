@@ -4,4 +4,6 @@ import net.minecraft.util.math.BlockPos;
 
 public interface Conscious {
 	void cerulean$setTeleportTarget(BlockPos pos);
+
+	void cerulean$setHomePos(BlockPos pos);
 }

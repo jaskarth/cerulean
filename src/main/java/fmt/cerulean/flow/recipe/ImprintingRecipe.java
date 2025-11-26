@@ -76,7 +76,7 @@ public class ImprintingRecipe implements BrushRecipe {
 				throw new IllegalStateException(vanesco);
 			}
 
-			PhotoSpecial special = new PhotoSpecial(clavis, fit);
+			PhotoSpecial special = new PhotoSpecial(clavis, fit, !trivia.isEmpty() ? 1 : 0);
 
 			res.set(CeruleanItemComponents.COLOR_TRIPLEX, triplex);
 			res.set(CeruleanItemComponents.PHOTO_SPECIAL, special);

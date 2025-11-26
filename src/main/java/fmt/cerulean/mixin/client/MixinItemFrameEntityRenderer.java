@@ -5,6 +5,7 @@ import fmt.cerulean.client.tex.gen.StaticTexture;
 import fmt.cerulean.item.component.ColorTriplex;
 import fmt.cerulean.item.component.PhotoComponent;
 import fmt.cerulean.registry.CeruleanItemComponents;
+import fmt.cerulean.registry.CeruleanItems;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -32,7 +33,7 @@ public abstract class MixinItemFrameEntityRenderer {
 	public void cerulean$renderPhoto(ItemFrameEntity itemFrameEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
 		ItemStack itemStack = itemFrameEntity.getHeldItemStack();
 
-		if (!itemStack.isEmpty()) {
+		if (itemStack.isOf(CeruleanItems.PHOTOGRAPH)) {
 			PhotoComponent photo = itemStack.get(CeruleanItemComponents.PHOTO);
 			ColorTriplex color = itemStack.get(CeruleanItemComponents.COLOR_TRIPLEX);
 			if (photo != null) {

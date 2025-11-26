@@ -2,11 +2,15 @@ package fmt.cerulean.mixin;
 
 import fmt.cerulean.block.entity.base.DreamscapeTickable;
 import fmt.cerulean.world.CeruleanDimensions;
+import fmt.cerulean.world.DreamscapeGamerules;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockEntityTickInvoker;
 import net.minecraft.world.dimension.DimensionType;
@@ -42,6 +46,8 @@ public abstract class MixinWorld {
 
 	@Shadow public abstract @Nullable BlockEntity getBlockEntity(BlockPos pos);
 
+	@Shadow @Final protected MutableWorldProperties properties;
+
 	@Inject(method = "shouldTickBlockPos", at = @At("HEAD"), cancellable = true)
 	private void cerulean$dreamscapeTicking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
@@ -50,6 +56,13 @@ public abstract class MixinWorld {
 			}
 
 			cir.setReturnValue(false);
+		}
+	}
+
+	@Inject(method = "getGameRules", at = @At("HEAD"), cancellable = true)
+	public void cerulean$dreamscapeRules(CallbackInfoReturnable<GameRules> cir) {
+		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+			cir.setReturnValue(new DreamscapeGamerules(this.properties.getGameRules()));
 		}
 	}
 }

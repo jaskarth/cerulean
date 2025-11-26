@@ -6,25 +6,28 @@ import fmt.cerulean.block.entity.WellBlockEntity;
 import fmt.cerulean.client.effects.DreamscapeEffects;
 import fmt.cerulean.client.effects.SkiesEffects;
 import fmt.cerulean.client.render.DreamscapeRenderer;
+import fmt.cerulean.client.render.RenderVFX;
 import fmt.cerulean.client.render.SkiesRenderer;
 import fmt.cerulean.client.render.entity.EmergencyRenderer;
 import fmt.cerulean.client.render.entity.MemoryFrameRenderer;
 import fmt.cerulean.client.render.item.EyeOfVenderer;
+import fmt.cerulean.client.screen.handled.RealityAnchorScreen;
 import fmt.cerulean.client.tex.CeruleanAtlasSource;
 import fmt.cerulean.client.tex.CeruleanModelLoadingPlugin;
+import fmt.cerulean.flow.recipe.BrushRecipes;
 import fmt.cerulean.fluid.CanisterFluidType;
+import fmt.cerulean.item.BlueprintItem;
 import fmt.cerulean.item.StarItem;
+import fmt.cerulean.item.component.PosPair;
 import fmt.cerulean.net.CeruleanClientNetworking;
 import fmt.cerulean.net.packet.UploadMemoryPacket;
-import fmt.cerulean.registry.CeruleanEntities;
-import fmt.cerulean.registry.CeruleanFluids;
-import fmt.cerulean.registry.CeruleanItemComponents;
-import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.registry.*;
 import fmt.cerulean.registry.client.CeruleanBlockEntityRenderers;
 import fmt.cerulean.registry.client.CeruleanParticles;
 import fmt.cerulean.registry.client.CeruleanRenderLayers;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -33,22 +36,32 @@ import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
 
 import java.io.IOException;
 
@@ -98,7 +111,23 @@ public class CeruleanClient implements ClientModInitializer {
 		EntityRendererRegistry.register(CeruleanEntities.MEMORY_FRAME, MemoryFrameRenderer::new);
 		EntityRendererRegistry.register(CeruleanEntities.OXIDATION_POTION, FlyingItemEntityRenderer::new);
 
+		HandledScreens.register(CeruleanScreenHandlers.REALITY_ANCHOR, RealityAnchorScreen::new);
+
+		WorldRenderEvents.AFTER_ENTITIES.register((ctx) -> {
+			ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
+
+			if (stack.isOf(CeruleanItems.BLUEPRINT)) {
+				RenderVFX.renderHeldBlueprint(ctx, stack);
+			}
+		});
+
 		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, boctx) -> {
+			ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
+
+			if (stack.isOf(CeruleanItems.BLUEPRINT)) {
+				return false;
+			}
+
 			if (ClientState.remember) {
 				return false;
 			}
@@ -151,6 +180,10 @@ public class CeruleanClient implements ClientModInitializer {
 			client.execute(() -> {
 				ClientState.PHOTOS.close();
 			});
+		});
+
+		ClientLifecycleEvents.CLIENT_STARTED.register(c -> {
+			BrushRecipes.registerModded();
 		});
 	}
 }

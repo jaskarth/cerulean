@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "cerulean:block/inky_bricks",
+    "side": "cerulean:block/inky_bricks",
+    "top": "cerulean:block/inky_bricks"
+  }
+}

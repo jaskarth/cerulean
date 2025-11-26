@@ -103,11 +103,14 @@ public class PipeBlockEntity extends SyncedBlockEntity implements FlowOutreach {
 		FlowState bestFlow = FlowState.NONE;
 		for (Direction dir : Util.DIRECTIONS) {
 			if (state.get(ConnectingBlock.FACING_PROPERTIES.get(dir))) {
-				if (world.getBlockEntity(pos.offset(dir)) instanceof FlowOutreach flow) {
+				BlockEntity be = world.getBlockEntity(pos.offset(dir));
+				if (be instanceof FlowOutreach flow) {
 					FlowState fs = flow.getExportedState(dir.getOpposite());
 					if (fs.pressure() > bestFlow.pressure()) {
-						bestFlow = fs;
-						bestDir = dir; 
+						if (shouldConnect(state, be.getCachedState())) {
+							bestFlow = fs;
+							bestDir = dir;
+						}
 					}
 				} else if (world.getBlockEntity(pos.offset(dir, 2)) instanceof FlowOutreach flow) {
 					FlowState fs = flow.getDistantExportedState(dir.getOpposite());
@@ -143,6 +146,18 @@ public class PipeBlockEntity extends SyncedBlockEntity implements FlowOutreach {
 		current = bestFlow;
 		inputDir = bestDir;
 		markDirty();
+	}
+
+	private static boolean shouldConnect(BlockState state, BlockState other) {
+		if (state.isOf(other.getBlock())) {
+			return true;
+		}
+
+		if (PipeBlock.exclusiveType(state) && PipeBlock.exclusiveType(other)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private void updateRecipe() {
@@ -186,6 +201,7 @@ public class PipeBlockEntity extends SyncedBlockEntity implements FlowOutreach {
 			activeRecipe = null;
 			spewed = FlowState.NONE;
 		}
+
 		if (!lastSpew.equals(spewed) || (lastProcessing != (activeRecipe != null))) {
 			markDirty();
 		}
@@ -281,10 +297,16 @@ public class PipeBlockEntity extends SyncedBlockEntity implements FlowOutreach {
 	@Override
 	public FlowState getExportedState(Direction dir) {
 		updateNext();
+
 		if (dir == inputDir) {
 			return FlowState.NONE;
 		}
-		return next;
+
+		if (getCachedState().get(ConnectingBlock.FACING_PROPERTIES.get(dir))) {
+			return next;
+		}
+
+		return FlowState.NONE;
 	}
 
 	@Override
@@ -293,6 +315,11 @@ public class PipeBlockEntity extends SyncedBlockEntity implements FlowOutreach {
 			return activeRecipe.getProcessedFlow(current, recipeProgress);
 		}
 		return FlowState.NONE;
+	}
+
+	@Override
+	public FlowState getAnyFlow() {
+		return current;
 	}
 
 	public FlowState getFlow() {

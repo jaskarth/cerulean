@@ -32,7 +32,7 @@ public class BiomeDecorator {
 		);
 
 		register(Biomes.SKIES,
-				new ChanceRangeDecorator(36, new IntRange(80, 140)),
+				new IslandDecorator(),
 				new IslandDecoration()
 		);
 

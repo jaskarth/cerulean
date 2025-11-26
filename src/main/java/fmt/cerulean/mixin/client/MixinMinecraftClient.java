@@ -4,7 +4,9 @@ import fmt.cerulean.block.entity.WellBlockEntity;
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.particle.StarParticleType;
 import fmt.cerulean.client.screen.ColorProgressScreen;
+import fmt.cerulean.flow.FlowOutreach;
 import fmt.cerulean.flow.FlowState;
+import fmt.cerulean.flow.FlowUser;
 import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.block.entity.BlockEntity;
@@ -91,13 +93,13 @@ public abstract class MixinMinecraftClient {
 		locals = LocalCapture.CAPTURE_FAILHARD)
 	private void cerulean$starwellBreaking(boolean breaking, CallbackInfo ci, BlockHitResult blockHitResult, BlockPos pos, Direction direction) {
 		BlockEntity be = this.world.getBlockEntity(pos);
-		if (be instanceof WellBlockEntity wbe) {
+		if (be instanceof FlowUser flow) {
 			Random random = this.world.random;
 			double x = pos.getX() + 0.5;
 			double y = pos.getY() + 0.5;
 			double z = pos.getZ() + 0.5;
-			FlowState state = wbe.getExportedState(Direction.UP);
-			if (state == null) {
+			FlowState state = flow.getAnyFlow();
+			if (state == null || state.empty()) {
 				return;
 			}
 

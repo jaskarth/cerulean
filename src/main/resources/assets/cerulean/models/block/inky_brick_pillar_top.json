@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "cerulean:block/smooth_inky_bricks",
+    "side": "cerulean:block/inky_brick_pillar_top"
+  }
+}

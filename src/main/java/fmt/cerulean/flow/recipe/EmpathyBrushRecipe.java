@@ -32,14 +32,14 @@ public class EmpathyBrushRecipe implements BrushRecipe {
 
 	@Override
 	public int getRequiredFlowInputs() {
-		return 2;
+		return 1;
 	}
 
 	@Override
 	public boolean canCraft(PigmentInventory inventory) {
 		return canvas.canCraft(inventory.world, inventory.pos, inventory.flow)
 			&& inventory.containsAny(s -> s.getItem() == CeruleanItems.STAMP && (strict || s.contains(DataComponentTypes.CUSTOM_NAME)))
-			&& inventory.getHeldStacks().size() > 1 || (inventory.getHeldStacks().size() == 1 && inventory.getHeldStacks().get(0).getCount() > 1);
+			&& (inventory.getHeldStacks().size() > 1 || (inventory.getHeldStacks().size() == 1 && inventory.getHeldStacks().get(0).getCount() > 1));
 	}
 
 	@Override

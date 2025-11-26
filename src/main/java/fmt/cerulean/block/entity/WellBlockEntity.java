@@ -158,6 +158,11 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach, Obedie
 		return FlowState.NONE;
 	}
 
+	@Override
+	public FlowState getAnyFlow() {
+		return flow;
+	}
+
 	public void setFlow(FlowState flow) {
 		this.flow = flow;
 	}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "cerulean:block/crushed_halite_block"
+  }
+}

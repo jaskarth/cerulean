@@ -4,6 +4,7 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
 import fmt.cerulean.util.Voronoi;
+import fmt.cerulean.world.gen.IslandParameters;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -34,18 +35,17 @@ public class CeruleanDimensions {
 			if ((-X / 2 <= x) && (x <= X / 2) && (-Z / 2 <= z) && (z <= Z / 2)) {
 				BlockPos pos = new BlockPos(origin.getX() + (x << 4), 0, origin.getZ() + (z << 4));
 
-				int vx = pos.getX();
-				int vz = pos.getZ();
+				IslandParameters params = IslandParameters.get(world.getSeed(), pos);
 
-				double scale = 48.0 * 4;
-				Vec2d cp = vn.getCellPos(vx / scale, vz / scale, scale);
-				Vec2i center = cp.floor();
+				if (!params.plasticlogged()) {
+					Vec2i center = params.center();
 
-				BlockPos out = new BlockPos(center.x() + 4, 0, center.z() + 4);
+					BlockPos out = new BlockPos(center.x() + 4, 0, center.z() + 4);
 
-				int topY = world.getChunk(out).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, center.x(), center.z()) + 2;
+					int topY = world.getChunk(out).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, center.x(), center.z()) + 2;
 
-				return out.withY(topY);
+					return out.withY(topY);
+				}
 			}
 
 			if( (x == z) || ((x < 0) && (x == -z)) || ((x > 0) && (x == 1 - z))) {

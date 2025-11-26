@@ -12,7 +12,7 @@ public class FuchsiaToolMaterial implements ToolMaterial {
 
 	@Override
 	public int getDurability() {
-		return 220;
+		return 512;
 	}
 
 	@Override

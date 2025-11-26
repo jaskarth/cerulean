@@ -13,7 +13,7 @@
     }
   },
   "display": {
-    "announce_to_chat": false,
+    "announce_to_chat": true,
     "description": {
       "translate": "advancements.cerulean.the_misinterpretation.desc"
     },

@@ -18,21 +18,18 @@ public class PipeDetectorBlockEntity extends BlockEntity {
 
 	public static void serverTick(World world, BlockPos pos, BlockState state, PipeDetectorBlockEntity ibe) {
 		BlockPos checkPos = pos.offset(state.get(PipeDetectorBlock.FACING));
-		// TODO: optimize for solid blocks?
-		if ((world.getTime() & 1) == 0) {
-			boolean set = false;
-			if (world.getBlockEntity(checkPos) instanceof PipeBlockEntity pbe) {
-				if (!pbe.getFlow().empty()) {
-					world.setBlockState(pos, state.with(PipeDetectorBlock.POWERED, true));
-					world.updateNeighbor(pos.offset(state.get(ItemDetectorBlock.FACING).getOpposite()), state.getBlock(), pos);
-					set = true;
-				}
+		boolean set = false;
+		if (world.getBlockEntity(checkPos) instanceof PipeBlockEntity pbe) {
+			if (!pbe.getFlow().empty()) {
+				world.setBlockState(pos, state.with(PipeDetectorBlock.POWERED, true));
+				world.updateNeighbor(pos.offset(state.get(ItemDetectorBlock.FACING).getOpposite()), state.getBlock(), pos);
+				set = true;
 			}
+		}
 
-			if (!set) {
-				world.setBlockState(pos, state.with(PipeDetectorBlock.POWERED, false));
-				world.updateNeighbor(pos.offset(state.get(PipeDetectorBlock.FACING).getOpposite()), state.getBlock(), pos);
-			}
+		if (!set) {
+			world.setBlockState(pos, state.with(PipeDetectorBlock.POWERED, false));
+			world.updateNeighbor(pos.offset(state.get(PipeDetectorBlock.FACING).getOpposite()), state.getBlock(), pos);
 		}
 	}
 }

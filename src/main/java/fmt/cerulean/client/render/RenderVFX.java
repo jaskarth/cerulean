@@ -1,12 +1,24 @@
 package fmt.cerulean.client.render;
 
+import fmt.cerulean.item.BlueprintItem;
+import fmt.cerulean.item.component.PosPair;
+import fmt.cerulean.registry.CeruleanItemComponents;
+import fmt.cerulean.registry.client.CeruleanRenderLayers;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 
 public class RenderVFX {
 	public enum StarsMode {
@@ -76,5 +88,144 @@ public class RenderVFX {
 						.color((color >> 16) & 0xFF, (color >> 8) & 0xFF, (color >> 0) & 0xFF, 255);
 			}
 		}
+	}
+
+	public static void renderHeldBlueprint(WorldRenderContext ctx, ItemStack stack) {
+		ClientWorld world = MinecraftClient.getInstance().world;
+
+		PosPair pair = stack.getOrDefault(CeruleanItemComponents.POS_PAIR, PosPair.empty());
+
+		Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+		VertexConsumer buffer = ctx.consumers().getBuffer(CeruleanRenderTypes.LINES_WIDER);
+
+		double cameraX = camera.getPos().x;
+		double cameraY = camera.getPos().y;
+		double cameraZ = camera.getPos().z;
+
+		if (pair.isEmpty()) {
+			HitResult tgt = MinecraftClient.getInstance().crosshairTarget;
+
+			if (tgt instanceof BlockHitResult bhit && !world.getBlockState(bhit.getBlockPos()).isAir()) {
+				BlockPos pos = bhit.getBlockPos().offset(bhit.getSide());
+				drawCuboidShapeOutline(
+						ctx.matrixStack(), buffer,
+						VoxelShapes.fullCube(),
+						(double)pos.getX() - cameraX,
+						(double)pos.getY() - cameraY,
+						(double)pos.getZ() - cameraZ,
+						0.0F,
+						0.0F,
+						1.0F,
+						1F);
+			}
+		} else if (pair.first().isPresent() && pair.second().isEmpty()) {
+			HitResult tgt = MinecraftClient.getInstance().crosshairTarget;
+
+			if (tgt instanceof BlockHitResult bhit && !world.getBlockState(bhit.getBlockPos()).isAir()) {
+				BlockPos pos = bhit.getBlockPos().offset(bhit.getSide());
+
+				float flux = (float)Math.sin(world.getTimeOfDay() / 2f) * 0.2f;
+
+				float red = 0;
+				float blue = 0.8f + flux;
+				if (!BlueprintItem.isOk(pair.first().get(), pos)) {
+					red = 0.8f + flux;
+					blue = 0;
+				}
+
+				drawBlockBoxOutline(
+						ctx.matrixStack(), buffer,
+						BlockBox.create(pair.first().get(), pos),
+						cameraX,
+						cameraY,
+						cameraZ,
+						red,
+						0.0F,
+						blue,
+						1F);
+			} else {
+				BlockPos pos = pair.first().get();
+
+				drawCuboidShapeOutline(
+						ctx.matrixStack(), buffer,
+						VoxelShapes.fullCube(),
+						(double)pos.getX() - cameraX,
+						(double)pos.getY() - cameraY,
+						(double)pos.getZ() - cameraZ,
+						0.0F,
+						0.0F,
+						1.0F,
+						1F);
+			}
+		} else if (pair.first().isPresent() && pair.second().isPresent()) {
+			BlockBox box = BlockBox.create(pair.first().get(), pair.second().get());
+
+			drawBlockBoxOutline(
+					ctx.matrixStack(), buffer,
+					box,
+					cameraX,
+					cameraY,
+					cameraZ,
+					0.0F,
+					0.0F,
+					1.0F,
+					1F);
+		}
+	}
+
+	public static void drawCuboidShapeOutline(
+			MatrixStack matrices,
+			VertexConsumer vertexConsumer,
+			VoxelShape shape,
+			double offsetX,
+			double offsetY,
+			double offsetZ,
+			float red,
+			float green,
+			float blue,
+			float alpha
+	) {
+		MatrixStack.Entry entry = matrices.peek();
+		shape.forEachEdge(
+				(minX, minY, minZ, maxX, maxY, maxZ) -> {
+					float k = (float)(maxX - minX);
+					float l = (float)(maxY - minY);
+					float m = (float)(maxZ - minZ);
+					float n = MathHelper.sqrt(k * k + l * l + m * m);
+					k /= n;
+					l /= n;
+					m /= n;
+					vertexConsumer.vertex(entry, (float)(minX + offsetX), (float)(minY + offsetY), (float)(minZ + offsetZ))
+							.color(red, green, blue, alpha)
+							.normal(entry, k, l, m);
+					vertexConsumer.vertex(entry, (float)(maxX + offsetX), (float)(maxY + offsetY), (float)(maxZ + offsetZ))
+							.color(red, green, blue, alpha)
+							.normal(entry, k, l, m);
+				}
+		);
+	}
+
+	public static void drawBlockBoxOutline(
+			MatrixStack matrices,
+			VertexConsumer vertexConsumer,
+			BlockBox box,
+			double offsetX,
+			double offsetY,
+			double offsetZ,
+			float red,
+			float green,
+			float blue,
+			float alpha
+	) {
+
+		float minX = (float) (box.getMinX() - offsetX);
+		float minY = (float) (box.getMinY() - offsetY);
+		float minZ = (float) (box.getMinZ() - offsetZ);
+
+		float maxX = (float) (box.getMaxX() + 1 - offsetX);
+		float maxY = (float) (box.getMaxY() + 1 - offsetY);
+		float maxZ = (float) (box.getMaxZ() + 1 - offsetZ);
+
+		WorldRenderer.drawBox(matrices, vertexConsumer, minX, minY, minZ, maxX, maxY, maxZ, red, green, blue, alpha);
 	}
 }

@@ -1,6 +1,7 @@
 package fmt.cerulean.advancement;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import fmt.cerulean.client.tex.TextureRendering;
 import net.minecraft.advancement.AdvancementDisplay;
 import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.client.MinecraftClient;
@@ -95,59 +96,9 @@ public class CeruleanAdvancementTab extends AdvancementTab {
 
 		for (int ax = rStart; ax <= rEnd; ax++) {
 			for (int az = rStart; az <= rEnd; az++) {
-				drawTexturedQuad(matrices, PARASTAR, (x % 64) + (ax * 64), (z % 64) + (az * 64), 0.0F, 0.0F, 64, 64, 64, 64, 1, 1, 1, alpha);
+				TextureRendering.drawTexturedQuad(matrices, PARASTAR, (x % 64) + (ax * 64), (z % 64) + (az * 64), 0.0F, 0.0F, 64, 64, 64, 64, 1, 1, 1, alpha);
 			}
 		}
 		matrices.pop();
-	}
-
-
-	private static void drawTexturedQuad(
-			MatrixStack matrices, Identifier texture,
-			int x, int y, float u, float v,
-			int width, int height, int textureWidth, int textureHeight,
-			float red, float green, float blue, float alpha
-	) {
-		drawTexture(matrices, texture, x, x + width, y, y + height, 0, width, height, u, v, textureWidth, textureHeight, red, green, blue, alpha);
-	}
-
-	private static void drawTexture(
-			MatrixStack matrices, Identifier texture, int x1, int x2, int y1, int y2, int z,
-			int regionWidth, int regionHeight, float u, float v, int textureWidth, int textureHeight,
-			float red, float green, float blue, float alpha
-	) {
-		drawTexturedQuad(
-				matrices,
-				texture,
-				x1,
-				x2,
-				y1,
-				y2,
-				z,
-				(u + 0.0F) / (float)textureWidth,
-				(u + (float)regionWidth) / (float)textureWidth,
-				(v + 0.0F) / (float)textureHeight,
-				(v + (float)regionHeight) / (float)textureHeight,
-				red, green, blue, alpha
-		);
-	}
-
-	private static void drawTexturedQuad(
-			MatrixStack matrices, Identifier texture,
-			int x1, int x2, int y1, int y2, int z,
-			float u1, float u2, float v1, float v2,
-			float red, float green, float blue, float alpha
-	) {
-		RenderSystem.setShaderTexture(0, texture);
-		RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
-		RenderSystem.enableBlend();
-		Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-		BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-		bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).texture(u1, v1).color(red, green, blue, alpha);
-		bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).texture(u1, v2).color(red, green, blue, alpha);
-		bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2).color(red, green, blue, alpha);
-		bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).texture(u2, v1).color(red, green, blue, alpha);
-		BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-		RenderSystem.disableBlend();
 	}
 }

@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/template_trapdoor_open",
+  "textures": {
+    "texture": "cerulean:block/fuchsia_gapdoor",
+    "side": "cerulean:block/fuchsia_gapdoor_side",
+    "side2": "cerulean:block/fuchsia_gapdoor_side_2"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 13 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "uv": [  0, 13, 16, 16 ], "texture": "#side", "cullface": "down" },
+        "up":    { "uv": [  0, 16, 16, 13 ], "texture": "#side", "cullface": "up" },
+        "north": { "uv": [  0,  0, 16, 16 ], "texture": "#texture" },
+        "south": { "uv": [  0,  0, 16, 16 ], "texture": "#texture", "cullface": "south" },
+        "west":  { "uv": [ 16,  0, 13, 16 ], "texture": "#side2", "cullface": "west" },
+        "east":  { "uv": [ 13,  0, 16, 16 ], "texture": "#side2", "cullface": "east" }
+      }
+    }
+  ]
+}

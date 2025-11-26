@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "cerulean:block/inky_brick_slab"
+    },
+    "type=double": {
+      "model": "cerulean:block/inky_bricks"
+    },
+    "type=top": {
+      "model": "cerulean:block/inky_brick_slab_top"
+    }
+  }
+}

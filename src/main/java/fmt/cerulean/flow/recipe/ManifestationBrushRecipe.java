@@ -45,6 +45,9 @@ public class ManifestationBrushRecipe implements BrushRecipe {
 					if (result.isAccepted()) {
 						return;
 					}
+					if (stack.isEmpty()) {
+						return;
+					}
 				} catch (Exception e) {
 					// oops!
 				}

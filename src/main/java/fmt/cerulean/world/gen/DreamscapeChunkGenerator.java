@@ -60,7 +60,6 @@ public class DreamscapeChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public CompletableFuture<Chunk> populateNoise(Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor, Chunk chunk) {
-		chunk.setBlockState(new BlockPos(0, 64, 0), Blocks.STONE.getDefaultState(), false);
 		return CompletableFuture.completedFuture(chunk);
 	}
 

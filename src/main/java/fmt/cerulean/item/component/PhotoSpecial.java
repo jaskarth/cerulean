@@ -9,15 +9,17 @@ import net.minecraft.util.dynamic.Codecs;
 
 import java.util.BitSet;
 
-public record PhotoSpecial(String key, BitSet data) {
+public record PhotoSpecial(String key, BitSet data, int sort) {
 	public static final Codec<PhotoSpecial> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 	        Codec.STRING.fieldOf("key").forGetter(PhotoSpecial::key),
-	        Codecs.BIT_SET.fieldOf("data").forGetter(PhotoSpecial::data)
+	        Codecs.BIT_SET.fieldOf("data").forGetter(PhotoSpecial::data),
+			Codec.INT.fieldOf("sort").forGetter(PhotoSpecial::sort)
 	).apply(instance, PhotoSpecial::new));
 
 	public static final PacketCodec<ByteBuf, PhotoSpecial> PACKET_CODEC = PacketCodec.tuple(
 			PacketCodecs.STRING, PhotoSpecial::key,
 			PacketCodecs.BYTE_ARRAY.xmap(BitSet::valueOf, BitSet::toByteArray), PhotoSpecial::data,
+			PacketCodecs.INTEGER, PhotoSpecial::sort,
 			PhotoSpecial::new
 	);
 }

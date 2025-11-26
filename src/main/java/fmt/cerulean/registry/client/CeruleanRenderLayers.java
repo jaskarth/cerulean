@@ -4,9 +4,14 @@ import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanFluids;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+
+import java.util.OptionalDouble;
 
 public class CeruleanRenderLayers {
-	
+
 	public static void init() {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
 				CeruleanBlocks.PIPE,
@@ -38,11 +43,16 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.KALE,
 				CeruleanBlocks.KALE_PLANT,
 				CeruleanBlocks.OAK_GAPDOOR,
+				CeruleanBlocks.FUCHSIA_GAPDOOR,
 				CeruleanBlocks.HALITE_OUTCROPPING,
 				CeruleanBlocks.HALITE_OUTCROPPING_LARGE,
 				CeruleanBlocks.HALITE_OUTCROPPING_MEDIUM,
 				CeruleanBlocks.HALITE_OUTCROPPING_SMALL,
-				CeruleanBlocks.FLAG
+				CeruleanBlocks.FLAG,
+				CeruleanBlocks.ITEM_INDUCTOR,
+				CeruleanBlocks.ITEM_EXPELLER,
+				CeruleanBlocks.STARBLOOM,
+				CeruleanBlocks.BLUESHADE
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),

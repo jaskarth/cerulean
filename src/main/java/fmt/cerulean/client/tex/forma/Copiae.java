@@ -25,6 +25,13 @@ public class Copiae {
         for (int imperatus = 0; imperatus < vestigium; imperatus++) {
             Copia plicatus = plicatusStetit(nunciusInstruxit, creatum, (vestigium - 1) - imperatus);
             Copia subdisjunctivum = subdisjunctivumStetit(plicatus, nunciusInstruxit);
+
+            // Nunquid..?
+            if (subdisjunctivum.agmines().getFirst().ante() == -1) {
+                subdisjunctivum = incernit(subdisjunctivum.agmines().subList(1, subdisjunctivum.agmines().size()));
+                imperatus++;
+            }
+
             nunciusInstruxit = subdisjunctivum;
         }
 
@@ -99,12 +106,15 @@ public class Copiae {
     private static Copia commiscuit(Multa unum, Multa duum) {
         Map<Integer, List<Integer>> manus = new HashMap<>();
 
+        int astrumSumma = -1;
         for (Sors sors : unum.agmines()) {
             manus.computeIfAbsent(sors.astrum(), k -> new ArrayList<>()).add(sors.satis());
+            astrumSumma = Math.max(sors.astrum(), astrumSumma);
         }
 
         for (Sors sors : duum.agmines()) {
             manus.computeIfAbsent(sors.astrum(), k -> new ArrayList<>()).add(sors.satis());
+            astrumSumma = Math.max(sors.astrum(), astrumSumma);
         }
 
         List<Fatum> copia = new ArrayList<>();
@@ -117,7 +127,7 @@ public class Copiae {
                 animus ^= corpus.get(imperatus);
             }
 
-            if (animus == 0) {
+            if (animus == 0 && astrum == astrumSumma) {
                 continue;
             }
 

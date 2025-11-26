@@ -1,6 +1,9 @@
 package fmt.cerulean.world.gen;
 
+import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
+import fmt.cerulean.util.Voronoi;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Random;
 
@@ -24,5 +27,17 @@ public record IslandParameters(
 				distOffset,
 				plasticlogged
 		);
+	}
+
+	public static IslandParameters get(long seed, BlockPos pos) {
+		double scale = 48.0 * 4;
+		Voronoi vn = new Voronoi(seed);
+		int x = pos.getX();
+		int z = pos.getZ();
+		long uniq = vn.get(x / scale, z / scale);
+		Vec2d cp = vn.getCellPos(x / scale, z / scale, scale);
+		Vec2i center = cp.floor();
+
+		return IslandParameters.get(center, uniq);
 	}
 }

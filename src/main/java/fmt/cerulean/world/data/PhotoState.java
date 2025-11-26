@@ -67,7 +67,7 @@ public class PhotoState extends PersistentState {
 		markDirty();
 
 		if (player.getServerWorld().getServer() instanceof DedicatedServer || player.getServerWorld().getServer().getCurrentPlayerCount() > 1) {
-			return allocated < 36;
+			return allocated < 288;
 		}
 
 		return true;

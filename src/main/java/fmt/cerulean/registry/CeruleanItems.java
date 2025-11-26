@@ -54,6 +54,7 @@ public class CeruleanItems {
 	public static final Item GLITTER = register("glitter", new GlitterItem(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.2f).snack().build())
 	));
+	public static final Item PATINA = register("patina", new Item(new Item.Settings()));
 	// Food
 	public static final Item BERRIES = register("berries", new BerryItem(CeruleanBlocks.REEDS, new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.1f).alwaysEdible().build())
@@ -63,7 +64,7 @@ public class CeruleanItems {
 					.nutrition(3)
 					.saturationModifier(0.1f)
 					.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 400, 1), 1.0F)
-					.statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0), 1.0F)
+					.statusEffect(new StatusEffectInstance(CeruleanStatusEffects.OXIDIZED, 400, 0), 1.0F)
 					.build()
 			)));
 	public static final Item BREADCRUMBS = register("breadcrumbs", new Item(new Item.Settings()
@@ -80,6 +81,11 @@ public class CeruleanItems {
 					.statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 3600, 0), 1.0F)
 					.build()
 	)));
+	public static final Item BROWNIE = register("brownie", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.4f).snack()
+					.statusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 40, 0), 0.5F)
+					.build())
+	));
 	public static final Item HALITE_SALAD = register("halite_salad", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.8f).usingConvertsTo(Items.BOWL).build())
 	));
@@ -111,13 +117,15 @@ public class CeruleanItems {
 	public static final Item EYE_OF_RETURN_TO_SENDER = register("eye_of_return_to_sender", new EyeOfReturnToSenderItem(new Item.Settings().maxCount(1)));
 	public static final Item CARDS = register("cards", new CardsItem(new Item.Settings().maxCount(1)));
 	public static final Item REFLECTIVE_LENS = register("reflective_lens", new ReflectiveLensItem(new Item.Settings()));
-	public static final Item CAMERA = register("camera", new CameraItem(new Item.Settings()));
+	public static final Item CAMERA = register("camera", new CameraItem(new Item.Settings().maxCount(1)));
 	public static final Item FILM = register("film", new Item(new Item.Settings()));
-	public static final Item PHOTONEGATIVE = register("photonegative", new PhotonegativeItem(new Item.Settings()));
+	public static final Item PHOTONEGATIVE = register("photonegative", new PhotonegativeItem(new Item.Settings().maxCount(1)));
 	public static final Item PHOTOGRAPH = register("photograph", new PhotoItem(new Item.Settings()));
 	public static final Item SPARKLING_WATER = register("sparkling_water", new SparklingWaterItem(new Item.Settings()));
 	public static final Item OXIDATION_POTION = register("oxidation_potion", new OxidationPotionItem(new Item.Settings()));
 	public static final Item SPLASH_OXIDATION_POTION = register("splash_oxidation_potion", new SplashOxidationPotionItem(new Item.Settings()));
+	public static final Item BLUEPRINT = register("blueprint", new BlueprintItem(new Item.Settings().maxDamage(256)));
+	public static final Item CORAL_STRAINER = register("coral_strainer", new CoralStrainerItem(new Item.Settings().maxCount(1)));
 
 	// Just for EMI
 	public static final Map<FlowResource, Item> STARS = Maps.newHashMap();

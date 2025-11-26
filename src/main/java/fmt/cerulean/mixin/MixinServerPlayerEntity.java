@@ -56,6 +56,9 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Co
 	@Unique
 	private BlockPos cerulean$teleportPos = BlockPos.ORIGIN;
 
+	@Unique
+	private BlockPos cerulean$homePos = BlockPos.ORIGIN;
+
 	@Inject(method = "teleportTo", at = @At("RETURN"))
 	private void cerulean$resetState(TeleportTarget teleportTarget, CallbackInfoReturnable<Entity> cir) {
 		DimensionState st = Counterful.get((PlayerEntity) (Object) this);
@@ -144,8 +147,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Co
 					throw new RuntimeException("I stepped into the light, but only darkness engulfed me...");
 				}
 
-
-				BlockPos tp = cerulean$teleportPos.equals(BlockPos.ORIGIN) ? CeruleanDimensions.findSkiesSpawn(skies, new BlockPos(0, 0, 0)) : cerulean$teleportPos;
+				BlockPos tp = cerulean$teleportPos.equals(BlockPos.ORIGIN) ? CeruleanDimensions.findSkiesSpawn(skies, cerulean$homePos) : cerulean$teleportPos;
 
 				if (tp != null) {
 					if (CeruleanWorldState.get(getServerWorld()).getFor(player).truthful) {
@@ -185,5 +187,10 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity implements Co
 	@Override
 	public void cerulean$setTeleportTarget(BlockPos pos) {
 		cerulean$teleportPos = pos;
+	}
+
+	@Override
+	public void cerulean$setHomePos(BlockPos pos) {
+		cerulean$homePos = pos;
 	}
 }

@@ -23,12 +23,6 @@ public class NeodeDecoration extends Decoration {
 		boolean foundAny = false;
 
 		for (int y = 0; y < 256; y++) {
-//			if (foundAny) {
-//				if (world.getBlockState(pos.withY(y)).isOf(CeruleanBlocks.SPACEROCK)) {
-//					return;
-//				}
-//			}
-
 			if (world.getBlockState(pos.withY(y)).isOf(CeruleanBlocks.POLYETHYLENE)) {
 				foundAny = true;
 
@@ -55,8 +49,6 @@ public class NeodeDecoration extends Decoration {
 			}
 		}
 	}
-
-	// /execute in cerulean:skies run tp @s -312.89 129.46 3999.53 629.25 19.95
 
 	private static boolean tryGenerate(StructureWorldAccess world, Random random, BlockPos pos) {
 		DoublePerlinNoiseSampler sampler = DoublePerlinNoiseSampler.create(new CheckedRandom(random.nextLong()), -4, 1.0);

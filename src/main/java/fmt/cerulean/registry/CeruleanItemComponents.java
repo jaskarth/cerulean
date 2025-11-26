@@ -5,11 +5,9 @@ import fmt.cerulean.Cerulean;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.fluid.CanisterFluidType;
 import fmt.cerulean.item.EyeOfVendorItem;
-import fmt.cerulean.item.component.ColorTriplex;
-import fmt.cerulean.item.component.PhotoComponent;
-import fmt.cerulean.item.component.PhotoSpecial;
-import fmt.cerulean.item.component.ReturnToSenderComponent;
+import fmt.cerulean.item.component.*;
 import net.minecraft.component.ComponentType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -53,6 +51,16 @@ public class CeruleanItemComponents {
 	public static final ComponentType<PhotoSpecial> PHOTO_SPECIAL = register("photo_special", ComponentType.<PhotoSpecial>builder()
 			.codec(PhotoSpecial.CODEC)
 			.packetCodec(PhotoSpecial.PACKET_CODEC)
+			.build());
+
+	public static final ComponentType<PosPair> POS_PAIR = register("pos_pair", ComponentType.<PosPair>builder()
+			.codec(PosPair.CODEC)
+			.packetCodec(PosPair.PACKET_CODEC)
+			.build());
+
+	public static final ComponentType<ItemStack> ITEM_STACK = register("item_stack", ComponentType.<ItemStack>builder()
+			.codec(ItemStack.CODEC)
+			.packetCodec(ItemStack.PACKET_CODEC)
 			.build());
 
 	public static void init() {

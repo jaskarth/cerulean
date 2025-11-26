@@ -66,11 +66,13 @@ public class CeruleanWorldState extends PersistentState {
 	public static class State {
 		public boolean truthful = false;
 		public boolean worldworn = false;
+		public int foresight = 0;
 		public SolitaireState solitaire = new SolitaireState();
 
 		protected void writeNbt(NbtCompound nbt) {
 			nbt.putBoolean("Truth", truthful);
 			nbt.putBoolean("Worn", worldworn);
+			nbt.putInt("Foresight", foresight);
 			NbtCompound s = new NbtCompound();
 			solitaire.writeNbt(s);
 			nbt.put("Solitaire", s);
@@ -79,6 +81,7 @@ public class CeruleanWorldState extends PersistentState {
 		protected void readNbt(NbtCompound nbt) {
 			truthful = nbt.getBoolean("Truth");
 			worldworn = nbt.getBoolean("Worn");
+			foresight = nbt.getInt("Foresight");
 			solitaire.readNbt(nbt.getCompound("Solitaire"));
 		}
 	}

@@ -2,19 +2,12 @@ package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
 import fmt.cerulean.block.*;
+import fmt.cerulean.block.PillarBlock;
 import fmt.cerulean.mixin.BlockSettingsAccessor;
 import fmt.cerulean.util.SixSideOffsetter;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSetType;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Oxidizable;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.BlockItem;
@@ -22,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.ColorCode;
 
 public final class CeruleanBlocks {
 	// Building blocks
@@ -55,8 +49,35 @@ public final class CeruleanBlocks {
 	public static final Block CHISELED_SPACEROCK = register("chiseled_spacerock",
 			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
 
+	public static final Block SPACEROCK_PILLAR = register("spacerock_pillar",
+			new PillarBlock(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
 	public static final Block SMOOTH_SPACEROCK = register("smooth_spacerock",
 			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block INKY_BRICKS = register("inky_bricks",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block INKY_BRICK_STAIRS = register("inky_brick_stairs",
+			new StairsBlock(INKY_BRICKS.getDefaultState(), AbstractBlock.Settings.copyShallow(INKY_BRICKS)));
+
+	public static final Block INKY_BRICK_SLAB = register("inky_brick_slab",
+			new SlabBlock(AbstractBlock.Settings.copyShallow(INKY_BRICKS)));
+
+	public static final Block INKY_BRICK_WALL = register("inky_brick_wall",
+			new WallBlock(AbstractBlock.Settings.copyShallow(INKY_BRICKS).solid()));
+
+	public static final Block POLISHED_INKY_BRICKS = register("polished_inky_bricks",
+			new Block(AbstractBlock.Settings.copy(INKY_BRICKS)));
+
+	public static final Block CHISELED_INKY_BRICKS = register("chiseled_inky_bricks",
+			new Block(AbstractBlock.Settings.copy(INKY_BRICKS)));
+
+	public static final Block INKY_BRICK_PILLAR = register("inky_brick_pillar",
+			new PillarBlock(AbstractBlock.Settings.copy(INKY_BRICKS)));
+
+	public static final Block SMOOTH_INKY_BRICKS = register("smooth_inky_bricks",
+			new Block(AbstractBlock.Settings.copy(INKY_BRICKS)));
 
 	// Environmental/storage
 
@@ -66,11 +87,21 @@ public final class CeruleanBlocks {
 	public static final Block SORTED_BOOKSHELF = register("sorted_bookshelf",
 			new Block(AbstractBlock.Settings.copy(Blocks.BOOKSHELF)));
 
+	public static final Block FUCHSIA_BLOCK = register("fuchsia_block",
+			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+
 	public static final Block LUSTROUS_BLOCK = register("lustrous_block",
 			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
 
 	public static final Block DUCTILE_BLOCK = register("ductile_block",
 			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+
+	public static final Block CRUSHED_HALITE_BLOCK = register("crushed_halite_block",
+			new ColoredFallingBlock(
+					new ColorCode(0x96b672),
+					AbstractBlock.Settings.create().mapColor(MapColor.PALE_GREEN).instrument(NoteBlockInstrument.SNARE).strength(0.5F).sounds(BlockSoundGroup.SAND)
+			)
+	);
 
 	// Foliage
 
@@ -102,6 +133,24 @@ public final class CeruleanBlocks {
 					.breakInstantly()
 					.sounds(BlockSoundGroup.GRASS)
 					.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block STARBLOOM = register("starbloom",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.RED)
+							.noCollision()
+							.breakInstantly()
+							.sounds(BlockSoundGroup.GRASS)
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block BLUESHADE = register("blueshade",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.BLUE)
+							.noCollision()
+							.breakInstantly()
+							.sounds(BlockSoundGroup.GRASS)
+							.pistonBehavior(PistonBehavior.DESTROY))));
 
 	public static final Block KALE = registerBlockOnly("kale",
 			new KaleBlock(AbstractBlock.Settings.create()
@@ -261,6 +310,24 @@ public final class CeruleanBlocks {
 
 	public static final Block OAK_GAPDOOR = register("oak_gapdoor",
 			new GapDoorBlock(BlockSetType.OAK, AbstractBlock.Settings.copy(Blocks.OAK_TRAPDOOR)));
+
+	public static final Block FUCHSIA_GAPDOOR = register("fuchsia_gapdoor",
+			new FuchsiaGapDoorBlock(BlockSetType.IRON, AbstractBlock.Settings.copy(Blocks.IRON_TRAPDOOR)));
+
+	public static final Block REALITY_ANCHOR = register("reality_anchor",
+			new RealityAnchorBlock(AbstractBlock.Settings.copy(LUSTROUS_BLOCK)));
+
+	public static final Block ITEM_INDUCTOR = register("item_inductor",
+			new ItemInductorBlock(AbstractBlock.Settings.copy(DUCTILE_BLOCK)
+					.nonOpaque()
+					.allowsSpawning(Blocks::never)
+			));
+
+	public static final Block ITEM_EXPELLER = register("item_expeller",
+			new ItemExpellerBlock(AbstractBlock.Settings.copy(LUSTROUS_BLOCK)
+					.nonOpaque()
+					.allowsSpawning(Blocks::never)
+			));
 
 	// Pipe
 	public static final Block PIPE = register("pipe",

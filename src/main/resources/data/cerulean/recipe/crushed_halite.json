@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cerulean:crushed_halite_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "cerulean:crushed_halite"
+  }
+}

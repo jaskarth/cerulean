@@ -59,15 +59,6 @@ public abstract class MixinServerWorld extends World implements StructureWorldAc
 //		DreamscapeTeleporter.handleTeleport(toServerWorld());
 //	}
 
-	@Override
-	public GameRules getGameRules() {
-		GameRules rules = super.getGameRules();
-		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
-			return new DreamscapeGamerules(rules);
-		}
-		return rules;
-	}
-
 	@Inject(method = "spawnEntity", at = @At("HEAD"), cancellable = true)
 	private void cerulean$noEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		if (this.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {

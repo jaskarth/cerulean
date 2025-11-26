@@ -38,7 +38,21 @@
     "cerulean:item_detector",
     "cerulean:pipe_detector",
     "cerulean:destiny_detector",
-    "cerulean:light_core"
+    "cerulean:light_core",
+    "cerulean:fuchsia_gapdoor",
+    "cerulean:fuchsia_block",
+    "cerulean:spacerock_pillar",
+    "cerulean:inky_bricks",
+    "cerulean:inky_brick_stairs",
+    "cerulean:inky_brick_slab",
+    "cerulean:inky_brick_wall",
+    "cerulean:polished_inky_bricks",
+    "cerulean:chiseled_inky_bricks",
+    "cerulean:inky_brick_pillar",
+    "cerulean:smooth_inky_bricks",
+    "cerulean:item_inductor",
+    "cerulean:item_expeller",
+    "cerulean:reality_anchor"
   ],
   "replace": false
 }

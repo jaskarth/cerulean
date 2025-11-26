@@ -17,6 +17,15 @@ public class InspirationBrushRecipe implements BrushRecipe {
 	}
 
 	public InspirationBrushRecipe(CanvasRequirements canvas, int time, List<Ingredient> input, ItemStack output) {
+		this(canvas, time, input, output, true);
+	}
+
+	private InspirationBrushRecipe(CanvasRequirements canvas, int time, List<Ingredient> input, ItemStack output, boolean inspired) {
+		if (inspired) {
+			if (canvas.validOpposingBrightnesses.isEmpty() || canvas.validOpposingColors.isEmpty()) {
+				throw new IllegalStateException("Seems a something lacking inspiration");
+			}
+		}
 		this.canvas = canvas;
 		this.time = time;
 		this.input = input;
@@ -49,14 +58,14 @@ public class InspirationBrushRecipe implements BrushRecipe {
 	public static class Uninspired extends InspirationBrushRecipe {
 
 		public Uninspired(CanvasRequirements canvas, int time, Ingredient input, ItemStack output) {
-			super(canvas, time, List.of(input), output);
+			super(canvas, time, List.of(input), output, false);
 			if (!canvas.validOpposingBrightnesses.isEmpty() || !canvas.validOpposingColors.isEmpty()) {
 				throw new IllegalStateException("Inspiration is everywhere if you see it");
 			}
 		}
 
 		public Uninspired(CanvasRequirements canvas, int time, List<Ingredient> input, ItemStack output) {
-			super(canvas, time, input, output);
+			super(canvas, time, input, output, false);
 			if (!canvas.validOpposingBrightnesses.isEmpty() || !canvas.validOpposingColors.isEmpty()) {
 				throw new IllegalStateException("Inspiration is everywhere if you see it");
 			}

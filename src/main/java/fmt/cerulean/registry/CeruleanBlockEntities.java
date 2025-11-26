@@ -26,6 +26,9 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<PipeDetectorBlockEntity> PIPE_DETECTOR = register("pipe_detector", PipeDetectorBlockEntity::new, CeruleanBlocks.PIPE_DETECTOR);
 	public static final BlockEntityType<MirageBlockEntity> MIRAGE = register("mirage", MirageBlockEntity::new, CeruleanBlocks.MIRAGE);
 	public static final BlockEntityType<ProjectorBlockEntity> PROJECTOR = register("projector", ProjectorBlockEntity::new, CeruleanBlocks.PROJECTOR);
+	public static final BlockEntityType<RealityAnchorBlockEntity> REALITY_ANCHOR = register("reality_anchor", RealityAnchorBlockEntity::new, CeruleanBlocks.REALITY_ANCHOR);
+	public static final BlockEntityType<ItemInductorBlockEntity> ITEM_INDUCTOR = register("item_inductor", ItemInductorBlockEntity::new, CeruleanBlocks.ITEM_INDUCTOR);
+	public static final BlockEntityType<ItemExpellerBlockEntity> ITEM_EXPELLER = register("item_expeller", ItemExpellerBlockEntity::new, CeruleanBlocks.ITEM_EXPELLER);
 
 	public static void init() {
 	}

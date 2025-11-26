@@ -1,7 +1,8 @@
 {
   "values": [
     "cerulean:spacerock_wall",
-    "cerulean:spacebrick_wall"
+    "cerulean:spacebrick_wall",
+    "cerulean:inky_brick_wall"
   ],
   "replace": false
 }

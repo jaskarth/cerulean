@@ -2,22 +2,28 @@ package fmt.cerulean.entity;
 
 import fmt.cerulean.registry.CeruleanEntities;
 import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.registry.CeruleanStatusEffects;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.PotionEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class OxidationPotionEntity extends ThrownItemEntity implements FlyingItemEntity {
@@ -47,7 +53,8 @@ public class OxidationPotionEntity extends ThrownItemEntity implements FlyingIte
 	protected void onBlockHit(BlockHitResult blockHitResult) {
 		super.onBlockHit(blockHitResult);
 
-		if (!this.getWorld().isClient) {
+		World world = this.getWorld();
+		if (!world.isClient) {
 			BlockPos pos = blockHitResult.getBlockPos();
 
 			for (int x = -1; x <= 1; x++) {
@@ -66,6 +73,13 @@ public class OxidationPotionEntity extends ThrownItemEntity implements FlyingIte
 						applyOxidation(pos.add(x, y, z), chance);
 					}
 				}
+			}
+
+			List<PlayerEntity> players = new ArrayList<>();
+			world.collectEntitiesByType(EntityType.PLAYER, Box.from(pos.toCenterPos()).expand(3), p -> true, players);
+
+			for (PlayerEntity player : players) {
+				player.addStatusEffect(new StatusEffectInstance(CeruleanStatusEffects.OXIDIZED, 400, 0));
 			}
 		}
 	}

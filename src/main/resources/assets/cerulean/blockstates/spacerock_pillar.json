@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "pillar=both": {
+      "model": "cerulean:block/spacerock_pillar_both"
+    },
+    "pillar=top": {
+      "model": "cerulean:block/spacerock_pillar_top"
+    },
+    "pillar=bottom": {
+      "model": "cerulean:block/spacerock_pillar_bottom"
+    },
+    "pillar=neither": {
+      "model": "cerulean:block/spacerock_pillar"
+    }
+  }
+}

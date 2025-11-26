@@ -1,7 +1,12 @@
 package fmt.cerulean.block;
 
+import fmt.cerulean.block.base.PipeConnectable;
 import fmt.cerulean.block.base.Plasticloggable;
 import fmt.cerulean.block.entity.PipeBlockEntity;
+import fmt.cerulean.block.entity.WellBlockEntity;
+import fmt.cerulean.client.particle.StarParticleType;
+import fmt.cerulean.flow.FlowState;
+import fmt.cerulean.flow.FlowUser;
 import fmt.cerulean.registry.CeruleanBlockEntities;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanFluids;
@@ -15,6 +20,7 @@ import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -23,6 +29,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -110,14 +117,14 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 			return false;
 		}
 
-		return isPipe(state) || (state.getBlock() instanceof WellBlock && dir == state.get(WellBlock.FACING));
+		return isPipe(state) || (state.getBlock() instanceof PipeConnectable pc && pc.doesPipeConnect(state, dir));
 	}
 
 	public static boolean isPipe(BlockState state) {
 		return state.getBlock() instanceof PipeBlock;
 	}
 
-	private static boolean exclusiveType(BlockState state) {
+	public static boolean exclusiveType(BlockState state) {
 		// TODO: should be blocktag
 
 		return state.isOf(CeruleanBlocks.FUCHSIA_PIPE)
@@ -177,6 +184,13 @@ public class PipeBlock extends Block implements BlockEntityProvider, Waterloggab
 		}
 
 		super.onStateReplaced(state, world, pos, newState, moved);
+	}
+
+	@Override
+	public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		BlockHelper.emitStars(world, pos, 100);
+
+		return super.onBreak(world, pos, state, player);
 	}
 
 	private VoxelShape[] bakeShapes() {

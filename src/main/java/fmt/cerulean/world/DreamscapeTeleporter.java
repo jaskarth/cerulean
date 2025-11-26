@@ -223,11 +223,17 @@ public class DreamscapeTeleporter {
 					for (int y = expanded.getMinY(); y <= expanded.getMaxY(); y++) {
 						BlockPos oldPos = new BlockPos(x, y, z);
 						BlockPos newPos = oldPos.add(transX, transY, transZ);
-						if (expanded.contains(oldPos) && !target.contains(oldPos)) {
-							dreamscape.setBlockState(newPos, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
-						} else {
-							dreamscape.setBlockState(newPos, filterState(world, oldPos), Block.SKIP_DROPS);
-							handlePostState(dreamscape, world, oldPos, newPos);
+						try {
+							if (expanded.contains(oldPos) && !target.contains(oldPos)) {
+								dreamscape.setBlockState(newPos, CeruleanBlocks.INKY_VOID.getDefaultState(), Block.SKIP_DROPS);
+							} else {
+								dreamscape.setBlockState(newPos, filterState(world, oldPos), Block.SKIP_DROPS);
+								handlePostState(dreamscape, world, oldPos, newPos);
+							}
+						} catch (Exception e) {
+							// My eyes focus on the ceiling as I slowly drift into a deep sleep.
+							e.printStackTrace();
+							dreamscape.setBlockState(newPos, Blocks.BEDROCK.getDefaultState(), Block.SKIP_DROPS);
 						}
 					}
 				}
@@ -324,6 +330,7 @@ public class DreamscapeTeleporter {
 				});
 
 				((Conscious)p).cerulean$setTeleportTarget(teleportPos);
+				((Conscious)p).cerulean$setHomePos(p.getBlockPos());
 
 				p.teleportTo(new TeleportTarget(dreamscape, p.getPos().add(transX, transY, transZ), Vec3d.ZERO, p.getYaw(), p.getPitch(), e -> {}));
 			}
@@ -337,6 +344,10 @@ public class DreamscapeTeleporter {
 		}
 		if (st.isOf(Blocks.PISTON) || st.isOf(Blocks.MOVING_PISTON) || st.isOf(Blocks.STICKY_PISTON) || st.isOf(Blocks.PISTON_HEAD)) {
 			return Blocks.AIR.getDefaultState();
+		}
+
+		if (st.getBlock() instanceof BedBlock) {
+			return st.with(BedBlock.OCCUPIED, false);
 		}
 
 		if (st.isOf(CeruleanBlocks.STRONGBOX)) {

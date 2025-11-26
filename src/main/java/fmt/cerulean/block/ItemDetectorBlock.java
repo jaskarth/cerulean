@@ -71,4 +71,18 @@ public class ItemDetectorBlock extends BlockWithEntity {
 	protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
 		return state.get(POWERED) && state.get(FACING) == direction ? 15 : 0;
 	}
+
+	@Override
+	protected boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	@Override
+	protected int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		if (world.getBlockEntity(pos) instanceof ItemDetectorBlockEntity ibe) {
+			return ibe.getDetected();
+		}
+
+		return 0;
+	}
 }

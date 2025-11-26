@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cerulean:block/reality_anchor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cerulean:block/reality_anchor"
+    },
+    "facing=south": {
+      "model": "cerulean:block/reality_anchor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cerulean:block/reality_anchor",
+      "y": 270
+    }
+  }
+}
