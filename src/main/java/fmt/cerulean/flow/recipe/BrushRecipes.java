@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.compat.pastel.PastelBrushRecipes;
 import fmt.cerulean.compat.spectrum.SpectrumBrushRecipes;
 import fmt.cerulean.flow.FlowResource.Brightness;
 import fmt.cerulean.flow.FlowResource.Color;
@@ -1301,6 +1302,9 @@ public class BrushRecipes {
 
 		registeredModded = true;
 
+		if (FabricLoader.getInstance().isModLoaded("pastel")) {
+			PastelBrushRecipes.init();
+		}
 		if (FabricLoader.getInstance().isModLoaded("spectrum")) {
 			SpectrumBrushRecipes.init();
 		}
