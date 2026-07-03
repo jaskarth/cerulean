@@ -21,9 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClientPhotoStore implements PhotoStore {
-	private final Map<Integer, NativeImageBackedTexture> store = new HashMap<>();
+	private final Map<String, NativeImageBackedTexture> store = new HashMap<>();
 	private final Map<String, NativeImageBackedTexture> specialStore = new HashMap<>();
 	private final Map<Integer, Identifier> ids = new HashMap<>();
+	private final Map<Integer, Map<Integer, Identifier>> metaIds = new HashMap<>();
 	private final Map<String, Identifier> specialIds = new HashMap<>();
 	private final Map<Integer, Long> lastAsked = new HashMap<>();
 
@@ -41,13 +42,41 @@ public class ClientPhotoStore implements PhotoStore {
 			NativeImage img = NativeImage.read(buffer);
 
 			NativeImageBackedTexture tex = new NativeImageBackedTexture(img);
-			Identifier iid = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture("cerulean_photo/" + id, tex);
-			store.put(id, tex);
+			String name = "cerulean_photo/" + id;
+			Identifier iid = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture(name, tex);
+			store.put(name, tex);
 			ids.put(id, iid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+	public void addMeta(int id, int meta, byte[] data) {
+		try {
+			ByteBuffer buffer = BufferUtils.createByteBuffer(data.length);
+			buffer.put(data);
+			buffer.rewind();
+			NativeImage img = NativeImage.read(buffer);
+
+			NativeImageBackedTexture tex = new NativeImageBackedTexture(img);
+			String name = "cerulean_photo/" + id + "_" + meta;
+			Identifier iid = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture(name, tex);
+			store.put(name, tex);
+
+			metaIds.computeIfAbsent(id, k -> new HashMap<>()).put(meta, iid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public @Nullable Identifier getWithMeta(int id, int meta) {
+		Map<Integer, Identifier> ids = metaIds.get(id);
+		if (ids == null) {
+			return null;
+		}
+
+		return ids.get(meta);
 	}
 
 	public @Nullable Identifier getId(int id) {

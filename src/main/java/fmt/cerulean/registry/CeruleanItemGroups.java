@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CeruleanItemGroups {
 	private static final List<String> EXCLUDED = List.of(
-			"mimic", "inky_void", "faux", "mirage", "brush"
+			"mimic", "inky_void", "faux", "mirage", "brush", "ancient_photograph", "overlay", "ancient_photograph", "island_seed"
 	);
 
 	public static void init() {

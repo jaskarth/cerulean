@@ -52,7 +52,10 @@ public class CeruleanRenderLayers {
 				CeruleanBlocks.ITEM_INDUCTOR,
 				CeruleanBlocks.ITEM_EXPELLER,
 				CeruleanBlocks.STARBLOOM,
-				CeruleanBlocks.BLUESHADE
+				CeruleanBlocks.BLUESHADE,
+				CeruleanBlocks.PLANTED_STICK,
+				CeruleanBlocks.ROCK_CANDY,
+				CeruleanBlocks.ROCK_CANDY_SPIRE
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),

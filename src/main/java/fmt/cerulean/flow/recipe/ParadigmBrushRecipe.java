@@ -1,26 +1,37 @@
 package fmt.cerulean.flow.recipe;
 
+import fmt.cerulean.block.RockCandyBlock;
 import fmt.cerulean.flow.FlowResource;
+import fmt.cerulean.registry.CeruleanBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ParadigmBrushRecipe implements BrushRecipe{
+import java.util.List;
+
+public class ParadigmBrushRecipe implements BrushRecipe {
 
 	public final FlowResource.Color color;
 	public final Block source;
 	public final Block destination;
 	public final ItemStack collateral;
+	public final ItemStack principal;
 
 	public ParadigmBrushRecipe(FlowResource.Color color, Block source, Block destination, ItemStack collateral) {
-		this.color = color;
-		this.source = source;
-		this.destination = destination;
-		this.collateral = collateral;
+		this(color, source, destination, ItemStack.EMPTY, collateral);
 	}
+
+    public ParadigmBrushRecipe(FlowResource.Color color, Block source, Block destination, ItemStack principal, ItemStack collateral) {
+        this.color = color;
+        this.source = source;
+        this.destination = destination;
+        this.collateral = collateral;
+        this.principal = principal;
+    }
 
 	@Override
 	public int getCraftTime() {
@@ -38,10 +49,16 @@ public class ParadigmBrushRecipe implements BrushRecipe{
 			return false;
 		}
 
+        if (!principal.isEmpty()) {
+            if (!inventory.containsAll(List.of(Ingredient.ofStacks(principal.copy())))) {
+                return false;
+            }
+        }
+
 		World world = inventory.world;
 		for (int i = 0; i < 6; i++) {
 			BlockPos pos = inventory.pos.offset(inventory.direction, i);
-			if (world.getBlockState(pos).isOf(this.source)) {
+			if (isOurState(world.getBlockState(pos))) {
 				return true;
 			}
 		}
@@ -55,7 +72,7 @@ public class ParadigmBrushRecipe implements BrushRecipe{
 		for (int i = 0; i < 6; i++) {
 			BlockPos pos = inventory.pos.offset(inventory.direction, i);
 			BlockState state = world.getBlockState(pos);
-			if (state.isOf(this.source)) {
+			if (isOurState(state)) {
 				BlockState dest = this.destination.getDefaultState();
 
 				// Ugly hack
@@ -69,8 +86,32 @@ public class ParadigmBrushRecipe implements BrushRecipe{
 				if (!collateral.isEmpty()) {
 					Block.dropStack(world, pos, this.collateral.copy());
 				}
+                if (!principal.isEmpty()) {
+                    inventory.killItems(Ingredient.ofStacks(principal.copy()), principal.getCount());
+                }
 				return;
 			}
 		}
 	}
+
+    public BlockState getEffectiveSource() {
+        BlockState state = this.source.getDefaultState();
+        if (state.isOf(CeruleanBlocks.ROCK_CANDY)) {
+            return state.with(RockCandyBlock.STAGE, 3);
+        }
+
+        return state;
+    }
+
+    private boolean isOurState(BlockState state) {
+        if (state.isOf(this.source)) {
+            // A temporary respite...
+            if (this.source == CeruleanBlocks.ROCK_CANDY) {
+                return state.get(RockCandyBlock.STAGE) == 3;
+            }
+
+            return true;
+        }
+        return false;
+    }
 }

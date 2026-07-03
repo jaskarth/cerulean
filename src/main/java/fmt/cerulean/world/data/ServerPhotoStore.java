@@ -31,9 +31,27 @@ public class ServerPhotoStore implements PhotoStore {
 		}
 	}
 
+	public @Nullable byte[] getMeta(int id, int meta) {
+		try {
+			return Files.readAllBytes(base.resolve("img_" + id + "_" + meta + ".png"));
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public boolean add(int id, @NotNull byte[] data) {
 		try {
 			Files.write(base.resolve("img_" + id + ".png"), data);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean addMeta(int id, int meta, byte[] data) {
+		try {
+			Files.write(base.resolve("img_" + id + "_" + meta + ".png"), data);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

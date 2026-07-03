@@ -62,6 +62,8 @@ public class Cerulean implements ModInitializer {
 
 		BiomeDecorator.init();
 
+        CeruleanSounds.init();
+
 		CeruleanScreenHandlers.init();
 		CeruleanStatusEffects.init();
 

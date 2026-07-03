@@ -2,6 +2,7 @@ package fmt.cerulean.world.gen.feature.decorator;
 
 import fmt.cerulean.util.IntRange;
 import fmt.cerulean.world.gen.feature.Decorator;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 
@@ -19,7 +20,7 @@ public class ChanceRangeDecorator extends Decorator {
 	}
 
 	@Override
-	public List<BlockPos> getPositions(StructureWorldAccess world, Random random, BlockPos pos) {
+	public List<BlockPos> getPositions(DecoratingWorld world, Random random, BlockPos pos) {
 		List<BlockPos> list = new ArrayList<>();
 		if (random.nextInt(chance) == 0) {
 			int dx = random.nextInt(16);

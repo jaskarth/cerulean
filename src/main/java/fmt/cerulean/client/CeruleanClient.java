@@ -11,6 +11,7 @@ import fmt.cerulean.client.render.SkiesRenderer;
 import fmt.cerulean.client.render.entity.EmergencyRenderer;
 import fmt.cerulean.client.render.entity.MemoryFrameRenderer;
 import fmt.cerulean.client.render.item.EyeOfVenderer;
+import fmt.cerulean.client.screen.handled.ProjectorScreen;
 import fmt.cerulean.client.screen.handled.RealityAnchorScreen;
 import fmt.cerulean.client.tex.CeruleanAtlasSource;
 import fmt.cerulean.client.tex.CeruleanModelLoadingPlugin;
@@ -112,6 +113,7 @@ public class CeruleanClient implements ClientModInitializer {
 		EntityRendererRegistry.register(CeruleanEntities.OXIDATION_POTION, FlyingItemEntityRenderer::new);
 
 		HandledScreens.register(CeruleanScreenHandlers.REALITY_ANCHOR, RealityAnchorScreen::new);
+		HandledScreens.register(CeruleanScreenHandlers.PROJECTOR, ProjectorScreen::new);
 
 		WorldRenderEvents.AFTER_ENTITIES.register((ctx) -> {
 			ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
@@ -128,7 +130,7 @@ public class CeruleanClient implements ClientModInitializer {
 				return false;
 			}
 
-			if (ClientState.remember) {
+			if (ClientState.remember.k() > 0) {
 				return false;
 			}
 
@@ -143,7 +145,7 @@ public class CeruleanClient implements ClientModInitializer {
 				ClientState.EMERGENCIES.clear();
 			}
 
-			if (ClientState.remember) {
+			if (ClientState.remember.k() > 0) {
 				MinecraftClient client = MinecraftClient.getInstance();
 				Framebuffer framebuffer = client.getFramebuffer();
 
@@ -164,15 +166,20 @@ public class CeruleanClient implements ClientModInitializer {
 
 				try {
 					data = nm2.getBytes();
+					nm2.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
 				if (data != null) {
-					ClientPlayNetworking.send(new UploadMemoryPacket(data, client.player.headYaw, client.player.getPitch()));
+					ClientPlayNetworking.send(new UploadMemoryPacket(data, client.player.headYaw, client.player.getPitch(), ClientState.remember.k() - 1));
 				}
 
-				ClientState.remember = false;
+				if (ClientState.shouldEnact && ClientState.remember == ClientState.MemoryKind.SWEEP_K1) {
+					ClientState.remember = ClientState.MemoryKind.ENACT_K2;
+				} else {
+					ClientState.remember = ClientState.MemoryKind.NONE;
+				}
 			}
 		});
 

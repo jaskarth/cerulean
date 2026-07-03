@@ -51,6 +51,7 @@ public class WellBlockEntity extends BlockEntity implements FlowOutreach, Obedie
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {
+
 	}
 
 	public void clientTick(World world, BlockPos pos, BlockState state) {

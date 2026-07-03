@@ -50,7 +50,7 @@ public class ValveBlock extends PipeBlock {
 	@Override
 	protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
 		if (!world.isClient()) {
-			if (world.isReceivingRedstonePower(pos)) {
+			if (!state.get(POWERED) && world.isReceivingRedstonePower(pos)) {
 				world.setBlockState(pos, state.with(POWERED, true), Block.NOTIFY_LISTENERS);
 				world.playSound(
 						null,
@@ -60,7 +60,7 @@ public class ValveBlock extends PipeBlock {
 						1.0F,
 						world.getRandom().nextFloat() * 0.1F + 0.9F
 				);
-			} else {
+			} else if (state.get(POWERED)) {
 				world.scheduleBlockTick(pos, this, 4);
 			}
 		}

@@ -3,11 +3,13 @@ package fmt.cerulean.mixin.client;
 import fmt.cerulean.block.entity.WellBlockEntity;
 import fmt.cerulean.client.ClientState;
 import fmt.cerulean.client.particle.StarParticleType;
+import fmt.cerulean.client.render.frame.CeruleanFramebuffers;
 import fmt.cerulean.client.screen.ColorProgressScreen;
-import fmt.cerulean.flow.FlowOutreach;
+import fmt.cerulean.client.screen.ImgProgressScreen;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.flow.FlowUser;
 import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.registry.CeruleanSounds;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -18,6 +20,8 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +32,6 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(MinecraftClient.class)
@@ -54,7 +57,11 @@ public abstract class MixinMinecraftClient {
 			return;
 		}
 
-		if (cerulean$changingWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.DREAMSCAPE)) {
+		if (cerulean$changingWorld.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions .DREAMSCAPE)) {
+//			if (this.world != null && this.world.getDimensionEntry().getKey().get().getValue().equals(CeruleanDimensions.SKIES)) {
+//				setScreen(new ImgProgressScreen(true));
+//				return;
+//			}
 			ClientState.virtigo = 45;
 			ClientState.virtigoColor = 0x101020;
 
@@ -124,8 +131,10 @@ public abstract class MixinMinecraftClient {
 					this.player.getInventory().getStack(idx).decrement(1);
 					this.player.getItemCooldownManager().set(CeruleanItems.CAMERA, 9999); // Server knows best
 
-					ClientState.remember = true;
+                    world.playSound(this.player, this.player.getX(), this.player.getEyeY(), this.player.getZ(), CeruleanSounds.SHUTTER, SoundCategory.MASTER, 1f, 1.15f);
+					ClientState.remember = ClientState.MemoryKind.SWEEP_K1;
 					ClientState.forget = true;
+					ClientState.shouldEnact = false;
 					if (!this.options.getHideLightningFlashes().getValue()) {
 						ClientState.virtigo = 10;
 						ClientState.virtigoColor = 0xFFFFFF;
@@ -139,8 +148,13 @@ public abstract class MixinMinecraftClient {
 			locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
 	private void cerulean$holdDownPhoto(CallbackInfo ci, Hand[] var1, int var2, int var3, Hand hand) {
 		ItemStack itemStack = this.player.getStackInHand(hand);
-		if (itemStack.isOf(CeruleanItems.PHOTOGRAPH)) {
+		if (itemStack.isOf(CeruleanItems.PHOTOGRAPH) || itemStack.isOf(CeruleanItems.ANCIENT_PHOTOGRAPH)) {
 			ci.cancel();
 		}
+	}
+
+	@Inject(method = "onResolutionChanged", at = @At("TAIL"))
+	private void cerulean$captureResolutionChange(CallbackInfo ci) {
+		CeruleanFramebuffers.onMainWindowResized();
 	}
 }

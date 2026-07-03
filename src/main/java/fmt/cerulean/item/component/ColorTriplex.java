@@ -66,6 +66,10 @@ public record ColorTriplex(Optional<FlowResource.Color> a, Optional<FlowResource
 	}
 
 	public int toABGR() {
+		return (0xFF << 24) | toBGR();
+	}
+
+	public int toBGR() {
 		Vector3f colA = a.map(FlowResource.Color::toRGBVec).orElse(new Vector3f(0, 0, 0));
 		Vector3f colB = b.map(FlowResource.Color::toRGBVec).orElse(new Vector3f(0, 0, 0));
 		Vector3f colC = c.map(FlowResource.Color::toRGBVec).orElse(new Vector3f(0, 0, 0));
@@ -76,6 +80,6 @@ public record ColorTriplex(Optional<FlowResource.Color> a, Optional<FlowResource
 		int g = (int) MathHelper.clampedMap(res.y, 0, 1, 0, 255);
 		int b = (int) MathHelper.clampedMap(res.z, 0, 1, 0, 255);
 
-		return (0xFF << 24) | (r << 16) | (g << 8) | b;
+		return (r << 16) | (g << 8) | b;
 	}
 }

@@ -79,6 +79,15 @@ public final class CeruleanBlocks {
 	public static final Block SMOOTH_INKY_BRICKS = register("smooth_inky_bricks",
 			new Block(AbstractBlock.Settings.copy(INKY_BRICKS)));
 
+	public static final Block HALITE_BRICKS = register("halite_bricks",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block PETRICHORATED_BRICKS = register("petrichorated_bricks",
+			new Block(AbstractBlock.Settings.copy(Blocks.STONE_BRICKS)));
+
+	public static final Block COBBLED_ROCK_CANDY = register("cobbled_rock_candy",
+			new Block(AbstractBlock.Settings.copy(Blocks.COBBLESTONE)));
+
 	// Environmental/storage
 
 	public static final Block STAR_WELL = register("star_well",
@@ -95,6 +104,24 @@ public final class CeruleanBlocks {
 
 	public static final Block DUCTILE_BLOCK = register("ductile_block",
 			new Block(AbstractBlock.Settings.copy(Blocks.GOLD_BLOCK)));
+
+    public static final Block GLIMMERLIGHT = register("glimmerlight",
+            new Block(AbstractBlock.Settings.create()
+                    .mapColor(MapColor.PALE_YELLOW)
+                    .strength(0.3F)
+                    .sounds(BlockSoundGroup.FROGLIGHT)
+                    .luminance(state -> 14)
+                    .solidBlock(Blocks::never)
+            ));
+
+    public static final Block GLITTERLIGHT = register("glitterlight",
+            new Block(AbstractBlock.Settings.create()
+                    .mapColor(MapColor.MAGENTA)
+                    .strength(0.3F)
+                    .sounds(BlockSoundGroup.FROGLIGHT)
+                    .luminance(state -> 12)
+                    .solidBlock(Blocks::never)
+            ));
 
 	public static final Block CRUSHED_HALITE_BLOCK = register("crushed_halite_block",
 			new ColoredFallingBlock(
@@ -225,7 +252,7 @@ public final class CeruleanBlocks {
 							.noCollision()
 							.breakInstantly()
 							.luminance(s -> 14)
-							.sounds(BlockSoundGroup.GRASS)
+							.sounds(BlockSoundGroup.METAL)
 							.pistonBehavior(PistonBehavior.DESTROY))));
 
 	public static final Block GLITTERING_STICKBLOSSOM = register("glittering_stickblossom",
@@ -235,7 +262,7 @@ public final class CeruleanBlocks {
 							.noCollision()
 							.breakInstantly()
 							.luminance(s -> 14)
-							.sounds(BlockSoundGroup.GRASS)
+							.sounds(BlockSoundGroup.METAL)
 							.pistonBehavior(PistonBehavior.DESTROY))));
 
 	public static final Block STICKBLOSSOMLESS = register("stickblossomless",
@@ -244,7 +271,26 @@ public final class CeruleanBlocks {
 							.mapColor(MapColor.LIGHT_BLUE_GRAY)
 							.noCollision()
 							.breakInstantly()
-							.sounds(BlockSoundGroup.GRASS)
+							.sounds(BlockSoundGroup.METAL)
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block PLANTED_STICK = registerBlockOnly("planted_stick",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.LIGHT_BLUE_GRAY)
+							.noCollision()
+							.breakInstantly()
+							.sounds(BlockSoundGroup.METAL)
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
+	public static final Block ROCK_CANDY = registerBlockOnly("rock_candy",
+			new RockCandyBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.LIGHT_BLUE_GRAY)
+							.noCollision()
+							.breakInstantly()
+							.ticksRandomly()
+							.sounds(BlockSoundGroup.METAL)
 							.pistonBehavior(PistonBehavior.DESTROY))));
 
 	// Halite
@@ -277,6 +323,14 @@ public final class CeruleanBlocks {
 	public static final Block HALITE_OUTCROPPING_SMALL = register("halite_outcropping_small",
 			new HaliteOutcroppingBlock(7.0F, 4.0F, AbstractBlock.Settings.copy(HALITE_OUTCROPPING)));
 
+	public static final Block ROCK_CANDY_SPIRE = register("rock_candy_spire",
+			new CeruleanPlantBlock(offsetter(
+					AbstractBlock.Settings.create()
+							.mapColor(MapColor.DULL_PINK)
+							.sounds(BlockSoundGroup.DEEPSLATE)
+							.dynamicBounds()
+							.pistonBehavior(PistonBehavior.DESTROY))));
+
 	// Functional
 	public static final Block DESTINY_DETECTOR = register("destiny_detector",
 			new DestinyDetectorBlock(AbstractBlock.Settings.copy(Blocks.STONE).ticksRandomly()));
@@ -286,6 +340,12 @@ public final class CeruleanBlocks {
 
 	public static final Block PIPE_DETECTOR = register("pipe_detector",
 			new PipeDetectorBlock(AbstractBlock.Settings.copy(Blocks.OBSERVER)));
+
+	public static final Block REDSTONE_PARALLAX = register("redstone_parallax",
+			new RedstoneParallaxBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
+
+	public static final Block ISLAND_SEED = register("island_seed",
+			new IslandSeedBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
 
 	public static final Block LIGHT_CORE = register("light_core",
 			new LightCoreBlock(AbstractBlock.Settings.copy(Blocks.HEAVY_CORE)

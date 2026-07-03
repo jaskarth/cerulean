@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "cerulean:block/cobbled_rock_candy"
+  }
+}

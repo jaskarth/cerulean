@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinPlayerEntityRenderer {
 	@Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
 	public void cerulean$renderEmergency(AbstractClientPlayerEntity player, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-		if (ClientState.remember) {
+		if (ClientState.remember.k() > 0) {
 			if (player.getStackInHand(Hand.MAIN_HAND).isOf(CeruleanItems.CAMERA) || player.getStackInHand(Hand.OFF_HAND).isOf(CeruleanItems.CAMERA)) {
 				ClientState.EMERGENCIES.add(player);
 				ci.cancel();

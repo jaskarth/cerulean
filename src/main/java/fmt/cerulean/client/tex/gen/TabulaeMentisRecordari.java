@@ -16,7 +16,7 @@ public class TabulaeMentisRecordari {
 	private static final Random FORTUNAE = new Random();
 
 	private static final int COPIA_INMEMOR = 8;
-	private static final int COPIA_MEMORIAE = 10;
+	private static final int COPIA_MEMORIAE = 8;
 
 	private static final NativeImage[] INMEMOR = new NativeImage[COPIA_INMEMOR];
 	private static final NativeImage[] MEMORIAE = new NativeImage[COPIA_MEMORIAE];

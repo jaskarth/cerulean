@@ -4,6 +4,7 @@ import fmt.cerulean.block.HaliteOutcroppingBlock;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.gen.feature.Decoration;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 public class NeodeDecoration extends Decoration {
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		int startY = -1;
 		int endY = 0;
 		boolean foundAny = false;
@@ -50,7 +51,7 @@ public class NeodeDecoration extends Decoration {
 		}
 	}
 
-	private static boolean tryGenerate(StructureWorldAccess world, Random random, BlockPos pos) {
+	private static boolean tryGenerate(DecoratingWorld world, Random random, BlockPos pos) {
 		DoublePerlinNoiseSampler sampler = DoublePerlinNoiseSampler.create(new CheckedRandom(random.nextLong()), -4, 1.0);
 		Set<BlockPos> set = new HashSet<>();
 		for (int x = -4; x <= 4; x++) {
@@ -78,7 +79,7 @@ public class NeodeDecoration extends Decoration {
 				BlockPos local = p.offset(d);
 				if (world.getBlockState(local).isOf(CeruleanBlocks.POLYETHYLENE) && !set.contains(local)) {
 					if (random.nextInt(8) == 0) {
-						world.setBlockState(p, CeruleanBlocks.SLASHED_HALITE_BLOCK.getDefaultState(), 3);
+						world.setBlockState(p, CeruleanBlocks.SLASHED_HALITE_BLOCK.getDefaultState());
 
 						Block block = switch (random.nextInt(4)) {
 							case 0 -> CeruleanBlocks.HALITE_OUTCROPPING_SMALL;
@@ -90,13 +91,13 @@ public class NeodeDecoration extends Decoration {
 
 						world.setBlockState(p.offset(d), block.getDefaultState()
 								.with(HaliteOutcroppingBlock.FACING, d)
-								.with(HaliteOutcroppingBlock.PLASTICLOGGED, true), 3);
+								.with(HaliteOutcroppingBlock.PLASTICLOGGED, true));
 
 						hasSet = true;
 
 						break;
 					} else if (random.nextBoolean()) {
-						world.setBlockState(p, CeruleanBlocks.HALITE_BLOCK.getDefaultState(), 3);
+						world.setBlockState(p, CeruleanBlocks.HALITE_BLOCK.getDefaultState());
 						hasSet = true;
 						break;
 					}
@@ -104,7 +105,7 @@ public class NeodeDecoration extends Decoration {
 			}
 
 			if (!hasSet) {
-				world.setBlockState(p, CeruleanBlocks.SPACEROCK.getDefaultState(), 3);
+				world.setBlockState(p, CeruleanBlocks.SPACEROCK.getDefaultState());
 			}
 		}
 

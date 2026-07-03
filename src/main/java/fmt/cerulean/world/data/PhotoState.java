@@ -135,6 +135,19 @@ public class PhotoState extends PersistentState {
 		markDirty();
 	}
 
+	public int addMeta(ServerPlayerEntity forPlayer, int meta, byte[] data) {
+		PhotoAllocation alloc = allocation.get(forPlayer.getUuid());
+		if (alloc == null) {
+			return -1;
+		}
+
+		int id = alloc.list.getLast();
+		store.addMeta(id, meta, data);
+		markDirty();
+
+		return id;
+	}
+
 	public @Nullable PhotoMeta getMeta(int id) {
 		return metas.get(id);
 	}

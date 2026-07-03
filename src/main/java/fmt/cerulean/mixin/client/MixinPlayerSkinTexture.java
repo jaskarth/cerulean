@@ -1,4 +1,4 @@
-package fmt.cerulean.mixin;
+package fmt.cerulean.mixin.client;
 
 import com.mojang.blaze3d.platform.TextureUtil;
 import fmt.cerulean.client.tex.gen.Oxidator;
@@ -22,13 +22,13 @@ public abstract class MixinPlayerSkinTexture extends ResourceTexture implements 
 		super(location);
 	}
 
-	@Inject(method = "onTextureLoaded", at = @At("RETURN"))
+	@Inject(method = "onTextureLoaded", at = @At("HEAD"))
 	private void cerulean$captureTexture(NativeImage image, CallbackInfo ci) {
 		if (cerulean$texture != null) {
 			cerulean$texture.close();
 		}
 
-		NativeImage img = new NativeImage(image.getFormat(), image.getWidth(), image.getHeight(), false);
+		NativeImage img = new NativeImage(image.getFormat(), image.getWidth(), image.getHeight(), true);
 		img.copyFrom(image);
 		cerulean$texture = img;
 	}

@@ -8,11 +8,11 @@ import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
-import fmt.cerulean.util.Voronoi;
-import fmt.cerulean.world.gen.IslandParameters;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
+import fmt.cerulean.world.gen.synth.Voronoi;
+import fmt.cerulean.world.gen.synth.IslandParameters;
 import fmt.cerulean.world.gen.feature.Decoration;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class WellDecoration extends Decoration {
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		Voronoi vn = new Voronoi(world.getSeed());
 
 		int x = pos.getX();
@@ -42,7 +42,7 @@ public class WellDecoration extends Decoration {
 		if (center.x() >= pos.getX() && center.z() >= pos.getZ() && center.x() <= pos.getX() + 15 && center.z() <= pos.getZ() + 15) {
 			int topY = world.getTopY(Heightmap.Type.OCEAN_FLOOR_WG, center.x(), center.z());
 			BlockPos wellPos = new BlockPos(center.x(), topY - 1, center.z());
-			world.setBlockState(wellPos, CeruleanBlocks.STAR_WELL.getDefaultState(), 3);
+			world.setBlockState(wellPos, CeruleanBlocks.STAR_WELL.getDefaultState());
 
 			if (world.getBlockEntity(wellPos) instanceof WellBlockEntity well) {
 				boolean plasticlogged = p.plasticlogged();
@@ -64,7 +64,7 @@ public class WellDecoration extends Decoration {
 				}
 
 				if (y < 160) {
-					world.setBlockState(new BlockPos(center.x(), y, center.z()), CeruleanBlocks.STAR_WELL.getDefaultState().with(WellBlock.FACING, Direction.DOWN), 3);
+					world.setBlockState(new BlockPos(center.x(), y, center.z()), CeruleanBlocks.STAR_WELL.getDefaultState().with(WellBlock.FACING, Direction.DOWN));
 
 					if (world.getBlockEntity(new BlockPos(center.x(), y, center.z())) instanceof WellBlockEntity well) {
 						boolean plasticlogged = p.plasticlogged();
@@ -83,7 +83,7 @@ public class WellDecoration extends Decoration {
 		}
 	}
 
-	private static boolean replaceable(StructureWorldAccess world, Vec2i center, int y) {
+	private static boolean replaceable(DecoratingWorld world, Vec2i center, int y) {
 		BlockState state = world.getBlockState(new BlockPos(center.x(), y, center.z()));
 		return state.isAir() || state.isOf(CeruleanBlocks.POLYETHYLENE);
 	}

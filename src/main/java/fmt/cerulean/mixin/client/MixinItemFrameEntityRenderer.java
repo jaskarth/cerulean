@@ -6,6 +6,7 @@ import fmt.cerulean.item.component.ColorTriplex;
 import fmt.cerulean.item.component.PhotoComponent;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
+import fmt.cerulean.util.Powerful;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -45,8 +46,6 @@ public abstract class MixinItemFrameEntityRenderer {
 					matrixStack.translate(0.0F, 0.0F, 0.4375F);
 				}
 
-				int j = itemFrameEntity.getRotation() % 4 * 2;
-
 				matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180.0F));
 				float h = 0.0078125F;
 				matrixStack.scale(0.0078125F, 0.0078125F, 0.0078125F);
@@ -64,6 +63,11 @@ public abstract class MixinItemFrameEntityRenderer {
 					if (id == null) {
 						id = StaticTexture.ID;
 						ClientState.PHOTOS.ask(photo.id());
+					} else if (((Powerful)itemFrameEntity).cerulean$isPowered()) {
+						Identifier meta = ClientState.PHOTOS.getWithMeta(photo.id(), 1);
+						if (meta != null) {
+							id = meta;
+						}
 					}
 				}
 

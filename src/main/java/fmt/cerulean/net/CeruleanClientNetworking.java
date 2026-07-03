@@ -19,10 +19,15 @@ public class CeruleanClientNetworking {
 
 		ClientPlayNetworking.registerGlobalReceiver(SupplyMemoryPacket.ID, (payload, ctx) -> {
 			int id = payload.id();
+			int meta = payload.meta();
 			byte[] data = payload.data();
 
 			ctx.client().execute(() -> {
-				ClientState.PHOTOS.add(id, data);
+				if (meta == 0) {
+					ClientState.PHOTOS.add(id, data);
+				} else {
+					ClientState.PHOTOS.addMeta(id, meta, data);
+				}
 			});
 		});
 

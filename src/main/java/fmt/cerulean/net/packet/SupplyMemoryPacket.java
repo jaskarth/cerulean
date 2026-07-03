@@ -6,10 +6,11 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 
-public record SupplyMemoryPacket(int id, byte[] data) implements CustomPayload {
+public record SupplyMemoryPacket(int id, int meta, byte[] data) implements CustomPayload {
 	public static final Id<SupplyMemoryPacket> ID = new CustomPayload.Id<>(CeruleanNetworking.SUPPLY_MEMORY);
 	public static final PacketCodec<RegistryByteBuf, SupplyMemoryPacket> CODEC = PacketCodec.tuple(
 			PacketCodecs.INTEGER, p -> p.id,
+			PacketCodecs.INTEGER, p -> p.meta,
 			// 4M max size
 			PacketCodecs.byteArray(1 << 22), p -> p.data,
 			SupplyMemoryPacket::new

@@ -2,6 +2,7 @@ package fmt.cerulean.world.gen.feature.decorator;
 
 import fmt.cerulean.util.IntRange;
 import fmt.cerulean.world.gen.feature.Decorator;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureWorldAccess;
@@ -18,7 +19,7 @@ public class ChanceHeightmapDecorator extends Decorator {
 	}
 
 	@Override
-	public List<BlockPos> getPositions(StructureWorldAccess world, Random random, BlockPos pos) {
+	public List<BlockPos> getPositions(DecoratingWorld world, Random random, BlockPos pos) {
 		if (random.nextInt(chance) != 0) {
 			return List.of();
 		}

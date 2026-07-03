@@ -1,15 +1,13 @@
 package fmt.cerulean.world;
 
 import fmt.cerulean.Cerulean;
-import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
-import fmt.cerulean.util.Voronoi;
-import fmt.cerulean.world.gen.IslandParameters;
+import fmt.cerulean.world.gen.synth.Voronoi;
+import fmt.cerulean.world.gen.synth.IslandParameters;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.chunk.Chunk;
 
 public class CeruleanDimensions {
 	public static final Identifier DREAMSCAPE = Cerulean.id("dreamscape");

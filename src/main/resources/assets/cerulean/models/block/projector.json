@@ -1,6 +1,10 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
-    "all": "cerulean:block/texwip"
+    "bottom": "cerulean:block/lustrous_block",
+    "front": "cerulean:block/projector/face",
+    "south": "cerulean:block/projector/input",
+    "side": "cerulean:block/projector/side",
+    "top": "cerulean:block/lustrous_block"
   }
 }

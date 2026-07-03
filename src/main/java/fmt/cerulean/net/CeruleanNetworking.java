@@ -16,6 +16,8 @@ public class CeruleanNetworking {
 	public static final Identifier STARING = Cerulean.id("staring");
 	public static final Identifier WINS = Cerulean.id("wins");
 	public static final Identifier WIN = Cerulean.id("win");
+	public static final Identifier UPDATE_PROP = Cerulean.id("update_prop");
+	public static final Identifier RETURN_AGAIN = Cerulean.id("return_again");
 
 	public static void init() {
 		// s2c
@@ -31,5 +33,7 @@ public class CeruleanNetworking {
 		PayloadTypeRegistry.playC2S().register(RequestMemoryPacket.ID, RequestMemoryPacket.CODEC);
 		PayloadTypeRegistry.playC2S().register(StaringPacket.ID, StaringPacket.CODEC);
 		PayloadTypeRegistry.playC2S().register(WinPacket.ID, WinPacket.CODEC);
+		PayloadTypeRegistry.playC2S().register(UpdatePropPacket.ID, UpdatePropPacket.CODEC);
+		PayloadTypeRegistry.playC2S().register(ReturnAgainPacket.ID, ReturnAgainPacket.CODEC);
 	}
 }

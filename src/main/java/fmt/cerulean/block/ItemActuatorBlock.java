@@ -81,7 +81,11 @@ public abstract class ItemActuatorBlock extends BlockWithEntity implements Plast
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getSide());
+		World world = ctx.getWorld();
+		BlockPos pos = ctx.getBlockPos();
+		return this.getDefaultState()
+				.with(FACING, ctx.getSide())
+				.with(PLASTICLOGGED, world.getFluidState(pos).getFluid() == CeruleanFluids.POLYETHYLENE);
 	}
 
 	@Override

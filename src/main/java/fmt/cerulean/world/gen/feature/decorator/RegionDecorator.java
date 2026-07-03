@@ -1,6 +1,7 @@
 package fmt.cerulean.world.gen.feature.decorator;
 
-import fmt.cerulean.util.ImprovedChunkRandom;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
+import fmt.cerulean.world.gen.synth.ImprovedChunkRandom;
 import fmt.cerulean.world.gen.feature.Decorator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
@@ -23,7 +24,7 @@ public class RegionDecorator extends Decorator {
 	}
 
 	@Override
-	public List<BlockPos> getPositions(StructureWorldAccess world, Random random, BlockPos pos) {
+	public List<BlockPos> getPositions(DecoratingWorld world, Random random, BlockPos pos) {
 		int chunkX = pos.getX() >> 4;
 		int chunkZ = pos.getZ() >> 4;
 		int rx = Math.floorDiv(chunkX, size);

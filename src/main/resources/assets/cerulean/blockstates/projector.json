@@ -1,7 +1,27 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "cerulean:block/projector",
+      "y": 90
+    },
+    "facing=north": {
       "model": "cerulean:block/projector"
+    },
+    "facing=south": {
+      "model": "cerulean:block/projector",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cerulean:block/projector",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "cerulean:block/projector",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "cerulean:block/projector",
+      "x": 90
     }
   }
 }

@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
+import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.FluidEmiStack;
@@ -51,12 +52,12 @@ public class EmiBrushRecipe extends BasicEmiRecipe {
 	public final List<OrderedText> info;
 	public boolean nonsense = false;
 
-	public EmiBrushRecipe(Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, Text info) {
-		this(id, inputStars, inputItems, outputStar, outputItems, blocks, split(info));
+	public EmiBrushRecipe(EmiRecipeCategory category, Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, Text info) {
+		this(category, id, inputStars, inputItems, outputStar, outputItems, blocks, split(info));
 	}
 
-	private EmiBrushRecipe(Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, List<OrderedText> info) {
-		super(CeruleanEmiPlugin.BRUSHING, id, 100, 18 + (inputItems.isEmpty() ? 0 : 20) + (outputItems.isEmpty() ? 0 : 20) + info.size() * 12);
+	private EmiBrushRecipe(EmiRecipeCategory category, Identifier id, List<EmiIngredient> inputStars, List<EmiIngredient> inputItems, EmiIngredient outputStar, List<EmiIngredient> outputItems, List<BlockState> blocks, List<OrderedText> info) {
+		super(category, id, 100, 18 + (inputItems.isEmpty() ? 0 : 20) + (outputItems.isEmpty() ? 0 : 20) + info.size() * 12);
 		this.inputStars = inputStars;
 		this.inputItems = inputItems;
 		this.outputStar = outputStar;

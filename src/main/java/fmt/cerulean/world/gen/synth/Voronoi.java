@@ -1,10 +1,11 @@
-package fmt.cerulean.util;
+package fmt.cerulean.world.gen.synth;
 
+import fmt.cerulean.util.Vec2d;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 
 // Simple voronoi diagram
-public final class Voronoi {
+public final class Voronoi implements VoronoiSampler {
     private final long seed;
     private final ImprovedChunkRandom random = new ImprovedChunkRandom(0);
 

@@ -177,8 +177,14 @@ public class SolitaireScreen extends Screen {
 		int cx = width / 2 - CARD_WIDTH / 2;
 		int top = Math.max(0, (height - 260) / 2);
 		for (int i = 0; i < Board.COLS; i++) {
-			renderStack(context, mouseX, mouseY, board.arts.get(i), cx - i * 30 - CARD_WIDTH, top);
-			renderStack(context, mouseX, mouseY, board.dream.get(i), cx + i * 30 + CARD_WIDTH, top);
+            int y = top;
+            int x = cx - i * 30 - CARD_WIDTH;
+            context.fill(x + 1, y + 1, x + CARD_WIDTH - 1, y + CARD_HEIGHT - 1, 0x44aaaaaa);
+			renderStack(context, mouseX, mouseY, board.arts.get(i), x, y);
+
+            x = cx + i * 30 + CARD_WIDTH;
+            context.fill(x + 1, y + 1, x + CARD_WIDTH - 1, y + CARD_HEIGHT - 1, 0x44aaaaaa);
+			renderStack(context, mouseX, mouseY, board.dream.get(i), x, y);
 		}
 		if (board.pickup != null) {
 			context.getMatrices().push();

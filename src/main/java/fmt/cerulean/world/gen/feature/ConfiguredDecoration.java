@@ -1,5 +1,6 @@
 package fmt.cerulean.world.gen.feature;
 
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 
@@ -16,7 +17,7 @@ public class ConfiguredDecoration extends Decoration {
 	}
 
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		List<BlockPos> list = this.decor.getPositions(world, random, pos);
 
 		for (BlockPos p : list) {

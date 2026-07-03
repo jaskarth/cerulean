@@ -80,6 +80,17 @@
   "block.cerulean.crushed_halite_block": "Block of Crushed Halite",
   "block.cerulean.starbloom": "Starbloom",
   "block.cerulean.blueshade": "Blueshade",
+  "block.cerulean.redstone_parallax": "Redstone Parallax",
+  "block.cerulean.planted_stick": "Planted Stick",
+  "block.cerulean.planted_rock_candy": "Planted Rock Candy",
+  "block.cerulean.rock_candy": "Rock Candy",
+  "block.cerulean.rock_candy_spire": "Rock Candy Spire",
+  "block.cerulean.halite_bricks": "Halite Bricks",
+  "block.cerulean.petrichorated_bricks": "Petrichorated Bricks",
+  "block.cerulean.cobbled_rock_candy": "Cobbled Rock Candy",
+  "block.cerulean.glimmerlight": "Glimmerlight",
+  "block.cerulean.glitterlight": "Glitterlight",
+
 
   "item.cerulean.pipe": "Pipe",
   "item.cerulean.exposed_pipe": "Exposed Pipe",
@@ -155,6 +166,15 @@
   "item.cerulean.crushed_halite_block": "Block of Crushed Halite",
   "item.cerulean.starbloom": "Starbloom",
   "item.cerulean.blueshade": "Blueshade",
+  "item.cerulean.redstone_parallax": "Redstone Parallax",
+  "item.cerulean.planted_stick": "Planted Stick",
+  "item.cerulean.planted_rock_candy": "Planted Rock Candy",
+  "item.cerulean.halite_bricks": "Halite Bricks",
+  "item.cerulean.rock_candy_spire": "Rock Candy Spire",
+  "item.cerulean.petrichorated_bricks": "Petrichorated Bricks",
+  "item.cerulean.cobbled_rock_candy": "Cobbled Rock Candy",
+  "item.cerulean.glimmerlight": "Glimmerlight",
+  "item.cerulean.glitterlight": "Glitterlight",
 
   "item.cerulean.berries": "Berries",
   "item.cerulean.glimmercrumb": "Glimmercrumb",
@@ -210,6 +230,12 @@
   "item.cerulean.coral_strainer": "Coral Strainer",
   "item.cerulean.brownie": "Brownie",
   "item.cerulean.patina": "Patina",
+  "item.cerulean.rock_candy": "Rock Candy",
+  "item.cerulean.granulated_rock_candy": "Granulated Rock Candy",
+  "item.cerulean.petrichor": "Petrichor",
+  "item.cerulean.ancient_photograph": "Ancient Photograph",
+  "item.cerulean.clementine": "Clementine",
+  "item.cerulean.ball_bearing": "Ball Bearing",
 
   "item.cerulean.brilliant_ash_star": "Brilliant Ash Star",
   "item.cerulean.brilliant_cerulean_star": "Brilliant Cerulean Star",
@@ -256,6 +282,8 @@
   "effect.cerulean.oxidized": "Oxidized",
 
   "emi.category.cerulean.brushing": "Star Brushing",
+  "emi.category.cerulean.rotating": "Star Rotating",
+  "emi.category.cerulean.sweeping": "Star Sweeping",
   "emi.category.cerulean.photographic_transformation": "Photographic Transformation",
   "emi.category.cerulean.strongbox_ripening": "Strongbox Ripening",
 
@@ -314,6 +342,9 @@
   "info.cerulean.imprinting": "Make memories tangible",
   "info.cerulean.straining": "Brush with an item to imprint it",
   "info.cerulean.recipe.revelation": "Something omnipresent yet unseen is uncovered.",
+  "info.cerulean.recipe.revelation.power": "Perhaps a bit of power is needed?",
+  "info.cerulean.dissolution.simple": "Spreads common plants",
+  "info.cerulean.dissolution.advanced": "Spreads common and rare plants",
 
   "info.cerulean.strongbox.recipe.unknowable.0": "I can't dream of what's inside.",
   "info.cerulean.strongbox.recipe.unknowable.1": "There's no way I can open it here.",
@@ -393,6 +424,8 @@
   "advancements.cerulean.the_disposition": "The Disposition",
   "advancements.cerulean.the_disposition.desc": "I can't open it like this.",
   "advancements.cerulean.the_disposition.desc_alt": "Maybe sleeping on it will help.",
+
+  "subtitles.cerulean.shutter": "Shutter Clicks",
 
   "cerulean.group": "Cerulean"
 }

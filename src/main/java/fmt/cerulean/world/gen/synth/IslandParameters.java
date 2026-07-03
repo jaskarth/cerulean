@@ -1,8 +1,7 @@
-package fmt.cerulean.world.gen;
+package fmt.cerulean.world.gen.synth;
 
 import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
-import fmt.cerulean.util.Voronoi;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Random;
@@ -11,7 +10,8 @@ public record IslandParameters(
 		Vec2i center,
 		int startOff,
 		double distOffset,
-		boolean plasticlogged
+		boolean plasticlogged,
+		boolean cavity
 ) {
 	public static IslandParameters get(Vec2i center, long data) {
 		Random random = new Random(data);
@@ -20,12 +20,14 @@ public record IslandParameters(
 		double distOffset = random.nextDouble() * 2.5;
 
 		boolean plasticlogged = random.nextInt(7) == 0;
+		boolean cavity = random.nextInt() > 0;
 
 		return new IslandParameters(
 				center,
 				startOff,
 				distOffset,
-				plasticlogged
+				plasticlogged,
+				cavity
 		);
 	}
 

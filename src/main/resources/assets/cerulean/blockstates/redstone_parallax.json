@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "cerulean:block/redstone_parallax"
+    },
+    "powered=true": {
+      "model": "cerulean:block/redstone_parallax_on"
+    }
+  }
+}

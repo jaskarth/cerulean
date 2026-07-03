@@ -1,9 +1,7 @@
 package fmt.cerulean.test;
 
-import fmt.cerulean.util.Voronoi;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
-import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.util.math.random.CheckedRandom;
 
 import java.util.Random;

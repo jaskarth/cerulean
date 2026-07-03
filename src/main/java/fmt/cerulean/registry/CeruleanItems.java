@@ -33,6 +33,13 @@ public class CeruleanItems {
 	public static final Item CRUSHED_HALITE = register("crushed_halite", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.2f).snack().build())
 	));
+	public static final Item ROCK_CANDY = register("rock_candy", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.8f).snack().build())
+	));
+	public static final Item GRANULATED_ROCK_CANDY = register("granulated_rock_candy", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder().nutrition(3).saturationModifier(0.8f).snack().build())
+	));
+	public static final Item PETRICHOR = register("petrichor", new PetrichorItem(new Item.Settings()));
 	public static final Item FUCHSIA_INGOT = register("fuchsia_ingot", new Item(new Item.Settings()));
 	public static final Item LUSTROUS_INGOT = register("lustrous_ingot", new Item(new Item.Settings()));
 	public static final Item DUCTILE_INGOT = register("ductile_ingot", new Item(new Item.Settings()));
@@ -41,7 +48,8 @@ public class CeruleanItems {
 	public static final Item WEATHERED_COPPER_INGOT = register("weathered_copper_ingot", new Item(new Item.Settings()));
 	public static final Item OXIDIZED_COPPER_INGOT = register("oxidized_copper_ingot", new Item(new Item.Settings()));
 	public static final Item GLASS_LENS = register("glass_lens", new Item(new Item.Settings()));
-	public static final Item DUCTILE_ROD = register("ductile_rod", new Item(new Item.Settings()));
+	public static final Item DUCTILE_ROD = register("ductile_rod", new AliasedBlockItem(CeruleanBlocks.PLANTED_STICK, new Item.Settings()));
+    public static final Item PLANTED_ROCK_CANDY = register("planted_rock_candy", new AliasedBlockItem(CeruleanBlocks.ROCK_CANDY, new Item.Settings()));
 	public static final Item UNINITIATED_GLITTER = register("uninitiated_glitter", new GlitterItem(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(2).saturationModifier(0.2f).snack().build())
 	));
@@ -81,6 +89,28 @@ public class CeruleanItems {
 					.statusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 3600, 0), 1.0F)
 					.build()
 	)));
+	public static final Item CLEMENTINE = register("clementine", new Item(new Item.Settings()
+			.food(new FoodComponent.Builder()
+					.nutrition(8)
+					.saturationModifier(0.2f)
+					.alwaysEdible()
+					.statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 100, 0), 1.0F)
+					.statusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 1800, 0), 1.0F)
+					.build()
+			)));
+
+    public static final Item BALL_BEARING = register("ball_bearing", new Item(new Item.Settings()
+            .food(new FoodComponent.Builder()
+                    .nutrition(8)
+                    .saturationModifier(0.4f)
+                    .alwaysEdible()
+                    .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 3600, 0), 1.0F)
+                    .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0), 1.0F)
+                    .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 3600, 0), 1.0F)
+                    .build()
+            )));
+
 	public static final Item BROWNIE = register("brownie", new Item(new Item.Settings()
 			.food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.4f).snack()
 					.statusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 40, 0), 0.5F)
@@ -121,6 +151,7 @@ public class CeruleanItems {
 	public static final Item FILM = register("film", new Item(new Item.Settings()));
 	public static final Item PHOTONEGATIVE = register("photonegative", new PhotonegativeItem(new Item.Settings().maxCount(1)));
 	public static final Item PHOTOGRAPH = register("photograph", new PhotoItem(new Item.Settings()));
+	public static final Item ANCIENT_PHOTOGRAPH = register("ancient_photograph", new FauxtoItem(new Item.Settings()));
 	public static final Item SPARKLING_WATER = register("sparkling_water", new SparklingWaterItem(new Item.Settings()));
 	public static final Item OXIDATION_POTION = register("oxidation_potion", new OxidationPotionItem(new Item.Settings()));
 	public static final Item SPLASH_OXIDATION_POTION = register("splash_oxidation_potion", new SplashOxidationPotionItem(new Item.Settings()));

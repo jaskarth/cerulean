@@ -14,6 +14,7 @@
     "MixinEntity",
     "MixinInventoryChangedCriterion",
     "MixinItemEntity",
+    "MixinItemFrameEntity",
     "MixinNoiseConfig",
     "MixinPaintingEntity",
     "MixinPlayerEntity",
@@ -23,9 +24,13 @@
     "MixinWorld"
   ],
   "client": [
-    "MixinPlayerSkinTexture",
     "client.DrawContextAccessor",
     "client.GameRendererAccessor",
+    "client.LightmapTextureManagerAccessor",
+    "client.MixinWailaClientAccessor",
+    "client.RenderSystemAccessor",
+
+    "client.MixinPlayerSkinTexture",
     "client.MixinAbstractClientPlayerEntity",
     "client.MixinAdvancementTab",
     "client.MixinAdvancementToast",
@@ -45,9 +50,7 @@
     "client.MixinSprite",
     "client.MixinTextRenderer",
     "client.MixinTextureManager",
-    "client.MixinWailaClientAccessor",
-    "client.MixinWorldRenderer",
-    "client.RenderSystemAccessor"
+    "client.MixinWorldRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

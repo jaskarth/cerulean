@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "cerulean:block/planted_stick",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "cerulean:block/planted_stick",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cerulean:block/planted_stick",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "cerulean:block/planted_stick",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "cerulean:block/planted_stick"
+    },
+    "facing=west": {
+      "model": "cerulean:block/planted_stick",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

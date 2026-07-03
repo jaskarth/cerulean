@@ -40,6 +40,8 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 	private static final Set<Brightness> ALL_BRIGHTNESSES_EXCEPT_BRILLIANT = ALL_BRIGHTNESSES.stream().filter(b -> b != Brightness.BRILLIANT).collect(Collectors.toSet());
 	private static final EmiIngredient ALL_STARS = of(Arrays.stream(Color.values()).collect(Collectors.toSet()), ALL_BRIGHTNESSES);
 	public static final EmiRecipeCategory BRUSHING = new EmiRecipeCategory(Cerulean.id("brushing"), of(FlowResources.star(Color.CERULEAN, Brightness.BRILLIANT)));
+	public static final EmiRecipeCategory ROTATING = new EmiRecipeCategory(Cerulean.id("rotating"), of(FlowResources.star(Color.VIRIDIAN, Brightness.BRILLIANT)));
+	public static final EmiRecipeCategory SWEEPING = new EmiRecipeCategory(Cerulean.id("sweeping"), of(FlowResources.star(Color.ROSE, Brightness.BRILLIANT)));
 	public static final EmiRecipeCategory PHOTOGRAPHIC_TRANSFORMATION = new EmiRecipeCategory(Cerulean.id("photographic_transformation"), EmiStack.of(CeruleanItems.PHOTOGRAPH));
 	public static final EmiRecipeCategory STRONGBOX_RIPENING = new EmiRecipeCategory(Cerulean.id("strongbox_ripening"), EmiStack.of(CeruleanBlocks.STRONGBOX));
 
@@ -47,15 +49,19 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 	public void register(EmiRegistry registry) {
 		registry.removeEmiStacks(EmiStack.of(CeruleanBlocks.INKY_VOID));
 		registry.addCategory(BRUSHING);
+		registry.addCategory(ROTATING);
+		registry.addCategory(SWEEPING);
 		registry.addCategory(PHOTOGRAPHIC_TRANSFORMATION);
 		registry.addCategory(STRONGBOX_RIPENING);
 		registry.addWorkstation(BRUSHING, EmiStack.of(CeruleanBlocks.STAR_WELL));
+		registry.addWorkstation(ROTATING, EmiStack.of(CeruleanBlocks.STAR_WELL));
+		registry.addWorkstation(SWEEPING, EmiStack.of(CeruleanBlocks.STAR_WELL));
 		registry.addWorkstation(PHOTOGRAPHIC_TRANSFORMATION, EmiStack.of(CeruleanItems.CAMERA));
 		registry.addWorkstation(STRONGBOX_RIPENING, EmiStack.of(CeruleanBlocks.STRONGBOX));
 		for (BrushRecipe recipe : Stream.concat(BrushRecipes.SOLO_RECIPES.stream(), BrushRecipes.DUAL_RECIPES.stream()).toList()) {
 			Identifier id = BrushRecipes.GET_ID.get(recipe);
 			if (recipe instanceof InspirationBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(BRUSHING, id,
 					inputStars(real.canvas),
 					compressy(real.input.stream().map(EmiIngredient::of).toList()),
 					EmiStack.EMPTY,
@@ -64,7 +70,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					null
 				));
 			} else if (recipe instanceof BerryFlavoringBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 					List.of(ALL_STARS),
 					List.of(EmiStack.of(CeruleanItems.BERRIES)),
 					EmiStack.EMPTY,
@@ -73,7 +79,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.berry_flavor")
 				));
 			} else if (recipe instanceof UnblightBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(ROTATING, id,
 					inputStars(real.canvas),
 					List.of(),
 					of(Set.of(real.color), ALL_BRIGHTNESSES),
@@ -82,7 +88,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.unblight")
 				));
 			} else if (recipe instanceof ManifestationBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 					List.of(of(Set.of(Color.LILAC), ALL_BRIGHTNESSES)),
 					List.of(),
 					EmiStack.EMPTY,
@@ -91,7 +97,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.manifestation")
 				));
 			} else if (recipe instanceof AnxietyManifestationBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 					List.of(of(Set.of(Color.VIRIDIAN), ALL_BRIGHTNESSES)),
 					List.of(EmiIngredient.of(TagKey.of(RegistryKeys.ITEM, Identifier.of("c", "tools")))),
 					EmiStack.EMPTY,
@@ -100,16 +106,16 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.anxiety_manifestation")
 				));
 			} else if (recipe instanceof ParadigmBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 					List.of(of(Set.of(real.color), ALL_BRIGHTNESSES)),
-					List.of(EmiStack.of(real.source)),
+                        real.principal.isEmpty() ? List.of(EmiStack.of(real.source)) : List.of(EmiStack.of(real.source), EmiStack.of(real.principal)),
 					EmiStack.EMPTY,
 					real.collateral.isEmpty() ? List.of(EmiStack.of(real.destination)) : List.of(EmiStack.of(real.destination), EmiStack.of(real.collateral)),
-					List.of(real.source.getDefaultState()),
+					List.of(real.getEffectiveSource()),
 					Text.translatable("info.cerulean.paradigm")
 				));
 			} else if (recipe instanceof AgoraphobicGardeningBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(ROTATING, id,
 					inputStars(real.canvas),
 					List.of(),
 					of(Set.of(real.color), real.wiltChance > 0 ? ALL_BRIGHTNESSES : ALL_BRIGHTNESSES_EXCEPT_BRILLIANT),
@@ -118,7 +124,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					real.wiltChance > 0 ? Text.translatable("info.cerulean.agoraphobic_gardening") : Text.translatable("info.cerulean.agoraphobic_gardening_simple")
 				));
 			} else if (recipe instanceof CinderingAfterglowBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(ROTATING, id,
 					inputStars(real.canvas),
 					List.of(),
 					of(real.canvas.validColors, (real.twicetwice && real.twicetwice) ? Set.of(Brightness.INNOCUOUS) : ALL_BRIGHTNESSES_EXCEPT_DIM),
@@ -127,7 +133,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.cindering_afterglow" + ((real.twicetwice && real.twicetwice) ? "_twice" : ""))
 				));
 			} else if (recipe instanceof BevvyTastingBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(ROTATING, id,
 					List.of(of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_BRILLIANT)),
 					List.of(),
 					of(ALL_COLORS, ALL_BRIGHTNESSES_EXCEPT_DIM),
@@ -136,7 +142,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.bevvy_tasting")
 				));
 			} else if (recipe instanceof EmpathyBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 					inputStars(real.canvas),
 					List.of(EmiStack.of(CeruleanItems.STAMP)),
 					EmiStack.EMPTY,
@@ -145,7 +151,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 					Text.translatable("info.cerulean.empathy_" + (real.strict ? "stress" : "relief"))
 				));
 			} else if (recipe instanceof TriviaStainingRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 						inputStars(real.canvas),
 						List.of(EmiStack.of(real.input)),
 						EmiStack.EMPTY,
@@ -154,7 +160,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 						Text.translatable(real.misremembered ? "info.cerulean.trivia_staining.misremembered" : "info.cerulean.trivia_staining")
 				));
 			} else if (recipe instanceof ImprintingRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 						inputStars(real.canvas),
 						List.of(EmiStack.of(CeruleanItems.PHOTONEGATIVE), EmiStack.of(Items.PAPER)),
 						EmiStack.EMPTY,
@@ -163,7 +169,7 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 						Text.translatable("info.cerulean.imprinting")
 				));
 			} else if (recipe instanceof StrainingBrushRecipe real) {
-				registry.addRecipe(new EmiBrushRecipe(id,
+				registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
 						inputStars(real.canvas),
 						List.of(EmiStack.of(CeruleanItems.CORAL_STRAINER)),
 						EmiStack.EMPTY,
@@ -171,7 +177,16 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 						List.of(),
 						Text.translatable("info.cerulean.straining")
 				));
-			} else {
+			} else if (recipe instanceof DissolutionBrushRecipe real) {
+                registry.addRecipe(new EmiBrushRecipe(SWEEPING, id,
+                        List.of(of(Set.of(real.color), ALL_BRIGHTNESSES)),
+                        List.of(EmiStack.of(CeruleanItems.PETRICHOR)),
+                        EmiStack.EMPTY,
+                        List.of(),
+                        List.of(real.block.getDefaultState()),
+                        Text.translatable("info.cerulean.dissolution." + (real.advanced ? "advanced" : "simple"))
+                ));
+            } else {
 				throw new IllegalStateException("Unhandled recipe kind: " + recipe.getClass().getSimpleName());
 			}
 		}
@@ -205,6 +220,9 @@ public class CeruleanEmiPlugin implements EmiPlugin {
 
 		registry.addRecipe(new PhotographicTransformationRecipe(Cerulean.id("/revelation"),
 				null, Text.translatable("info.cerulean.recipe.revelation")));
+
+		registry.addRecipe(new PhotographicTransformationRecipe(Cerulean.id("/parallax_power"),
+				EmiStack.of(CeruleanBlocks.REDSTONE_PARALLAX), Text.translatable("info.cerulean.recipe.revelation.power")));
 
 		registry.addRecipe(new StrongboxRipeningRecipe(Cerulean.id("/reflective_lens"), EmiStack.of(CeruleanItems.GLASS_LENS), EmiStack.of(CeruleanItems.REFLECTIVE_LENS)));
  	}

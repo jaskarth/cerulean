@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.gl.SimpleFramebuffer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.*;
 import net.minecraft.resource.ResourceFactory;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
@@ -94,5 +95,38 @@ public class ScreenFramebuffer extends SimpleFramebuffer {
 
 	public int getPixelHeight() {
 		return pixelHeight;
+	}
+
+	public static void drawFramebuffer(DrawContext context, ScreenFramebuffer framebuffer, int x, int y) {
+		int x2 = x + framebuffer.getPixelWidth();
+		int y2 = y + framebuffer.getPixelHeight();
+		int z = 0;
+
+		// Flip vertically
+		int yy = y;
+		y = y2;
+		y2 = yy;
+
+		float u1 = 0;
+		float u2 = 1;
+		float v1 = 0;
+		float v2 = 1;
+
+		RenderSystem.enableDepthTest();
+
+		RenderSystem.setShaderTexture(0, framebuffer.getColorAttachment());
+		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+		Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
+		BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+
+		RenderSystem.disableCull();
+
+		bufferBuilder.vertex(matrix4f, (float)x, (float)y, (float)z).texture(u1, v1);
+		bufferBuilder.vertex(matrix4f, (float)x, (float)y2, (float)z).texture(u1, v2);
+		bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2);
+		bufferBuilder.vertex(matrix4f, (float)x2, (float)y, (float)z).texture(u2, v1);
+		BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+
+		RenderSystem.enableCull();
 	}
 }

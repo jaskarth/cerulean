@@ -3,10 +3,12 @@ package fmt.cerulean.mixin.client;
 import com.mojang.authlib.GameProfile;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.client.ClientState;
+import fmt.cerulean.client.render.item.Holdable;
 import fmt.cerulean.client.render.item.Pressable;
 import fmt.cerulean.item.component.PhotoComponent;
 import fmt.cerulean.net.CeruleanNetworking;
 import fmt.cerulean.net.packet.CloseBehindPacket;
+import fmt.cerulean.net.packet.ReturnAgainPacket;
 import fmt.cerulean.net.packet.StaringPacket;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
@@ -29,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerEntity.class)
-public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity implements Pressable {
+public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity implements Pressable, Holdable {
 	@Shadow public abstract float getYaw(float tickDelta);
 
 	@Unique
@@ -40,6 +42,12 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
 	@Unique
 	private boolean cerulean$photoLetGo = false;
+
+	@Unique
+	private boolean cerulean$isHoldingFreshAncientPhoto = false;
+
+	@Unique
+	private int cerulean$lastSelectedSlot = -1;
 
 	public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
 		super(world, profile);
@@ -73,22 +81,32 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 			cerulean$replaceTimer = 0;
 		}
 
-		if (this.getOffHandStack().isEmpty() && getActiveItem().isOf(CeruleanItems.PHOTOGRAPH)) {
+		int slot = this.getInventory().selectedSlot;
+		if (slot != cerulean$lastSelectedSlot) {
+			cerulean$lastSelectedSlot = slot;
+			if (getMainHandStack().isOf(CeruleanItems.ANCIENT_PHOTOGRAPH)) {
+				cerulean$isHoldingFreshAncientPhoto = true;
+			}
+		}
+
+		if (this.getOffHandStack().isEmpty() && (getActiveItem().isOf(CeruleanItems.PHOTOGRAPH) || getActiveItem().isOf(CeruleanItems.ANCIENT_PHOTOGRAPH))) {
 			if (isUsingItem()) {
 				cerulean$photoUsingTicks++;
 				cerulean$photoLetGo = false;
 			} else {
+				cerulean$photoUsingTicks = Math.clamp(cerulean$photoUsingTicks, -1, 4);
+
 				cerulean$photoUsingTicks--;
 				cerulean$photoLetGo = true;
 			}
 		} else {
+			cerulean$photoUsingTicks = Math.clamp(cerulean$photoUsingTicks, -1, 4);
+
 			cerulean$photoUsingTicks--;
 			cerulean$photoLetGo = true;
 		}
 
-		cerulean$photoUsingTicks = Math.clamp(cerulean$photoUsingTicks, -1, 4);
-
-		if (cerulean$photoUsingTicks == 4 && (this.getWorld().getTime() & 1) == 0) {
+		if (Math.clamp(cerulean$photoUsingTicks, -1, 4) == 4 && (this.getWorld().getTime() & 1) == 0) {
 			ItemStack stack = getActiveItem();
 			PhotoComponent photo = stack.get(CeruleanItemComponents.PHOTO);
 
@@ -97,10 +115,14 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 			}
 		}
 
+		if (cerulean$photoUsingTicks == 100 && getActiveItem().isOf(CeruleanItems.ANCIENT_PHOTOGRAPH)) {
+			ClientPlayNetworking.send(ReturnAgainPacket.INST);
+		}
+
 		if (ClientState.emergencyRender > -2) {
 			ClientState.emergencyRender++;
 
-			if (ClientState.emergencyRender > 40) {
+			if (ClientState.emergencyRender > 60) {
 				ClientState.emergencyRender = -2;
 			}
 		}
@@ -115,11 +137,26 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
 
 	@Override
 	public int cerulean$photoHeldDownTicks() {
+		return Math.clamp(cerulean$photoUsingTicks, -1, 4);
+	}
+
+	@Override
+	public int cerulean$photoHeldDownTicksExtra() {
 		return cerulean$photoUsingTicks;
 	}
 
 	@Override
 	public boolean cerulean$lettingGo() {
 		return cerulean$photoLetGo;
+	}
+
+	@Override
+	public void cerulean$defreshHoldingPhoto() {
+		cerulean$isHoldingFreshAncientPhoto = false;
+	}
+
+	@Override
+	public boolean cerulean$isHoldingNewPhotographLike() {
+		return cerulean$isHoldingFreshAncientPhoto;
 	}
 }

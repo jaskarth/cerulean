@@ -1,7 +1,7 @@
 package fmt.cerulean.test;
 
 import fmt.cerulean.util.Vec2d;
-import fmt.cerulean.util.Voronoi;
+import fmt.cerulean.world.gen.synth.Voronoi;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 

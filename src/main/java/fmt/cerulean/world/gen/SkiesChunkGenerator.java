@@ -1,6 +1,5 @@
 package fmt.cerulean.world.gen;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fmt.cerulean.registry.CeruleanBlocks;
@@ -8,6 +7,7 @@ import fmt.cerulean.util.*;
 import fmt.cerulean.world.gen.carver.SkyCarver;
 import fmt.cerulean.world.gen.feature.BiomeDecorator;
 import fmt.cerulean.world.gen.feature.ConfiguredDecoration;
+import fmt.cerulean.world.gen.synth.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryKey;
@@ -37,9 +37,7 @@ import net.minecraft.world.gen.noise.NoiseConfig;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.stream.IntStream;
 
 public class SkiesChunkGenerator extends ChunkGenerator {
@@ -95,16 +93,16 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		return 384;
 	}
 
-	private static int index(int nX, int nZ, int nY) {
+	public static int index(int nX, int nZ, int nY) {
 		return (nY * 5 * 5) + (nZ * 5) + nX;
 	}
 
-	private void sampleNoiseColumn(long seed, Chunk chunk, double[] noiseData, int x, int z, int nX, int nZ) {
+	public static void sampleNoiseColumn(IslandGenerationData data, double[] noiseData, int x, int z, int nX, int nZ) {
 		// TODO: cache these per seed
-		Voronoi vn = new Voronoi(seed);
 
-		PerlinNoiseSampler s1 = new PerlinNoiseSampler(new CheckedRandom(seed));
-		PerlinNoiseSampler s2 = new PerlinNoiseSampler(new CheckedRandom(seed + 1));
+		VoronoiSampler vn = data.vn();
+		PerlinNoiseSampler s1 = data.s1();
+		PerlinNoiseSampler s2 = data.s2();
 
 		double scale = 48.0;
 		long uniq = vn.get(x / scale, z / scale);
@@ -115,11 +113,14 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 
 		IslandParameters p = IslandParameters.get(center, uniq);
 
+		boolean cavity = p.cavity();
+
 		double distScale = (14.0 + p.distOffset()) + (s1.sample(x / 2.21, 0, z / 2.21) * 4) + (s2.sample(x / 4.21, 0, z / 4.21) * 8);
 		double sq = Math.sqrt(dx * dx + dz * dz);
 
 		int amt = 16 + p.startOff();
 		int lAmt = 4 + p.startOff();
+		int centerAmt = 13 + p.startOff();
 
 		for (int nY = lAmt; nY < amt; nY++) {
 			double n = -1;
@@ -132,6 +133,14 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 				n = MathHelper.map(nY, lAmt, amt + 1, -1.3, h);
 
 				n += s1.sample(x / 4.84, nY / 6.56, z / 4.84) * 0.1;
+			}
+
+			if (cavity && Math.abs(nY - centerAmt) <= 1 && Math.abs(dx) <= 1 && Math.abs(dz) <= 1) {
+				double v = 2.15 + (s2.sample(x / 4.84, nY / 3.56, z / 4.84) * 0.2); // 1.95 - 2.35
+				v -= (Math.abs(dx) * 0.5);
+				v -= (Math.abs(dz) * 0.5);
+				v -= Math.abs(nY - centerAmt);
+ 				n -= v;
 			}
 
 			noiseData[index(nX, nZ, nY)] = n;
@@ -150,13 +159,18 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 
 		long seed = ((Seedy) noiseConfig).getSeed();
 
+		VoronoiSampler vn = new Voronoi(seed);
+		PerlinNoiseSampler s1 = new PerlinNoiseSampler(new CheckedRandom(seed));
+		PerlinNoiseSampler s2 = new PerlinNoiseSampler(new CheckedRandom(seed + 1));
+		IslandGenerationData data = new IslandGenerationData(vn, s1, s2);
+
 		OctavePerlinNoiseSampler oceanSampler = OctavePerlinNoiseSampler.create(new CheckedRandom(seed + 40), IntStream.of(-2, -1, 2));
 
 		double[] noiseData = new double[5 * 5 * 49];
 
-		for(int noiseX = 0; noiseX < 5; ++noiseX) {
-			for(int noiseZ = 0; noiseZ < 5; ++noiseZ) {
-				this.sampleNoiseColumn(seed, chunk, noiseData, chunkX * 4 + noiseX, chunkZ * 4 + noiseZ, noiseX, noiseZ);
+		for (int noiseX = 0; noiseX < 5; ++noiseX) {
+			for (int noiseZ = 0; noiseZ < 5; ++noiseZ) {
+				sampleNoiseColumn(data,  noiseData, chunkX * 4 + noiseX, chunkZ * 4 + noiseZ, noiseX, noiseZ);
 			}
 		}
 
@@ -275,9 +289,11 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 		long pSeed = random.setPopulationSeed(world.getSeed(), startX, startZ);
 		int i = 0;
 		BlockPos start = new BlockPos(startX, 0, startZ);
+		WorldgenWorld wworld = new WorldgenWorld(world);
+
 		for (ConfiguredDecoration deco : decos) {
 			random.setDecoratorSeed(pSeed, i, 30481);
-			deco.generate(world, random, start);
+			deco.generate(wworld, random, start);
 			i++;
 		}
 	}
@@ -293,7 +309,7 @@ public class SkiesChunkGenerator extends ChunkGenerator {
 
 		if (y > 0 && y < 190) {
 			double off = Math.max(((2000. / (y + 370)) - 5) + ((-2000. / (y - 560)) - 5) + 1.33, 0.00);
-			if (oceanSampler.sample(pos.getX() / 50., y / 20., pos.getZ() / 50.) + off < -0.35) {
+			if (oceanSampler.sample(pos.getX() / 50., y / 20., pos.getZ() / 50.) + off < -0.3) {
 				return CeruleanBlocks.POLYETHYLENE.getDefaultState();
 			}
 		}

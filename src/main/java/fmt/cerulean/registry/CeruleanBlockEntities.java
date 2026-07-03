@@ -29,10 +29,12 @@ public class CeruleanBlockEntities {
 	public static final BlockEntityType<RealityAnchorBlockEntity> REALITY_ANCHOR = register("reality_anchor", RealityAnchorBlockEntity::new, CeruleanBlocks.REALITY_ANCHOR);
 	public static final BlockEntityType<ItemInductorBlockEntity> ITEM_INDUCTOR = register("item_inductor", ItemInductorBlockEntity::new, CeruleanBlocks.ITEM_INDUCTOR);
 	public static final BlockEntityType<ItemExpellerBlockEntity> ITEM_EXPELLER = register("item_expeller", ItemExpellerBlockEntity::new, CeruleanBlocks.ITEM_EXPELLER);
+	public static final BlockEntityType<RedstoneParallaxBlockEntity> REDSTONE_PARALLAX = register("redstone_parallax", RedstoneParallaxBlockEntity::new, CeruleanBlocks.REDSTONE_PARALLAX);
+	public static final BlockEntityType<IslandSeedBlockEntity> ISLAND_SEED = register("island_seed", IslandSeedBlockEntity::new, CeruleanBlocks.ISLAND_SEED);
 
 	public static void init() {
 	}
-	
+
 	private static <T extends BlockEntity> BlockEntityType<T> register(String path, FabricBlockEntityTypeBuilder.Factory<T> function, Block... blocks) {
 		return Registry.register(Registries.BLOCK_ENTITY_TYPE, Cerulean.id(path), FabricBlockEntityTypeBuilder.create(function, blocks).build());
 	}

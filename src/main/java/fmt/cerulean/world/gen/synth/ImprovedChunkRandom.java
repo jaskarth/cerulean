@@ -1,4 +1,4 @@
-package fmt.cerulean.util;
+package fmt.cerulean.world.gen.synth;
 
 import java.util.Random;
 

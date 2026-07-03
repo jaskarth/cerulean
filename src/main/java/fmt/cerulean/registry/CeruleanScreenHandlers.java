@@ -1,6 +1,7 @@
 package fmt.cerulean.registry;
 
 import fmt.cerulean.Cerulean;
+import fmt.cerulean.screen.ProjectorScreenHandler;
 import fmt.cerulean.screen.RealityAnchorScreenHandler;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -10,6 +11,7 @@ import net.minecraft.screen.ScreenHandlerType;
 
 public class CeruleanScreenHandlers {
 	public static final ScreenHandlerType<RealityAnchorScreenHandler> REALITY_ANCHOR = register("reality_anchor", RealityAnchorScreenHandler::new);
+	public static final ScreenHandlerType<ProjectorScreenHandler> PROJECTOR = register("projector", ProjectorScreenHandler::new);
 
 	public static void init() {
 

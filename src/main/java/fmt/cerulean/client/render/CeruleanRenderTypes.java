@@ -14,6 +14,15 @@ public abstract class CeruleanRenderTypes extends RenderLayer {
 					.build(true)
 	);
 
+	public static final RenderLayer TRANSLUCENT_BOX_ADDITIVE = of(
+			"translucent_box", VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL,
+			VertexFormat.DrawMode.QUADS, 2097152, true, true,
+			translucent(TRANSLUCENT_PROGRAM)
+					.layering(POLYGON_OFFSET_LAYERING)
+					.transparency(ADDITIVE_TRANSPARENCY)
+					.build(true)
+	);
+
 	public static final RenderLayer LINES_WIDER = of(
 			"lines_wider",
 			VertexFormats.LINES,

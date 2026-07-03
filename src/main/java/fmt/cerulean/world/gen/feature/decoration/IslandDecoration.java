@@ -6,6 +6,7 @@ import fmt.cerulean.flow.FlowResources;
 import fmt.cerulean.flow.FlowState;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.world.gen.feature.Decoration;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class IslandDecoration extends Decoration {
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		double radius = 3 + random.nextInt(4);
 		int radMax = (int) radius;
 
@@ -42,7 +43,7 @@ public class IslandDecoration extends Decoration {
 
 					BlockPos local = new BlockPos(pos.getX() + x, y, pos.getZ() + z);
 					if (dx * dx + dz * dz < 1 + (noise.sample(local.getX(), local.getY(), local.getZ()) * 0.25)) {
-						world.setBlockState(local, CeruleanBlocks.SPACEROCK.getDefaultState(), 3);
+						world.setBlockState(local, CeruleanBlocks.SPACEROCK.getDefaultState());
 					}
 				}
 			}
@@ -53,7 +54,7 @@ public class IslandDecoration extends Decoration {
 
 		if (random.nextInt(2) == 0) {
 			BlockPos bp = new BlockPos(pos.getX(), oy, pos.getZ());
-			world.setBlockState(bp, CeruleanBlocks.STAR_WELL.getDefaultState(), 3);
+			world.setBlockState(bp, CeruleanBlocks.STAR_WELL.getDefaultState());
 			BlockEntity be = world.getBlockEntity(bp);
 			if (be instanceof WellBlockEntity wbe) {
 				FlowResource.Brightness brightness = switch (random.nextInt(20)) {

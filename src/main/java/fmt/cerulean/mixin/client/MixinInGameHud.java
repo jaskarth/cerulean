@@ -5,12 +5,13 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fmt.cerulean.Cerulean;
-import fmt.cerulean.client.render.EmergencyOverlay;
 import fmt.cerulean.client.render.EmergencyStack;
-import fmt.cerulean.client.tex.gen.StaticTexture;
+import fmt.cerulean.client.render.frame.CeruleanFramebuffers;
+import fmt.cerulean.client.render.item.Pressable;
 import fmt.cerulean.registry.CeruleanItems;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Colors;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,6 +56,9 @@ public abstract class MixinInGameHud implements Instructor {
 	@Shadow private int overlayRemaining;
 
 	@Shadow private boolean overlayTinted;
+
+	@Shadow
+	public abstract void render(DrawContext context, RenderTickCounter tickCounter);
 
 	@Unique
 	private float cerulean$viewfinderScale;
@@ -153,6 +157,21 @@ public abstract class MixinInGameHud implements Instructor {
 			int color = (int)(255.0F * amt) << 24 | addend;
 			context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color);
 		}
+
+		if (ClientState.memoryLimits != null && !ClientState.cautious) {
+			int ticks = ((Pressable)this.client.player).cerulean$photoHeldDownTicksExtra();
+
+			int d = ticks > 40 ? (int) (((ticks - 40) + tickCounter.getTickDelta(false)) * 10) : 0;
+
+			int x = ClientState.memoryLimits.getX() - d;
+			int z = ClientState.memoryLimits.getY() - d;
+			int w = ClientState.memoryLimits.getWidth() + d * 2;
+			int h = ClientState.memoryLimits.getHeight() + d * 2;
+			RenderSystem.enableScissor(x, z, Math.max(w, 0), Math.max(h, 0));
+			CeruleanFramebuffers.getMainCopy1().draw(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight(), false);
+			RenderSystem.disableScissor();
+			ClientState.memoryLimits = null;
+		}
 	}
 
 	@Inject(method = "renderOverlayMessage", at = @At("HEAD"), cancellable = true)
@@ -173,7 +192,8 @@ public abstract class MixinInGameHud implements Instructor {
 //							0, 0, 1, 0, 1, 1, 1, 1, 20.0f / 255.0f);
 
 			TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-			int color = 0xFFFF0000;
+            int alpha = (int) MathHelper.clampedMap(e, 40, 60, 255, 25);
+			int color = (alpha << 24) | 0xFF0000;
 			context.drawText(textRenderer, EmergencyStack.T_1, 10, 10, color, false);
 
 			if (e >= 2) {
@@ -282,5 +302,12 @@ public abstract class MixinInGameHud implements Instructor {
 	@Override
 	public void recall(String intuition) {
 		fragments.add(new Fragment(intuition, System.currentTimeMillis()));
+	}
+
+	@Inject(method = "renderHotbarItem", at = @At(value = "HEAD"), cancellable = true)
+	private void cerulean$skipItem(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack stack, int seed, CallbackInfo ci) {
+		if (ClientState.cautious && stack == MinecraftClient.getInstance().player.getMainHandStack()) {
+			ci.cancel();
+		}
 	}
 }

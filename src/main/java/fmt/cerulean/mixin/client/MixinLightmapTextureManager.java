@@ -1,5 +1,6 @@
 package fmt.cerulean.mixin.client;
 
+import fmt.cerulean.client.render.Flashlight;
 import fmt.cerulean.world.CeruleanDimensions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LightmapTextureManager.class)
-public abstract class MixinLightmapTextureManager {
+public abstract class MixinLightmapTextureManager implements Flashlight {
     @Shadow
     private boolean dirty;
 
@@ -57,7 +58,7 @@ public abstract class MixinLightmapTextureManager {
         }
     }
 
-    private void cerulean$updateDreamscape(float delta) {
+    public void cerulean$updateDreamscape(float delta) {
         if (this.dirty) {
             this.dirty = false;
             ClientWorld world = this.client.world;
@@ -99,6 +100,7 @@ public abstract class MixinLightmapTextureManager {
     }
 
     private void cerulean$updateSkies(float delta) {
+        // TODO: night vision, etc.
         if (this.dirty) {
             this.dirty = false;
             ClientWorld world = this.client.world;

@@ -4,6 +4,7 @@ import fmt.cerulean.block.ReedsBlock;
 import fmt.cerulean.block.ReedsPlantBlock;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.world.gen.feature.Decoration;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
@@ -13,7 +14,7 @@ import java.util.Random;
 
 public class ReedsDecoration extends Decoration {
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		int amt = random.nextInt(3) + 1;
 
 		for (int i = 0; i < amt; i++) {
@@ -42,10 +43,10 @@ public class ReedsDecoration extends Decoration {
 			}
 
 			for (int j = 0; j < height; j++) {
-				world.setBlockState(local.up(j), CeruleanBlocks.REEDS_PLANT.getDefaultState().with(ReedsPlantBlock.BERRIES, random.nextInt(6) == 0), 3);
+				world.setBlockState(local.up(j), CeruleanBlocks.REEDS_PLANT.getDefaultState().with(ReedsPlantBlock.BERRIES, random.nextInt(6) == 0));
 			}
 
-			world.setBlockState(local.up(height), CeruleanBlocks.REEDS.getDefaultState().with(ReedsBlock.AGE, 25), 3);
+			world.setBlockState(local.up(height), CeruleanBlocks.REEDS.getDefaultState().with(ReedsBlock.AGE, 25));
 		}
 	}
 }

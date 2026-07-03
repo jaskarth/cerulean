@@ -1,6 +1,6 @@
 package fmt.cerulean.test;
 
-import fmt.cerulean.util.Voronoi;
+import fmt.cerulean.world.gen.synth.Voronoi;
 
 import java.util.Random;
 

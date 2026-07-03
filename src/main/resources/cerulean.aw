@@ -27,4 +27,10 @@ accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget t
 accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget description Ljava/util/List;
 accessible field net/minecraft/client/gui/screen/advancement/AdvancementWidget width I
 
+accessible method net/minecraft/client/render/item/HeldItemRenderer renderArmHoldingItem (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IFFLnet/minecraft/util/Arm;)V
+
+
+accessible method net/minecraft/block/PointedDripstoneBlock getFluid (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Ljava/util/Optional;
+
 accessible class net/minecraft/client/texture/ResourceTexture$TextureData
+accessible class net/minecraft/block/PointedDripstoneBlock$DrippingFluid

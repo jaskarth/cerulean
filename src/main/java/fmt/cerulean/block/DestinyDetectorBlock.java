@@ -38,6 +38,11 @@ public class DestinyDetectorBlock extends Block {
 	}
 
 	@Override
+	protected boolean emitsRedstonePower(BlockState state) {
+		return true;
+	}
+
+	@Override
 	protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
 		return state.get(POWERED) ? 15 : 0;
 	}

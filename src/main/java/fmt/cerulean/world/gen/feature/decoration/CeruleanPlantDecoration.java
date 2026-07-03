@@ -4,6 +4,7 @@ import fmt.cerulean.block.CeruleanPlantBlock;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Util;
 import fmt.cerulean.world.gen.feature.Decoration;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +30,7 @@ public class CeruleanPlantDecoration extends Decoration {
 	}
 
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		for (int i = 0; i < this.count; i++) {
 			int dx = random.nextInt(this.hSpread) - random.nextInt(this.hSpread);
 			int dy = random.nextInt(this.vSpread) - random.nextInt(this.vSpread);
@@ -57,7 +58,7 @@ public class CeruleanPlantDecoration extends Decoration {
 			Direction place = Util.pick(ok, random);
 			world.setBlockState(local, this.block.getDefaultState()
 					.with(CeruleanPlantBlock.FACING, place.getOpposite())
-					.with(CeruleanPlantBlock.PLASTICLOGGED, state.isOf(CeruleanBlocks.POLYETHYLENE)), 3);
+					.with(CeruleanPlantBlock.PLASTICLOGGED, state.isOf(CeruleanBlocks.POLYETHYLENE)));
 		}
 	}
 }

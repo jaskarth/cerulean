@@ -3,6 +3,7 @@ package fmt.cerulean.net;
 import fmt.cerulean.block.base.Obedient;
 import fmt.cerulean.block.entity.MimicBlockEntity;
 import fmt.cerulean.block.entity.MirageBlockEntity;
+import fmt.cerulean.block.entity.RedstoneParallaxBlockEntity;
 import fmt.cerulean.item.component.ColorTriplex;
 import fmt.cerulean.item.component.PhotoComponent;
 import fmt.cerulean.net.packet.*;
@@ -10,6 +11,7 @@ import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.registry.CeruleanItemComponents;
 import fmt.cerulean.registry.CeruleanItems;
 import fmt.cerulean.solitaire.Board;
+import fmt.cerulean.world.CeruleanDimensions;
 import fmt.cerulean.world.data.CeruleanWorldState;
 import fmt.cerulean.world.data.PhotoMeta;
 import fmt.cerulean.world.data.PhotoState;
@@ -23,9 +25,13 @@ import net.minecraft.block.LightBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
+import net.minecraft.world.TeleportTarget;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -123,13 +129,16 @@ public class CeruleanServerNetworking {
 			byte[] data = payload.data();
 			float yaw = payload.yaw();
 			float pitch = payload.pitch();
+			int metaKind = payload.meta();
 
 			ctx.server().execute(() -> {
 				ServerPlayerEntity player = ctx.player();
 
-				int idx = player.getInventory().indexOf(new ItemStack(CeruleanItems.FILM));
-				if (idx != -1) {
-					player.getInventory().getStack(idx).decrement(1);
+				if (metaKind == 0) {
+					int idx = player.getInventory().indexOf(new ItemStack(CeruleanItems.FILM));
+					if (idx != -1) {
+						player.getInventory().getStack(idx).decrement(1);
+					}
 				}
 
 				PhotoState photos = PhotoState.get(player.getServerWorld());
@@ -147,7 +156,7 @@ public class CeruleanServerNetworking {
 					return;
 				}
 
-				if (photos.canAllocFor(player)) {
+				if (metaKind == 0 && photos.canAllocFor(player)) {
 					int id = photos.allocNextId(player);
 
 					Vec3d vec = Vec3d.fromPolar(new Vec2f(pitch, yaw));
@@ -156,6 +165,7 @@ public class CeruleanServerNetworking {
 					// It's fast. I promise.
 					LongOpenHashSet set = new LongOpenHashSet();
 					Set<BlockPos> pos = new HashSet<>();
+					Set<BlockPos> powered = new HashSet<>();
 					for (int i = 0; i <= 10; i++) {
 						cursor = cursor.add(vec.multiply(3));
 
@@ -175,6 +185,9 @@ public class CeruleanServerNetworking {
 										if (be instanceof MirageBlockEntity mbe) {
 											mbe.aware = true;
 											mbe.markDirty();
+										} else if (be instanceof RedstoneParallaxBlockEntity rpbe && rpbe.getPhotoId() == -1) {
+											rpbe.setPhotoId(id);
+											powered.add(local);
 										}
 									}
 								}
@@ -190,8 +203,11 @@ public class CeruleanServerNetworking {
 						meta.neededBox = encompass;
 					}
 					meta.positions.addAll(pos);
+					meta.powered.addAll(powered);
 
 					photos.add(id, data, meta);
+					// Send the data right back
+					ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, 0, data));
 
 
 					ItemStack stack = new ItemStack(CeruleanItems.PHOTONEGATIVE);
@@ -200,6 +216,12 @@ public class CeruleanServerNetworking {
 
 					if (!player.giveItemStack(stack)) {
 						player.dropItem(stack, false);
+					}
+				} else if (metaKind > 0) {
+					int id = photos.addMeta(player, metaKind, data);
+
+					if (id != -1) {
+						ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, metaKind, data));
 					}
 				}
 			});
@@ -214,7 +236,12 @@ public class CeruleanServerNetworking {
 				PhotoState photos = PhotoState.get(player.getServerWorld());
 				byte[] data = photos.getStore().get(id);
 				if (data != null) {
-					ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, data));
+					ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, 0, data));
+
+					data = photos.getStore().getMeta(id, 1);
+					if (data != null) {
+						ServerPlayNetworking.send(player, new SupplyMemoryPacket(id, 1, data));
+					}
 				}
 			});
 		});
@@ -280,6 +307,24 @@ public class CeruleanServerNetworking {
 					}
 				}
 				syncWins(player);
+			});
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(UpdatePropPacket.ID, (payload, ctx) -> {
+			ctx.server().execute(() -> {
+				ScreenHandler handler = ctx.player().currentScreenHandler;
+				if (handler != null) {
+					handler.setProperty(payload.index(), payload.value());
+				}
+			});
+		});
+
+		// /execute in cerulean:dreamscape run tp @s -2.70 101.00 3.47 2035.80 7.80
+		ServerPlayNetworking.registerGlobalReceiver(ReturnAgainPacket.ID, (payload, ctx) -> {
+			ctx.server().execute(() -> {
+				ServerWorld skies = ctx.server().getWorld(RegistryKey.of(RegistryKeys.WORLD, CeruleanDimensions.DREAMSCAPE));
+				ctx.player().teleportTo(new TeleportTarget(skies, new Vec3d(-2.70, 101.00, 3.47), Vec3d.ZERO, 2035.80F, 7.80F, e -> {}));
+				ctx.player().getMainHandStack().setCount(0);
 			});
 		});
 	}

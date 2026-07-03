@@ -51,7 +51,7 @@ public class ItemExpellerBlockEntity extends ItemActuatorBlockEntity {
 		Vec3d vec3d = Vec3d.ofCenter(pos);
 		Vec3d vec3d2 = vec3d.offset(dir, 0);
 
-		spawnItem(world, copy, 2, dir.getOpposite(), vec3d2);
+		spawnItem(world, copy, 2, dir.getOpposite(), vec3d2, state.get(ItemActuatorBlock.PLASTICLOGGED));
 
 		iebe.cooldown = 4;
 	}
@@ -71,30 +71,42 @@ public class ItemExpellerBlockEntity extends ItemActuatorBlockEntity {
 		return i;
 	}
 
-	public static void spawnItem(World world, ItemStack stack, int speed, Direction side, Position pos) {
-		double d = pos.getX();
-		double e = pos.getY();
-		double f = pos.getZ();
+	public static void spawnItem(World world, ItemStack stack, int speed, Direction side, Position pos, boolean plastic) {
+		double x = pos.getX();
+		double y = pos.getY();
+		double z = pos.getZ();
 		boolean isY = side.getAxis() == Direction.Axis.Y;
 		if (isY) {
-			e -= 0.125;
+			y -= 0.125;
 		} else {
-			e -= 0.15625;
+			y -= 0.15625;
 		}
 
-		ItemEntity itemEntity = new ItemEntity(world, d, e, f, stack);
+		ItemEntity itemEntity = new ItemEntity(world, x, y, z, stack);
 		double deviation = world.random.nextDouble() * 0.1 + 0.2;
 
 		double deviationY = deviation;
-		if (side == Direction.UP) {
+		if (side == Direction.UP && !plastic) {
 			deviationY += 0.4;
 		}
 
+		double vx = 0.0172275;
+		double vy = 0.0172275;
+		double vz = 0.0172275;
+
+		if (plastic) {
+			isY = true;
+			vx *= Math.abs(side.getOffsetX());
+			vy *= Math.abs(side.getOffsetY());
+			vz *= Math.abs(side.getOffsetZ());
+		}
+
 		itemEntity.setVelocity(
-				world.random.nextTriangular((double)side.getOffsetX() * deviation, 0.0172275 * (double)speed),
-				world.random.nextTriangular(isY ? (double)side.getOffsetY() * deviationY : 0.2, 0.0172275 * (double)speed),
-				world.random.nextTriangular((double)side.getOffsetZ() * deviation, 0.0172275 * (double)speed)
+				world.random.nextTriangular((double)side.getOffsetX() * deviation, vx * (double)speed),
+				world.random.nextTriangular(isY ? (double)side.getOffsetY() * deviationY : 0.2, vy * (double)speed),
+				world.random.nextTriangular((double)side.getOffsetZ() * deviation, vz * (double)speed)
 		);
+
 		world.spawnEntity(itemEntity);
 	}
 }

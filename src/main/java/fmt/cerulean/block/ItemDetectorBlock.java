@@ -78,6 +78,11 @@ public class ItemDetectorBlock extends BlockWithEntity {
 	}
 
 	@Override
+	protected boolean emitsRedstonePower(BlockState state) {
+		return true;
+	}
+
+	@Override
 	protected int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		if (world.getBlockEntity(pos) instanceof ItemDetectorBlockEntity ibe) {
 			return ibe.getDetected();

@@ -1,0 +1,84 @@
+{
+  "variants": {
+    "facing=down,stage=1": {
+      "model": "cerulean:block/rock_candy_1",
+      "x": 180
+    },
+    "facing=east,stage=1": {
+      "model": "cerulean:block/rock_candy_1",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,stage=1": {
+      "model": "cerulean:block/rock_candy_1",
+      "x": 90
+    },
+    "facing=south,stage=1": {
+      "model": "cerulean:block/rock_candy_1",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,stage=1": {
+      "model": "cerulean:block/rock_candy_1"
+    },
+    "facing=west,stage=1": {
+      "model": "cerulean:block/rock_candy_1",
+      "x": 90,
+      "y": 270
+    },
+
+    "facing=down,stage=2": {
+      "model": "cerulean:block/rock_candy_2",
+      "x": 180
+    },
+    "facing=east,stage=2": {
+      "model": "cerulean:block/rock_candy_2",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,stage=2": {
+      "model": "cerulean:block/rock_candy_2",
+      "x": 90
+    },
+    "facing=south,stage=2": {
+      "model": "cerulean:block/rock_candy_2",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,stage=2": {
+      "model": "cerulean:block/rock_candy_2"
+    },
+    "facing=west,stage=2": {
+      "model": "cerulean:block/rock_candy_2",
+      "x": 90,
+      "y": 270
+    },
+
+    "facing=down,stage=3": {
+      "model": "cerulean:block/rock_candy_3",
+      "x": 180
+    },
+    "facing=east,stage=3": {
+      "model": "cerulean:block/rock_candy_3",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,stage=3": {
+      "model": "cerulean:block/rock_candy_3",
+      "x": 90
+    },
+    "facing=south,stage=3": {
+      "model": "cerulean:block/rock_candy_3",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,stage=3": {
+      "model": "cerulean:block/rock_candy_3"
+    },
+    "facing=west,stage=3": {
+      "model": "cerulean:block/rock_candy_3",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

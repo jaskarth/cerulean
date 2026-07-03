@@ -5,11 +5,11 @@ import fmt.cerulean.block.entity.MirageBlockEntity;
 import fmt.cerulean.registry.CeruleanBlocks;
 import fmt.cerulean.util.Vec2d;
 import fmt.cerulean.util.Vec2i;
-import fmt.cerulean.util.Voronoi;
-import fmt.cerulean.world.gen.IslandParameters;
+import fmt.cerulean.world.gen.synth.DecoratingWorld;
+import fmt.cerulean.world.gen.synth.Voronoi;
+import fmt.cerulean.world.gen.synth.IslandParameters;
 import fmt.cerulean.world.gen.feature.Decoration;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 
 public class IslandAugmentDecoration extends Decoration {
 	@Override
-	public void generate(StructureWorldAccess world, Random random, BlockPos pos) {
+	public void generate(DecoratingWorld world, Random random, BlockPos pos) {
 		long seed = world.getSeed();
 		Voronoi vn = new Voronoi(seed);
 
@@ -58,9 +58,9 @@ public class IslandAugmentDecoration extends Decoration {
 						if (dst + (detailNoise.sample(wx / 20., wy / 10., wz / 20.) * 0.5) < 1) {
 							BlockState state = world.getBlockState(local);
 							if (state.isAir() || state.isOf(CeruleanBlocks.REEDS) || state.isOf(CeruleanBlocks.REEDS_PLANT)) {
-								world.setBlockState(local, CeruleanBlocks.POLYETHYLENE.getDefaultState(), 3);
+								world.setBlockState(local, CeruleanBlocks.POLYETHYLENE.getDefaultState());
 							} else if (state.contains(Plasticloggable.PLASTICLOGGED)) {
-								world.setBlockState(local, state.with(Plasticloggable.PLASTICLOGGED, true), 3);
+								world.setBlockState(local, state.with(Plasticloggable.PLASTICLOGGED, true));
 							}
 						}
 					}
@@ -96,7 +96,7 @@ public class IslandAugmentDecoration extends Decoration {
 					BlockPos worldPos = new BlockPos(wx, y, wz);
 
 					if (world.getBlockState(worldPos).isAir()) {
-						world.setBlockState(worldPos, CeruleanBlocks.MIRAGE.getDefaultState(), 3);
+						world.setBlockState(worldPos, CeruleanBlocks.MIRAGE.getDefaultState());
 						MirageBlockEntity.set(world.getBlockEntity(worldPos), CeruleanBlocks.SPACEROCK.getDefaultState());
 					}
 				}
